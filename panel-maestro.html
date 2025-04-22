@@ -33,10 +33,23 @@
     </select>
     <button onclick="verRespuestasPorAlumno()">📘 Ver respuestas de alumno</button>
     <ul id="respuestasAlumno"></ul>
+
+    <hr>
+
+    <h3>Resumen de respuestas por alumno</h3>
+    <button onclick="verResumen()">📊 Ver resumen</button>
+    <table id="tablaResumen">
+      <thead>
+        <tr>
+          <th>Alumno</th>
+          <th>Total de respuestas</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
   <script src="conexion.js"></script>
   <script src="maestro.js"></script>
 </body>
 </html>
-
