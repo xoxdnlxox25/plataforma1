@@ -1,6 +1,7 @@
 const idClase = localStorage.getItem("clase");
 document.getElementById("nombreClase").textContent = idClase;
 
+// Cargar alumnos al iniciar
 function cargarAlumnos() {
   fetch(`${URL}?accion=getAlumnos&clase=${idClase}`)
     .then(res => res.json())
@@ -19,12 +20,13 @@ function cargarAlumnos() {
     });
 }
 
+// Agregar nuevo alumno
 function agregarAlumno() {
   const nombre = document.getElementById("nuevoAlumno").value;
   const id = document.getElementById("nuevoID").value;
 
   if (!nombre || !id) {
-    alert("Por favor completa todos los campos");
+    alert("⚠ Por favor completa todos los campos.");
     return;
   }
 
@@ -47,6 +49,7 @@ function agregarAlumno() {
     });
 }
 
+// Eliminar alumno
 function eliminarAlumno(idAlumno) {
   const datos = new URLSearchParams();
   datos.append("accion", "eliminarAlumno");
@@ -64,4 +67,29 @@ function eliminarAlumno(idAlumno) {
     });
 }
 
+// Ver respuestas de todos los alumnos de la clase
+function verRespuestas() {
+  fetch(`${URL}?accion=getRespuestasClase&clase=${idClase}`)
+    .then(res => res.json())
+    .then(data => {
+      const lista = document.getElementById("listaRespuestas");
+      lista.innerHTML = "";
+
+      if (data.length === 0) {
+        lista.innerHTML = "<li>No hay respuestas registradas aún.</li>";
+        return;
+      }
+
+      data.forEach(r => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          <strong>${r.ID_ALUMNO}</strong> — ${r.Dia} (P${r.PreguntaN}): <em>${r.Respuesta}</em> [${r.Fecha}]
+        `;
+        lista.appendChild(li);
+      });
+    });
+}
+
+// Cargar todo al iniciar
 window.onload = cargarAlumnos;
+
