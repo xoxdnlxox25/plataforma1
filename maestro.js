@@ -129,6 +129,30 @@ function verRespuestasPorAlumno() {
     });
 }
 
+// 📊 Ver resumen de respuestas por alumno
+function verResumen() {
+  fetch(`${URL}?accion=getResumenClase&clase=${idClase}`)
+    .then(res => res.json())
+    .then(data => {
+      const tbody = document.querySelector("#tablaResumen tbody");
+      tbody.innerHTML = "";
+
+      if (data.length === 0) {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `<td colspan="2">No hay datos para mostrar.</td>`;
+        tbody.appendChild(fila);
+        return;
+      }
+
+      data.forEach(r => {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `
+          <td>${r.ID_ALUMNO}</td>
+          <td>${r.Total}</td>
+        `;
+        tbody.appendChild(fila);
+      });
+    });
+}
+
 window.onload = cargarAlumnos;
-
-
