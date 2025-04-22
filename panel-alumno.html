@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Panel del Alumno</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Bienvenido, <span id="nombreAlumno"></span></h2>
+    <p>Clase: <span id="nombreClase"></span></p>
+
+    <h3>Preguntas del día</h3>
+    <div id="preguntasContainer">
+      <!-- Aquí se insertarán dinámicamente las preguntas -->
+    </div>
+
+    <button onclick="cerrarSesion()">Cerrar sesión</button>
+  </div>
+
+  <script src="conexion.js"></script>
+  <script src="alumno.js"></script>
+</body>
+</html>
