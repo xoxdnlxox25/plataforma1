@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel del Maestro</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Panel del Maestro</h2>
+    <p>Clase: <span id="nombreClase"></span></p>
+
+    <h3>Lista de alumnos</h3>
+    <ul id="listaAlumnos"></ul>
+
+    <h3>Agregar nuevo alumno</h3>
+    <input type="text" id="nuevoAlumno" placeholder="Nombre del alumno">
+    <input type="text" id="nuevoID" placeholder="ID del alumno">
+    <button onclick="agregarAlumno()">Agregar</button>
+  </div>
+
+  <script src="conexion.js"></script>
+  <script src="maestro.js"></script>
+</body>
+</html>
