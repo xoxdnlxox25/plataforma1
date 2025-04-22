@@ -1,39 +1,7 @@
-// Cargar clases automáticamente
-window.onload = () => {
-  fetch(`${URL}?accion=getClases`)
-    .then(res => res.json())
-    .then(data => {
-      const select = document.getElementById("claseAlumno");
-      data.forEach(clase => {
-        const option = document.createElement("option");
-        option.value = clase.ID_CLASE;
-        option.textContent = clase.NombreClase;
-        select.appendChild(option);
-      });
-    });
-};
-
-// Cargar alumnos según clase
-function cargarAlumnos() {
-  const clase = document.getElementById("claseAlumno").value;
-  fetch(`${URL}?accion=getAlumnos&clase=${clase}`)
-    .then(res => res.json())
-    .then(data => {
-      const select = document.getElementById("alumno");
-      select.innerHTML = `<option value="">Selecciona tu nombre</option>`;
-      data.forEach(alumno => {
-        const option = document.createElement("option");
-        option.value = alumno.ID_ALUMNO;
-        option.textContent = alumno.NombreAlumno;
-        select.appendChild(option);
-      });
-    });
-}
-
 // Login Maestro
 function loginMaestro() {
-  const clase = document.getElementById("claseMaestro").value;
-  const clave = document.getElementById("claveMaestro").value;
+  const clase = document.getElementById("claseMaestro").value.trim();
+  const clave = document.getElementById("claveMaestro").value.trim();
 
   fetch(`${URL}?accion=loginMaestro&clase=${clase}&clave=${clave}`)
     .then(res => res.text())
@@ -43,22 +11,54 @@ function loginMaestro() {
         localStorage.setItem("clase", clase);
         window.location.href = "panel-maestro.html";
       } else {
-        alert("Contraseña incorrecta");
+        mostrarToast("❌ Contraseña incorrecta o clase no válida", "error");
       }
+    })
+    .catch(() => {
+      mostrarToast("❌ Error al conectar con el servidor", "error");
     });
 }
 
-// Login Alumno
+// Login Alumno con verificación desde hoja "Alumnos"
 function loginAlumno() {
-  const clase = document.getElementById("claseAlumno").value;
-  const alumno = document.getElementById("alumno").value;
+  const clase = document.getElementById("claseAlumno").value.trim();
+  const alumno = document.getElementById("alumno").value.trim();
 
-  if (clase && alumno) {
-    localStorage.setItem("tipo", "alumno");
-    localStorage.setItem("clase", clase);
-    localStorage.setItem("alumno", alumno);
-    window.location.href = "panel-alumno.html";
-  } else {
-    alert("Selecciona clase y alumno");
+  if (!clase || !alumno) {
+    mostrarToast("⚠ Por favor ingresa tu clase y tu nombre", "error");
+    return;
   }
+
+  fetch(`${URL}?accion=getAlumnos&clase=${clase}`)
+    .then(res => res.json())
+    .then(data => {
+      const encontrado = data.find(a => a.NombreAlumno.toLowerCase() === alumno.toLowerCase());
+
+      if (encontrado) {
+        localStorage.setItem("tipo", "alumno");
+        localStorage.setItem("clase", clase);
+        localStorage.setItem("alumno", encontrado.NombreAlumno); // Guarda el nombre exacto
+        window.location.href = "panel-alumno.html";
+      } else {
+        mostrarToast("❌ No se encontró el alumno en esa clase", "error");
+      }
+    })
+    .catch(() => {
+      mostrarToast("❌ Error al conectar con el servidor", "error");
+    });
+}
+
+// ✅ Toast flotante moderno (reutilizable en todas partes)
+function mostrarToast(mensaje, tipo = "info") {
+  const contenedor = document.getElementById("toast-container");
+  if (!contenedor) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${tipo}`;
+  toast.textContent = mensaje;
+  contenedor.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
 }
