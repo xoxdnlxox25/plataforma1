@@ -21,8 +21,10 @@ body {
   word-break: break-word;
   font-size: 1.8rem;
   text-align: center;
+  margin-top: 60px; /* 👈 Aumentamos este margen para evitar que lo tape el header */
   margin-bottom: 10px;
 }
+
 
 h2, h3 {
   color: #2c3e50;
