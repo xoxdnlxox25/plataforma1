@@ -14,7 +14,7 @@ body {
   background-color: white;
   box-shadow: 0 0 20px rgba(0,0,0,0.05);
   border-radius: 12px;
-  margin-top: 40px;
+  margin-top: 90px; /* Ajustado por cabecera fija */
 }
 
 h2, h3 {
@@ -101,6 +101,7 @@ table th {
     font-size: 0.9rem;
   }
 }
+
 .pregunta {
   margin-bottom: 20px;
   padding: 15px;
@@ -114,15 +115,22 @@ label {
   margin: 8px 0;
   font-size: 15px;
 }
+
+/* CABECERA FIJA + ANIMACIÓN */
 .top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
   background-color: #2c3e50;
   padding: 10px 20px;
   color: white;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   border-bottom: 4px solid #2980b9;
-  text-align: center;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .logo-area {
@@ -141,7 +149,22 @@ label {
   font-size: 1.6rem;
   margin: 0;
   font-weight: bold;
+  animation: slideIn 0.5s ease forwards;
+  opacity: 0;
 }
+
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* TOASTS */
 #toast-container {
   position: fixed;
   bottom: 20px;
