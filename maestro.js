@@ -1,21 +1,30 @@
 const idClase = localStorage.getItem("clase");
 document.getElementById("nombreClase").textContent = idClase;
 
-// Cargar alumnos al iniciar
+// Cargar alumnos en la lista y en el selector
 function cargarAlumnos() {
   fetch(`${URL}?accion=getAlumnos&clase=${idClase}`)
     .then(res => res.json())
     .then(data => {
       const lista = document.getElementById("listaAlumnos");
+      const selector = document.getElementById("selectAlumno");
       lista.innerHTML = "";
+      selector.innerHTML = '<option value="">Selecciona un alumno</option>';
 
       data.forEach(alumno => {
+        // Lista
         const li = document.createElement("li");
         li.innerHTML = `
           ${alumno.NombreAlumno} (${alumno.ID_ALUMNO})
           <button onclick="eliminarAlumno('${alumno.ID_ALUMNO}')">❌ Eliminar</button>
         `;
         lista.appendChild(li);
+
+        // Selector
+        const option = document.createElement("option");
+        option.value = alumno.ID_ALUMNO;
+        option.textContent = alumno.NombreAlumno;
+        selector.appendChild(option);
       });
     });
 }
@@ -67,7 +76,7 @@ function eliminarAlumno(idAlumno) {
     });
 }
 
-// Ver respuestas de todos los alumnos de la clase
+// Ver respuestas de toda la clase
 function verRespuestas() {
   fetch(`${URL}?accion=getRespuestasClase&clase=${idClase}`)
     .then(res => res.json())
@@ -90,6 +99,36 @@ function verRespuestas() {
     });
 }
 
-// Cargar todo al iniciar
+// 🔍 Ver respuestas filtradas por alumno
+function verRespuestasPorAlumno() {
+  const idAlumno = document.getElementById("selectAlumno").value;
+
+  if (!idAlumno) {
+    alert("⚠ Por favor selecciona un alumno.");
+    return;
+  }
+
+  fetch(`${URL}?accion=getRespuestasAlumno&clase=${idClase}&alumno=${idAlumno}`)
+    .then(res => res.json())
+    .then(data => {
+      const lista = document.getElementById("respuestasAlumno");
+      lista.innerHTML = "";
+
+      if (data.length === 0) {
+        lista.innerHTML = "<li>Este alumno aún no ha registrado respuestas.</li>";
+        return;
+      }
+
+      data.forEach(r => {
+        const li = document.createElement("li");
+        li.innerHTML = `
+          Día: <strong>${r.Dia}</strong> | Pregunta ${r.PreguntaN} → <em>${r.Respuesta}</em> [${r.Fecha}]
+        `;
+        lista.appendChild(li);
+      });
+    });
+}
+
 window.onload = cargarAlumnos;
+
 
