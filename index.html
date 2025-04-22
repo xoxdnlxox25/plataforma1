@@ -19,6 +19,7 @@
   <div class="container">
     <h2>Ingreso Escuela Sabática</h2>
 
+    <!-- Login Maestro -->
     <div id="loginMaestro">
       <h3>Login Maestro</h3>
       <input type="text" id="claseMaestro" placeholder="ID de Clase (Ej: clase1)">
@@ -28,15 +29,20 @@
 
     <hr>
 
+    <!-- Login Alumno con inputs -->
     <div id="loginAlumno">
-  <h3>Login Alumno</h3>
-  <input type="text" id="claseAlumno" placeholder="Nombre de clase (Ej: clase1)">
-  <input type="text" id="alumno" placeholder="Tu nombre (Ej: Ana López)">
-  <button onclick="loginAlumno()">Entrar</button>
-</div>
+      <h3>Login Alumno</h3>
+      <input type="text" id="claseAlumno" placeholder="Nombre de clase (Ej: clase1)">
+      <input type="text" id="alumno" placeholder="Tu nombre (Ej: Ana López)">
+      <button onclick="loginAlumno()">Entrar</button>
+    </div>
   </div>
+
+  <!-- Contenedor de alertas flotantes -->
+  <div id="toast-container"></div>
 
   <script src="conexion.js"></script>
   <script src="login.js"></script>
 </body>
 </html>
+
