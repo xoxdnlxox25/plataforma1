@@ -246,5 +246,26 @@ button.logout {
   font-size: 1rem;
   margin-top: 20px;
 }
+.bloque {
+  margin-bottom: 25px;
+}
+
+.bloque h3 {
+  cursor: pointer;
+  background-color: #ecf0f1;
+  padding: 10px 12px;
+  border-radius: 6px;
+  margin-bottom: 5px;
+  user-select: none;
+}
+
+.bloque h3:hover {
+  background-color: #dce4e6;
+}
+
+.bloque .contenido {
+  display: none;
+  padding-left: 5px;
+}
 
 
