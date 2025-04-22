@@ -1,4 +1,11 @@
 const idClase = localStorage.getItem("clase");
+const tipoUsuario = localStorage.getItem("tipo");
+
+// Verifica que sea maestro, si no redirige
+if (tipoUsuario !== "maestro" || !idClase) {
+  window.location.href = "index.html";
+}
+
 document.getElementById("nombreClase").textContent = idClase;
 
 // Cargar alumnos en la lista y en el selector
@@ -153,6 +160,12 @@ function verResumen() {
         tbody.appendChild(fila);
       });
     });
+}
+
+// 🔒 Cerrar sesión
+function cerrarSesion() {
+  localStorage.clear();
+  window.location.href = "index.html";
 }
 
 window.onload = cargarAlumnos;
