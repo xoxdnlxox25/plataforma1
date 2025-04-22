@@ -1,0 +1,38 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Escuela Sabática</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h2>Ingreso Escuela Sabática</h2>
+
+    <div id="loginMaestro">
+      <h3>Login Maestro</h3>
+      <input type="text" id="claseMaestro" placeholder="ID de Clase (Ej: clase1)">
+      <input type="password" id="claveMaestro" placeholder="Contraseña">
+      <button onclick="loginMaestro()">Entrar</button>
+    </div>
+
+    <hr>
+
+    <div id="loginAlumno">
+      <h3>Login Alumno</h3>
+      <select id="claseAlumno" onchange="cargarAlumnos()">
+        <option value="">Selecciona tu clase</option>
+      </select>
+      <select id="alumno">
+        <option value="">Selecciona tu nombre</option>
+      </select>
+      <button onclick="loginAlumno()">Entrar</button>
+    </div>
+  </div>
+
+  <script src="conexion.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
