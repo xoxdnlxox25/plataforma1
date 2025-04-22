@@ -29,15 +29,11 @@
     <hr>
 
     <div id="loginAlumno">
-      <h3>Login Alumno</h3>
-      <select id="claseAlumno" onchange="cargarAlumnos()">
-        <option value="">Selecciona tu clase</option>
-      </select>
-      <select id="alumno">
-        <option value="">Selecciona tu nombre</option>
-      </select>
-      <button onclick="loginAlumno()">Entrar</button>
-    </div>
+  <h3>Login Alumno</h3>
+  <input type="text" id="claseAlumno" placeholder="Nombre de clase (Ej: clase1)">
+  <input type="text" id="alumno" placeholder="Tu nombre (Ej: Ana López)">
+  <button onclick="loginAlumno()">Entrar</button>
+</div>
   </div>
 
   <script src="conexion.js"></script>
