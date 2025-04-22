@@ -20,42 +20,56 @@
     <h2>Panel del Maestro</h2>
     <p>Clase: <span id="nombreClase"></span></p>
 
-    <h3>Lista de alumnos</h3>
-    <ul id="listaAlumnos"></ul>
+    <div class="bloque">
+      <h3>📋 Lista de alumnos</h3>
+      <div class="contenido">
+        <ul id="listaAlumnos"></ul>
+      </div>
+    </div>
 
-    <h3>Agregar nuevo alumno</h3>
-    <input type="text" id="nuevoAlumno" placeholder="Nombre del alumno">
-    <input type="text" id="nuevoID" placeholder="ID del alumno">
-    <button onclick="agregarAlumno()">Agregar</button>
+    <div class="bloque">
+      <h3>➕ Agregar nuevo alumno</h3>
+      <div class="contenido">
+        <input type="text" id="nuevoAlumno" placeholder="Nombre del alumno">
+        <input type="text" id="nuevoID" placeholder="ID del alumno">
+        <button onclick="agregarAlumno()">Agregar</button>
+      </div>
+    </div>
 
-    <hr>
+    <div class="bloque">
+      <h3>📄 Respuestas de los alumnos</h3>
+      <div class="contenido">
+        <button onclick="verRespuestas()">Ver respuestas</button>
+        <ul id="listaRespuestas"></ul>
+      </div>
+    </div>
 
-    <h3>Respuestas de los alumnos</h3>
-    <button onclick="verRespuestas()">📄 Ver respuestas</button>
-    <ul id="listaRespuestas"></ul>
+    <div class="bloque">
+      <h3>📘 Ver respuestas por alumno</h3>
+      <div class="contenido">
+        <select id="selectAlumno">
+          <option value="">Selecciona un alumno</option>
+        </select>
+        <button onclick="verRespuestasPorAlumno()">Ver respuestas de alumno</button>
+        <ul id="respuestasAlumno"></ul>
+      </div>
+    </div>
 
-    <hr>
-
-    <h3>Ver respuestas por alumno</h3>
-    <select id="selectAlumno">
-      <option value="">Selecciona un alumno</option>
-    </select>
-    <button onclick="verRespuestasPorAlumno()">📘 Ver respuestas de alumno</button>
-    <ul id="respuestasAlumno"></ul>
-
-    <hr>
-
-    <h3>Resumen de respuestas por alumno</h3>
-    <button onclick="verResumen()">📊 Ver resumen</button>
-    <table id="tablaResumen">
-      <thead>
-        <tr>
-          <th>Alumno</th>
-          <th>Total de respuestas</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
+    <div class="bloque">
+      <h3>📊 Resumen de respuestas por alumno</h3>
+      <div class="contenido">
+        <button onclick="verResumen()">Ver resumen</button>
+        <table id="tablaResumen">
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>Total de respuestas</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
 
     <!-- Botón de cerrar sesión al final -->
     <div style="text-align: center; margin-top: 40px;">
@@ -67,5 +81,18 @@
 
   <script src="conexion.js"></script>
   <script src="maestro.js"></script>
+
+  <!-- Toggle de secciones desplegables -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".bloque h3").forEach(titulo => {
+        titulo.addEventListener("click", () => {
+          const contenido = titulo.nextElementSibling;
+          contenido.style.display = contenido.style.display === "block" ? "none" : "block";
+        });
+      });
+    });
+  </script>
 </body>
 </html>
+
