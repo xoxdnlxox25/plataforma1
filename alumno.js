@@ -43,20 +43,19 @@ function enviarRespuestas() {
       return;
     }
 
-    const datos = {
-      accion: "guardarRespuesta",
-      clase: idClase,
-      alumno: nombreAlumno,
-      dia: diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1),
-      numero: p.numero,
-      respuesta: seleccionada.value,
-      fecha: fecha
-    };
+    // Usamos URLSearchParams para enviar como formulario
+    const datos = new URLSearchParams();
+    datos.append("accion", "guardarRespuesta");
+    datos.append("clase", idClase);
+    datos.append("alumno", nombreAlumno);
+    datos.append("dia", diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1));
+    datos.append("numero", p.numero);
+    datos.append("respuesta", seleccionada.value);
+    datos.append("fecha", fecha);
 
     fetch(URL, {
       method: "POST",
-      body: JSON.stringify(datos),
-      headers: { "Content-Type": "application/json" }
+      body: datos
     })
     .then(res => res.text())
     .then(resp => {
@@ -73,4 +72,3 @@ function cerrarSesion() {
   localStorage.clear();
   window.location.href = "index.html";
 }
-
