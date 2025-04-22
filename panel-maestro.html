@@ -20,11 +20,6 @@
     <h2>Panel del Maestro</h2>
     <p>Clase: <span id="nombreClase"></span></p>
 
-    <button onclick="cerrarSesion()">🔒 Cerrar sesión</button>
-
-    <!-- (resto del contenido sigue igual...) -->
-
-
     <h3>Lista de alumnos</h3>
     <ul id="listaAlumnos"></ul>
 
@@ -61,11 +56,16 @@
       </thead>
       <tbody></tbody>
     </table>
+
+    <!-- Botón de cerrar sesión al final -->
+    <div style="text-align: center; margin-top: 40px;">
+      <button onclick="cerrarSesion()">🔒 Cerrar sesión</button>
+    </div>
   </div>
-<div id="toast-container"></div>
+
+  <div id="toast-container"></div>
 
   <script src="conexion.js"></script>
   <script src="maestro.js"></script>
 </body>
 </html>
-
