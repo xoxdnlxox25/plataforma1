@@ -7,12 +7,23 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+  <!-- Encabezado con logo y nombre -->
+  <header class="top-bar">
+    <div class="logo-area">
+      <img src="logo.png" alt="Logo Escuela" class="logo">
+      <h1 class="titulo-escuela">Escuela Sabática</h1>
+    </div>
+  </header>
+
   <div class="container">
     <h2>Panel del Maestro</h2>
     <p>Clase: <span id="nombreClase"></span></p>
 
-    <!-- Botón de cerrar sesión -->
     <button onclick="cerrarSesion()">🔒 Cerrar sesión</button>
+
+    <!-- (resto del contenido sigue igual...) -->
+
 
     <h3>Lista de alumnos</h3>
     <ul id="listaAlumnos"></ul>
