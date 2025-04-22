@@ -241,5 +241,10 @@ label {
     height: 42px;
   }
 }
+button.logout {
+  background-color: #2980b9;
+  font-size: 1rem;
+  margin-top: 20px;
+}
 
 
