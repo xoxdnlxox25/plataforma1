@@ -42,7 +42,7 @@ function agregarAlumno() {
   const id = document.getElementById("nuevoID").value;
 
   if (!nombre || !id) {
-    alert("⚠ Por favor completa todos los campos.");
+    mostrarToast("⚠ Por favor completa todos los campos.", "error");
     return;
   }
 
@@ -58,7 +58,7 @@ function agregarAlumno() {
   })
     .then(res => res.text())
     .then(resp => {
-      alert(resp);
+      mostrarToast(resp, "success");
       cargarAlumnos();
       document.getElementById("nuevoAlumno").value = "";
       document.getElementById("nuevoID").value = "";
@@ -78,7 +78,7 @@ function eliminarAlumno(idAlumno) {
   })
     .then(res => res.text())
     .then(resp => {
-      alert(resp);
+      mostrarToast(resp, "info");
       cargarAlumnos();
     });
 }
@@ -111,7 +111,7 @@ function verRespuestasPorAlumno() {
   const idAlumno = document.getElementById("selectAlumno").value;
 
   if (!idAlumno) {
-    alert("⚠ Por favor selecciona un alumno.");
+    mostrarToast("⚠ Por favor selecciona un alumno.", "error");
     return;
   }
 
@@ -166,6 +166,21 @@ function verResumen() {
 function cerrarSesion() {
   localStorage.clear();
   window.location.href = "index.html";
+}
+
+// ✅ Función toast
+function mostrarToast(mensaje, tipo = "info") {
+  const contenedor = document.getElementById("toast-container");
+  if (!contenedor) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${tipo}`;
+  toast.textContent = mensaje;
+  contenedor.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
 }
 
 window.onload = cargarAlumnos;
