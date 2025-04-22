@@ -184,3 +184,14 @@ function mostrarToast(mensaje, tipo = "info") {
 }
 
 window.onload = cargarAlumnos;
+
+// Mostrar/Ocultar secciones
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll(".bloque h3").forEach(titulo => {
+    titulo.addEventListener("click", () => {
+      const contenido = titulo.nextElementSibling;
+      contenido.style.display = contenido.style.display === "block" ? "none" : "block";
+    });
+  });
+});
+
