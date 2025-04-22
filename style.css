@@ -206,4 +206,30 @@ label {
   from {opacity: 0.95;}
   to {opacity: 0;}
 }
+@media screen and (max-width: 480px) {
+  h2, h3 {
+    font-size: 1.2rem;
+    text-align: center;
+  }
+
+  .container {
+    padding: 16px;
+  }
+
+  .titulo-escuela {
+    font-size: 1.3rem;
+  }
+
+  .top-bar {
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    text-align: center;
+  }
+
+  .logo {
+    width: 42px;
+    height: 42px;
+  }
+}
 
