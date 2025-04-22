@@ -17,6 +17,13 @@ body {
   margin-top: 90px; /* Ajustado por cabecera fija */
 }
 
+.container h2 {
+  word-break: break-word;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
 h2, h3 {
   color: #2c3e50;
   margin-top: 0;
@@ -206,10 +213,12 @@ label {
   from {opacity: 0.95;}
   to {opacity: 0;}
 }
+
+/* MÓVIL: Ajuste para pantalla pequeña */
 @media screen and (max-width: 480px) {
-  h2, h3 {
-    font-size: 1.2rem;
-    text-align: center;
+  .container h2 {
+    font-size: 1.4rem;
+    word-break: break-word;
   }
 
   .container {
@@ -232,4 +241,5 @@ label {
     height: 42px;
   }
 }
+
 
