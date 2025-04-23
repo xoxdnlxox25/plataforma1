@@ -26,54 +26,55 @@ function loginMaestro() {
     });
 }
 
-// Login Alumno con verificación desde hoja "Alumnos"
+// Login Alumno (por ID_ALUMNO)
 function loginAlumno() {
   const claseInput = document.getElementById("claseAlumno");
-  const alumnoInput = document.getElementById("alumno");
+  const idInput = document.getElementById("alumno");
 
   const clase = claseInput.value.trim();
-  const alumno = alumnoInput.value.trim();
+  const idAlumno = idInput.value.trim();
 
-  if (!clase || !alumno) {
-    mostrarToast("⚠ Por favor ingresa tu clase y tu nombre", "error");
+  if (!clase || !idAlumno) {
+    mostrarToast("⚠ Por favor ingresa tu clase y tu ID de alumno", "error");
     return;
   }
 
   fetch(`${URL}?accion=getAlumnos&clase=${clase}`)
     .then(res => res.json())
     .then(data => {
-      const encontrado = data.find(a => a.NombreAlumno.toLowerCase() === alumno.toLowerCase());
+      const alumnoEncontrado = data.find(a => a.ID_ALUMNO.toLowerCase() === idAlumno.toLowerCase());
 
-      if (encontrado) {
+      if (alumnoEncontrado) {
         localStorage.setItem("tipo", "alumno");
         localStorage.setItem("clase", clase);
-        localStorage.setItem("alumno", encontrado.NombreAlumno); // Guarda el nombre exacto
+        localStorage.setItem("alumno", alumnoEncontrado.NombreAlumno); // Guardamos el nombre exacto
+        localStorage.setItem("idAlumno", alumnoEncontrado.ID_ALUMNO); // Guardamos el ID también
         window.location.href = "panel-alumno.html";
       } else {
-        mostrarToast("❌ No se encontró el alumno en esa clase", "error");
+        mostrarToast("❌ ID no encontrado en esa clase", "error");
         claseInput.value = "";
-        alumnoInput.value = "";
+        idInput.value = "";
       }
     })
     .catch(() => {
       mostrarToast("❌ Error al conectar con el servidor", "error");
       claseInput.value = "";
-      alumnoInput.value = "";
+      idInput.value = "";
     });
 }
 
-// ✅ Toast flotante moderno (reutilizable en todas partes)
+// ✅ Toast flotante
 function mostrarToast(mensaje, tipo = "info") {
   const contenedor = document.getElementById("toast-container");
   if (!contenedor) return;
+
+  // Eliminar toasts existentes antes de mostrar uno nuevo
+  contenedor.innerHTML = "";
 
   const toast = document.createElement("div");
   toast.className = `toast ${tipo}`;
   toast.textContent = mensaje;
   contenedor.appendChild(toast);
 
-  setTimeout(() => {
-    toast.remove();
-  }, 3000);
+  setTimeout(() => toast.remove(), 3000);
 }
-
