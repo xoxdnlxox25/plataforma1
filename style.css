@@ -1,375 +1,215 @@
-/* Estilo base */
+/* Estilos base */
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: 'Segoe UI', sans-serif;
-  background-color: #f4f6f8;
   margin: 0;
-  padding: 0;
+  background: linear-gradient(to bottom, #fff8e1, #ffe082);
   color: #333;
 }
 
-.container {
-  max-width: 960px;
+.app-wrapper {
+  max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
-  background-color: white;
-  box-shadow: 0 0 20px rgba(0,0,0,0.05);
-  border-radius: 12px;
-  margin-top: 90px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 30px 20px;
 }
 
-.container h2 {
-  word-break: break-word;
-  font-size: 1.8rem;
+h1 {
+  color: #333;
+  font-size: 28px;
+  margin-bottom: 30px;
+  font-weight: 700;
   text-align: center;
-  margin-top: 60px;
-  margin-bottom: 10px;
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
 }
 
-h2, h3 {
-  color: #2c3e50;
-  margin-top: 0;
+#welcome-message {
+  font-size: 1.3em;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 20px;
 }
 
-input, select, button {
-  padding: 10px;
-  margin: 8px 0;
+.input-field {
+  width: 100%;
+  padding: 14px;
+  margin-bottom: 20px;
+  border-radius: 10px;
   border: 1px solid #ccc;
-  border-radius: 8px;
+  font-size: 1em;
+}
+
+.btn {
   width: 100%;
-  box-sizing: border-box;
-  font-size: 1rem;
-}
-
-input:focus, select:focus {
-  border-color: #3498db;
-  outline: none;
-}
-
-button {
-  background-color: #3498db;
-  color: white;
+  padding: 14px;
+  background: #fbc02d;
+  color: #000;
   border: none;
-  cursor: pointer;
+  border-radius: 12px;
+  font-size: 1.1em;
   font-weight: bold;
-  transition: background-color 0.2s ease;
-}
-
-button:hover {
-  background-color: #2980b9;
-}
-
-ul {
-  list-style: none;
-  padding-left: 0;
-}
-
-ul li {
-  background-color: #ecf0f1;
-  margin: 6px 0;
-  padding: 10px 12px;
-  border-radius: 8px;
-  line-height: 1.4;
-}
-
-hr {
-  border: none;
-  height: 1px;
-  background-color: #ddd;
-  margin: 30px 0;
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(251, 192, 45, 0.4);
   margin-top: 10px;
 }
 
-table th, table td {
-  border: 1px solid #ccc;
-  padding: 10px;
+.btn:hover {
+  background: #f9a825;
+  box-shadow: 0 6px 14px rgba(249, 168, 37, 0.6);
+  transform: translateY(-2px);
+}
+
+.study-card {
+  background: #fffde7;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  margin-top: 20px;
   text-align: left;
 }
 
-table th {
-  background-color: #f1f1f1;
+.study-card h2 {
+  color: #fbc02d;
+  margin-bottom: 10px;
 }
 
-/* Responsive Design */
-@media screen and (max-width: 600px) {
-  .container {
-    margin: 10px;
-    padding: 15px;
-  }
-
-  input, select, button {
-    font-size: 0.95rem;
-  }
-
-  table th, table td {
-    font-size: 0.9rem;
-  }
+.study-card p {
+  line-height: 1.6;
+  font-size: 16px;
 }
 
-.pregunta {
-  margin-bottom: 20px;
-  padding: 15px;
-  border-left: 4px solid #3498db;
-  background-color: #f9f9f9;
-  border-radius: 8px;
+.btn-study {
+  background: #aed581;
+  box-shadow: 0 4px 10px rgba(139, 195, 74, 0.4);
 }
 
-label {
+.btn-study:hover {
+  background: #9ccc65;
+  box-shadow: 0 6px 14px rgba(139, 195, 74, 0.6);
+}
+
+.respuesta label {
   display: block;
   margin: 8px 0;
-  font-size: 15px;
+  cursor: pointer;
 }
 
-/* CABECERA FIJA + ANIMACIÓN */
-.top-bar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background-color: #2c3e50;
-  padding: 10px 20px;
-  color: white;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  border-bottom: 4px solid #2980b9;
-  z-index: 1000;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+.bloque-pregunta {
+  margin-bottom: 30px;
 }
 
-.logo-area {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 10px;
-}
-
-.titulo-escuela {
-  font-size: 1.6rem;
-  margin: 0;
-  font-weight: bold;
-  animation: slideIn 0.5s ease forwards;
-  opacity: 0;
-}
-
-@keyframes slideIn {
-  from {
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-/* TOASTS */
-#toast-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-}
-
-.toast {
-  background-color: #333;
-  color: white;
-  padding: 14px 20px;
+.btn-mini {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  border: 1px solid #ccc;
   border-radius: 8px;
-  margin-top: 10px;
-  opacity: 0.95;
-  animation: fadein 0.4s, fadeout 0.4s 2.5s;
-  font-size: 14px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-  min-width: 200px;
-}
-
-.toast.success {
-  background-color: #27ae60;
-}
-
-.toast.error {
-  background-color: #e74c3c;
-}
-
-.toast.info {
-  background-color: #2980b9;
-}
-
-@keyframes fadein {
-  from {bottom: 0; opacity: 0;}
-  to {bottom: 20px; opacity: 0.95;}
-}
-
-@keyframes fadeout {
-  from {opacity: 0.95;}
-  to {opacity: 0;}
-}
-
-/* MÓVIL */
-@media screen and (max-width: 480px) {
-  .container h2 {
-    font-size: 1.4rem;
-    word-break: break-word;
-  }
-
-  .container {
-    padding: 16px;
-  }
-
-  .titulo-escuela {
-    font-size: 1.3rem;
-  }
-
-  .top-bar {
-    flex-direction: column;
-    gap: 6px;
-    padding: 12px;
-    text-align: center;
-  }
-
-  .logo {
-    width: 42px;
-    height: 42px;
-  }
-}
-
-/* Login tipo tarjeta */
-.bloque {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
-  padding: 20px;
-  margin-bottom: 25px;
-  transition: box-shadow 0.3s ease;
-}
-
-.bloque:hover {
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
-}
-
-.bloque h3 {
+  margin: 5px 0;
   cursor: pointer;
-  padding: 10px 12px;
-  border-bottom: 1px solid #ccc;
-  margin-top: 0;
-  font-weight: bold;
-  font-size: 1.2rem;
-  user-select: none;
+  transition: background 0.3s;
 }
 
-.bloque h3:hover {
-  background-color: #f3f7f8;
+.btn-mini:hover {
+  background-color: #ddd;
 }
 
-.bloque .contenido {
-  display: none;
-  margin-top: 15px;
-}
-
-button.logout {
-  background-color: #2980b9;
-  font-size: 1rem;
-  margin-top: 20px;
-}
-.input-icon {
-  position: relative;
-  margin-bottom: 15px;
-}
-
-.input-icon input {
-  padding-left: 40px;
-}
-
-.input-icon .icono {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: #555;
-}
-.solicitar-clase {
-  color: #2980b9;
-  font-weight: bold;
-  font-size: 0.95rem;
-  text-decoration: none;
-}
-
-.solicitar-clase:hover {
-  text-decoration: underline;
-  color: #1c598d;
-}
-.footer {
-  text-align: center;
-  padding: 20px;
-  font-size: 0.95rem;
-  color: #555;
-  background-color: #f8f8f8;
-  border-top: 1px solid #ddd;
-  margin-top: 40px;
-}
-
-.footer a {
-  color: #2980b9;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.footer a:hover {
-  text-decoration: underline;
-}
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 9999;
-  left: 0;
-  top: 0;
+/* Notas personales */
+.nota-personal textarea {
   width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-  justify-content: center;
-  align-items: center;
-}
-
-.modal-content {
-  background: white;
-  padding: 20px 30px;
+  min-height: 80px;
   border-radius: 10px;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  padding: 10px;
+  border: 1px solid #ccc;
+  font-family: 'Segoe UI', sans-serif;
+  font-size: 1em;
+  resize: vertical;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.modal-buttons {
-  margin-top: 20px;
+input[type="radio"] {
+  margin-right: 6px;
+}
+
+#resultado span {
+  font-weight: bold;
+}
+
+.semana-estudios {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 10px;
 }
 
-.btn-confirm {
-  background-color: #e74c3c;
-  color: white;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
+.dia-btn {
+  flex: 1;
+  min-width: 100px;
+  background-color: #fff9c4;
+  border: 1px solid #fbc02d;
+  padding: 10px;
+  text-align: center;
+  font-weight: bold;
+  border-radius: 8px;
   cursor: pointer;
+  transition: all 0.3s;
 }
 
-.btn-cancel {
-  background-color: #ccc;
-  color: black;
-  padding: 10px 16px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
+.dia-btn:hover {
+  background-color: #fdd835;
 }
+
+.dia-actual {
+  background-color: #aed581;
+  border-color: #7cb342;
+  color: #fff;
+}
+
+/* Estilo visual de versículos */
+.versiculo-box {
+  background-color: #e3f2fd;
+  border-left: 5px solid #42a5f5;
+  padding: 10px 15px;
+  margin-top: 10px;
+  margin-left: 5px;
+  border-radius: 6px;
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* Estilo visual de notas */
+.nota-box {
+  background-color: #fff8e1;
+  border-left: 5px solid #ffb300;
+  padding: 10px 15px;
+  margin-top: 10px;
+  margin-left: 5px;
+  border-radius: 6px;
+  font-size: 15px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* Botón de limpieza opcional */
+.btn-mini.limpiar {
+  background-color: #fff3e0;
+  color: #bf360c;
+  border: 1px solid #ffa726;
+  margin-top: 6px;
+}
+
+.btn-mini.limpiar:hover {
+  background-color: #ffe0b2;
+}
+
+
