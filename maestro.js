@@ -60,27 +60,40 @@ function agregarAlumno() {
     });
 }
 
-// Eliminar alumno
+// Eliminar alumno con confirmación personalizada
 function eliminarAlumno(idAlumno) {
   const alumnoNombre = document.querySelector(`button[onclick="eliminarAlumno('${idAlumno}')"]`).parentElement.textContent.trim().split(' (')[0];
 
-  const confirmar = confirm(`¿Estás seguro de eliminar al alumno: ${alumnoNombre}?`);
-  if (!confirmar) return;
+  // Crear modal flotante personalizado
+  const confirmBox = document.createElement("div");
+  confirmBox.className = "toast confirm-box";
+  confirmBox.innerHTML = `
+    <div style="font-size: 1.1rem; margin-bottom: 8px;">❓ ¿Eliminar a <strong>${alumnoNombre}</strong>?</div>
+    <div style="text-align: right;">
+      <button class="btn-confirm" style="margin-right: 10px;">Sí</button>
+      <button class="btn-cancel">Cancelar</button>
+    </div>
+  `;
 
-  const datos = new URLSearchParams();
-  datos.append("accion", "eliminarAlumno");
-  datos.append("clase", idClase);
-  datos.append("id", idAlumno);
+  const contenedor = document.getElementById("toast-container");
+  contenedor.appendChild(confirmBox);
 
-  fetch(URL, {
-    method: "POST",
-    body: datos
-  })
-    .then(res => res.text())
-    .then(resp => {
-      mostrarToast(resp, "info");
-      cargarAlumnos();
-    });
+  // Botones
+  confirmBox.querySelector(".btn-cancel").onclick = () => confirmBox.remove();
+  confirmBox.querySelector(".btn-confirm").onclick = () => {
+    confirmBox.remove();
+    const datos = new URLSearchParams();
+    datos.append("accion", "eliminarAlumno");
+    datos.append("clase", idClase);
+    datos.append("id", idAlumno);
+
+    fetch(URL, { method: "POST", body: datos })
+      .then(res => res.text())
+      .then(resp => {
+        mostrarToast(resp, "info");
+        cargarAlumnos();
+      });
+  };
 }
 
 
