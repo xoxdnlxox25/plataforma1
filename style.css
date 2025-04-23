@@ -14,17 +14,16 @@ body {
   background-color: white;
   box-shadow: 0 0 20px rgba(0,0,0,0.05);
   border-radius: 12px;
-  margin-top: 90px; /* Ajustado por cabecera fija */
+  margin-top: 90px;
 }
 
 .container h2 {
   word-break: break-word;
   font-size: 1.8rem;
   text-align: center;
-  margin-top: 60px; /* 👈 Aumentamos este margen para evitar que lo tape el header */
+  margin-top: 60px;
   margin-bottom: 10px;
 }
-
 
 h2, h3 {
   color: #2c3e50;
@@ -216,7 +215,7 @@ label {
   to {opacity: 0;}
 }
 
-/* MÓVIL: Ajuste para pantalla pequeña */
+/* MÓVIL */
 @media screen and (max-width: 480px) {
   .container h2 {
     font-size: 1.4rem;
@@ -243,31 +242,59 @@ label {
     height: 42px;
   }
 }
+
+/* Login tipo tarjeta */
+.bloque {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  padding: 20px;
+  margin-bottom: 25px;
+  transition: box-shadow 0.3s ease;
+}
+
+.bloque:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.bloque h3 {
+  cursor: pointer;
+  padding: 10px 12px;
+  border-bottom: 1px solid #ccc;
+  margin-top: 0;
+  font-weight: bold;
+  font-size: 1.2rem;
+  user-select: none;
+}
+
+.bloque h3:hover {
+  background-color: #f3f7f8;
+}
+
+.bloque .contenido {
+  display: none;
+  margin-top: 15px;
+}
+
 button.logout {
   background-color: #2980b9;
   font-size: 1rem;
   margin-top: 20px;
 }
-.bloque {
-  margin-bottom: 25px;
+.input-icon {
+  position: relative;
+  margin-bottom: 15px;
 }
 
-.bloque h3 {
-  cursor: pointer;
-  background-color: #ecf0f1;
-  padding: 10px 12px;
-  border-radius: 6px;
-  margin-bottom: 5px;
-  user-select: none;
+.input-icon input {
+  padding-left: 40px;
 }
 
-.bloque h3:hover {
-  background-color: #dce4e6;
+.input-icon .icono {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #555;
 }
-
-.bloque .contenido {
-  display: none;
-  padding-left: 5px;
-}
-
-
