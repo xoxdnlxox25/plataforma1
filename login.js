@@ -1,7 +1,10 @@
 // Login Maestro
 function loginMaestro() {
-  const clase = document.getElementById("claseMaestro").value.trim();
-  const clave = document.getElementById("claveMaestro").value.trim();
+  const claseInput = document.getElementById("claseMaestro");
+  const claveInput = document.getElementById("claveMaestro");
+
+  const clase = claseInput.value.trim();
+  const clave = claveInput.value.trim();
 
   fetch(`${URL}?accion=loginMaestro&clase=${clase}&clave=${clave}`)
     .then(res => res.text())
@@ -12,17 +15,24 @@ function loginMaestro() {
         window.location.href = "panel-maestro.html";
       } else {
         mostrarToast("❌ Contraseña incorrecta o clase no válida", "error");
+        claseInput.value = "";
+        claveInput.value = "";
       }
     })
     .catch(() => {
       mostrarToast("❌ Error al conectar con el servidor", "error");
+      claseInput.value = "";
+      claveInput.value = "";
     });
 }
 
 // Login Alumno con verificación desde hoja "Alumnos"
 function loginAlumno() {
-  const clase = document.getElementById("claseAlumno").value.trim();
-  const alumno = document.getElementById("alumno").value.trim();
+  const claseInput = document.getElementById("claseAlumno");
+  const alumnoInput = document.getElementById("alumno");
+
+  const clase = claseInput.value.trim();
+  const alumno = alumnoInput.value.trim();
 
   if (!clase || !alumno) {
     mostrarToast("⚠ Por favor ingresa tu clase y tu nombre", "error");
@@ -41,10 +51,14 @@ function loginAlumno() {
         window.location.href = "panel-alumno.html";
       } else {
         mostrarToast("❌ No se encontró el alumno en esa clase", "error");
+        claseInput.value = "";
+        alumnoInput.value = "";
       }
     })
     .catch(() => {
       mostrarToast("❌ Error al conectar con el servidor", "error");
+      claseInput.value = "";
+      alumnoInput.value = "";
     });
 }
 
@@ -62,3 +76,4 @@ function mostrarToast(mensaje, tipo = "info") {
     toast.remove();
   }, 3000);
 }
+
