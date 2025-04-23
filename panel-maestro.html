@@ -17,7 +17,7 @@
   </header>
 
   <div class="container">
-    <h2>Bienvenido(a): <span id="Maestro"></span></h2>
+    <h2>Bienvenido(a): <span id="nombreMaestro"></span></h2>
     <p>Clase: <span id="nombreClase"></span></p>
 
     <div class="bloque">
@@ -82,8 +82,8 @@
   <script src="conexion.js"></script>
   <script src="maestro.js"></script>
 
+  <!-- Mostrar nombre del maestro y clase -->
   <script>
-    // Mostrar nombre del maestro y clase al cargar
     document.addEventListener("DOMContentLoaded", () => {
       const clase = localStorage.getItem("clase") || "";
       const maestro = localStorage.getItem("maestro") || clase;
