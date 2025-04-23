@@ -298,3 +298,15 @@ button.logout {
   font-size: 18px;
   color: #555;
 }
+.solicitar-clase {
+  color: #2980b9;
+  font-weight: bold;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.solicitar-clase:hover {
+  text-decoration: underline;
+  color: #1c598d;
+}
+
