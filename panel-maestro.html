@@ -17,10 +17,10 @@
   </header>
 
   <div class="container">
-    <h2>Panel del Maestro</h2>
+    <h2>Bienvenido(a), <span id="nombreMaestro"></span></h2>
     <p>Clase: <span id="nombreClase"></span></p>
 
- <div class="bloque">
+    <div class="bloque">
       <h3>📊 Resumen de respuestas por alumno</h3>
       <div class="contenido">
         <button onclick="verResumen()">Ver resumen</button>
@@ -35,8 +35,7 @@
         </table>
       </div>
     </div>
-    
-    
+
     <div class="bloque">
       <h3>📋 Lista de alumnos</h3>
       <div class="contenido">
@@ -72,7 +71,6 @@
       </div>
     </div>
 
-  
     <!-- Botón de cerrar sesión al final -->
     <div style="text-align: center; margin-top: 40px;">
       <button onclick="cerrarSesion()">🔒 Cerrar sesión</button>
@@ -84,5 +82,14 @@
   <script src="conexion.js"></script>
   <script src="maestro.js"></script>
 
+  <script>
+    // Mostrar nombre del maestro y clase al cargar
+    document.addEventListener("DOMContentLoaded", () => {
+      const clase = localStorage.getItem("clase") || "";
+      const maestro = localStorage.getItem("maestro") || clase;
+      document.getElementById("nombreClase").textContent = clase;
+      document.getElementById("nombreMaestro").textContent = maestro;
+    });
+  </script>
 </body>
 </html>
