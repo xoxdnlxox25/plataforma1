@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panel del Alumno</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -17,16 +17,15 @@
   </header>
 
   <div class="container">
-    <h2>Bienvenido (a): <span id="nombreAlumno"></span></h2>
+    <h2>Bienvenido(a): <span id="nombreAlumno"></span></h2>
     <p>Clase: <span id="nombreClase"></span></p>
 
-    <!-- Nueva sección para los días de estudio -->
-    <div id="semana-estudios" class="semana-estudios">
-      <!-- Botones para seleccionar el día -->
-    </div>
+    <!-- Contenedor para los días de la semana -->
+    <div id="semana-estudios" class="semana-estudios"></div>
 
+    <!-- Contenedor para el estudio seleccionado -->
     <div class="study-card">
-      <!-- Aquí se mostrarán los estudios del día seleccionado -->
+      <!-- Aquí se cargará el contenido dinámico según el día seleccionado -->
     </div>
 
     <button onclick="cerrarSesion()">Cerrar sesión</button>
@@ -35,151 +34,78 @@
   <div id="toast-container"></div>
 
   <script src="conexion.js"></script>
+  <script src="alumno.js"></script>
   <script>
     // Mostrar nombre e ID de clase desde localStorage
     document.getElementById("nombreAlumno").textContent = localStorage.getItem("alumno") || "Alumno";
     document.getElementById("nombreClase").textContent = localStorage.getItem("clase") || "Clase";
 
-    // Generar los botones para los días de la semana
-    function generarBotonesPorDia() {
-      const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"];
-      const contenedor = document.getElementById("semana-estudios");
-      contenedor.innerHTML = "";
+    // Cargar estudios de la semana (botones por día)
+    function cargarEstudios() {
+      const idClase = localStorage.getItem("clase"); // Obtener clase
 
-      const hoy = new Date();
-      const diaActualTexto = dias[hoy.getDay() % 7];
-
-      dias.forEach(diaTexto => {
-        const btn = document.createElement("button");
-        btn.className = `dia-btn${diaTexto === diaActualTexto ? " dia-actual" : ""}`;
-        btn.textContent = diaTexto;
-        btn.onclick = () => cargarEstudioPorDia(diaTexto);
-        contenedor.appendChild(btn);
-      });
-    }
-
-    // Cargar el estudio por día desde la API de Google Sheets
-    function cargarEstudioPorDia(dia) {
-      const urlConDia = `${URL}?accion=cargarEstudioPorDia&dia=${dia}`;
-      fetch(urlConDia)
-        .then(res => res.json())
+      obtenerEstudios(idClase) // Usamos la función de conexion.js para obtener los estudios
         .then(data => {
-          const card = document.querySelector('.study-card');
-          if (!data || data.error) {
-            card.innerHTML = `<p>${data.error || "No se encontró ningún estudio disponible."}</p>`;
+          const contenedor = document.getElementById("semana-estudios");
+          contenedor.innerHTML = "";  // Limpiar el contenedor
+
+          if (data.length === 0) {
+            contenedor.innerHTML = "<p>No hay estudios disponibles para esta clase.</p>";
             return;
           }
 
-          let contenidoHTML = `<h2>Estudio para el día ${dia}</h2>`;
-
-          data.preguntas.forEach((item, index) => {
-            const respuestas = (item.Respuesta || "")
-              .split('<br>')
-              .map(r => r.trim())
-              .filter(r => r.length > 0)
-              .slice(0, 3);
-
-            const notaId = `notaPersonal_${dia}_${index}`;
-            const respuestaId = `respuesta_${dia}_${index}`;
-            const notaGuardada = localStorage.getItem(notaId) || "";
-            const respuestaGuardada = localStorage.getItem(respuestaId) || "";
-
-            contenidoHTML += `<div class="bloque-pregunta">`;
-
-            if (item.Título) contenidoHTML += `<p><strong>${item.Título.replace(/\n/g, "<br>")}</strong></p>`;
-            if (item.Pregunta) contenidoHTML += `<p><strong>${item.Pregunta}</strong></p>`;
-
-            if (item.Versiculo) {
-              contenidoHTML += `
-                <button class="btn-mini" onclick="toggleVisibility('versiculo${index}')">📖 Mostrar/Ocultar versículo</button>
-                <div id="versiculo${index}" style="display: none;">
-                  <div class="versiculo-box"><strong>Versículo:</strong> ${item.Versiculo}</div>
-                </div>`;
-            }
-
-            if (item.Nota) {
-              contenidoHTML += `
-                <button class="btn-mini" onclick="toggleVisibility('nota${index}')">📜 Mostrar/Ocultar nota</button>
-                <div id="nota${index}" style="display: none;">
-                  <div class="nota-box"><strong>Nota:</strong> ${item.Nota}</div>
-                </div>`;
-            }
-
-            if (respuestas.length > 0) {
-              contenidoHTML += `
-                <button class="btn-mini" onclick="toggleVisibility('respuesta${index}')">✅ Mostrar/Ocultar respuestas</button>
-                <div class="respuesta" id="respuesta${index}" style="display: none;">
-                  <p><strong>Respuesta:</strong></p>
-                  ${respuestas.map(r => {
-                    const letra = r.charAt(0);
-                    const checked = respuestaGuardada === letra ? 'checked' : '';
-                    return `<label><input type="radio" name="respuesta${index}" value="${letra}" ${checked} onclick="guardarRespuesta('${respuestaId}', '${letra}')"> ${r}</label>`;
-                  }).join('<br>')}
-                  <p id="resultado_${respuestaId}" data-correcta="${item.Correcta || ''}" style="margin-top:8px;"></p>
-                </div>`;
-            }
-
-            contenidoHTML += `
-              <div class="nota-personal" style="margin-top: 15px;">
-                <label><strong>✍️ Mis notas personales:</strong></label><br>
-                <textarea id="${notaId}" oninput="guardarNota('${notaId}')" placeholder="Escribe aquí tu reflexión...">${notaGuardada}</textarea>
-              </div>
-              <hr style="margin: 25px 0; border: none; border-top: 1px solid #ccc;">
-            </div>`;
+          // Crear los botones para cada día de la semana
+          data.forEach(estudio => {
+            const btn = document.createElement("button");
+            btn.className = `dia-btn`;
+            btn.textContent = estudio.dia; // Usar el día del estudio
+            btn.onclick = () => cargarEstudioPorDia(estudio.dia); // Cargar estudio según el día
+            contenedor.appendChild(btn);
           });
-
-          card.innerHTML = contenidoHTML;
-
-          // Verificar las respuestas previas
-          data.preguntas.forEach((item, index) => {
-            const respuestaId = `respuesta_${dia}_${index}`;
-            const valor = localStorage.getItem(respuestaId);
-            if (valor) verificarRespuesta(respuestaId, valor);
-          });
-        })
-        .catch(err => {
-          document.querySelector('.study-card').innerHTML = '<p>Error al cargar el estudio.</p>';
-          console.error('Error al obtener estudio:', err);
         });
     }
 
-    // Función para mostrar u ocultar los elementos
-    function toggleVisibility(id) {
-      const el = document.getElementById(id);
-      el.style.display = (el.style.display === 'none') ? 'block' : 'none';
+    // Cargar el estudio según el día
+    function cargarEstudioPorDia(dia) {
+      const idClase = localStorage.getItem("clase");
+
+      obtenerEstudioPorDia(idClase, dia) // Usamos la función de conexion.js para obtener el estudio del día
+        .then(data => {
+          const card = document.querySelector('.study-card');
+          card.innerHTML = `<h2>Estudio para el día ${dia}</h2>`;
+
+          if (!data || data.error) {
+            card.innerHTML += `<p>${data.error || "No se encontró ningún estudio disponible."}</p>`;
+            return;
+          }
+
+          // Mostrar las preguntas del estudio
+          data.preguntas.forEach((item, index) => {
+            card.innerHTML += `
+              <div class="bloque-pregunta">
+                <p><strong>${item.Pregunta}</strong></p>
+                <p><strong>Respuesta:</strong></p>
+                ${item.Respuesta.split('<br>').map(r => `
+                  <label><input type="radio" name="respuesta${index}" value="${r.charAt(0)}" onclick="guardarRespuesta('${index}', '${r.charAt(0)}')"> ${r}</label><br>
+                `).join("")}
+              </div>
+            `;
+          });
+
+          // Agregar nota personal
+          card.innerHTML += `
+            <div class="nota-personal">
+              <label><strong>✍️ Mis notas personales:</strong></label><br>
+              <textarea id="notaPersonal" placeholder="Escribe aquí tu reflexión..."></textarea>
+            </div>
+          `;
+        });
     }
 
-    // Guardar las notas del alumno
-    function guardarNota(id) {
-      const contenido = document.getElementById(id).value;
-      localStorage.setItem(id, contenido);
-    }
-
-    // Guardar la respuesta del alumno
-    function guardarRespuesta(id, valor) {
-      localStorage.setItem(id, valor);
-      verificarRespuesta(id, valor);
-    }
-
-    // Verificar si la respuesta es correcta o incorrecta
-    function verificarRespuesta(id, valor) {
-      const resultadoEl = document.getElementById(`resultado_${id}`);
-      const correcta = resultadoEl.dataset.correcta;
-      if (!correcta) return;
-
-      resultadoEl.textContent = (valor === correcta) ? "✔ Correcto" : "✖ Incorrecto";
-      resultadoEl.style.color = (valor === correcta) ? "green" : "red";
-    }
-
-    // Al cargar, generar los botones para los días
-    window.onload = function () {
-      const savedUser = localStorage.getItem('sabadoUser');
-      if (savedUser) {
-        showWelcome(savedUser);
-      }
-      generarBotonesPorDia();
+    // Llamar a la función para cargar los estudios cuando se cargue la página
+    window.onload = function() {
+      cargarEstudios(); // Llamar la función para cargar los estudios desde la hoja de Google
     };
   </script>
-
 </body>
 </html>
