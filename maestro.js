@@ -62,18 +62,27 @@ function agregarAlumno() {
 
 // Eliminar alumno
 function eliminarAlumno(idAlumno) {
+  const alumnoNombre = document.querySelector(`button[onclick="eliminarAlumno('${idAlumno}')"]`).parentElement.textContent.trim().split(' (')[0];
+
+  const confirmar = confirm(`¿Estás seguro de eliminar al alumno: ${alumnoNombre}?`);
+  if (!confirmar) return;
+
   const datos = new URLSearchParams();
   datos.append("accion", "eliminarAlumno");
   datos.append("clase", idClase);
   datos.append("id", idAlumno);
 
-  fetch(URL, { method: "POST", body: datos })
+  fetch(URL, {
+    method: "POST",
+    body: datos
+  })
     .then(res => res.text())
     .then(resp => {
       mostrarToast(resp, "info");
       cargarAlumnos();
     });
 }
+
 
 // Ver todas las respuestas
 function verRespuestas() {
