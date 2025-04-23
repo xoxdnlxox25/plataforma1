@@ -20,6 +20,23 @@
     <h2>Panel del Maestro</h2>
     <p>Clase: <span id="nombreClase"></span></p>
 
+ <div class="bloque">
+      <h3>📊 Resumen de respuestas por alumno</h3>
+      <div class="contenido">
+        <button onclick="verResumen()">Ver resumen</button>
+        <table id="tablaResumen">
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>Total de respuestas</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    
+    
     <div class="bloque">
       <h3>📋 Lista de alumnos</h3>
       <div class="contenido">
@@ -55,22 +72,7 @@
       </div>
     </div>
 
-    <div class="bloque">
-      <h3>📊 Resumen de respuestas por alumno</h3>
-      <div class="contenido">
-        <button onclick="verResumen()">Ver resumen</button>
-        <table id="tablaResumen">
-          <thead>
-            <tr>
-              <th>Alumno</th>
-              <th>Total de respuestas</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-
+  
     <!-- Botón de cerrar sesión al final -->
     <div style="text-align: center; margin-top: 40px;">
       <button onclick="cerrarSesion()">🔒 Cerrar sesión</button>
