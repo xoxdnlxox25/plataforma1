@@ -12,6 +12,7 @@ function loginMaestro() {
       if (data === "ok") {
         localStorage.setItem("tipo", "maestro");
         localStorage.setItem("clase", clase);
+        localStorage.setItem("maestro", clase); // Se guarda como nombre del maestro
         window.location.href = "panel-maestro.html";
       } else {
         mostrarToast("❌ Contraseña incorrecta o clase no válida", "error");
@@ -47,8 +48,8 @@ function loginAlumno() {
       if (alumnoEncontrado) {
         localStorage.setItem("tipo", "alumno");
         localStorage.setItem("clase", clase);
-        localStorage.setItem("alumno", alumnoEncontrado.NombreAlumno); // Guardamos el nombre exacto
-        localStorage.setItem("idAlumno", alumnoEncontrado.ID_ALUMNO); // Guardamos el ID también
+        localStorage.setItem("alumno", alumnoEncontrado.NombreAlumno);
+        localStorage.setItem("idAlumno", alumnoEncontrado.ID_ALUMNO);
         window.location.href = "panel-alumno.html";
       } else {
         mostrarToast("❌ ID no encontrado en esa clase", "error");
@@ -68,7 +69,7 @@ function mostrarToast(mensaje, tipo = "info") {
   const contenedor = document.getElementById("toast-container");
   if (!contenedor) return;
 
-  // Eliminar toasts existentes antes de mostrar uno nuevo
+  // Eliminar cualquier toast previo
   contenedor.innerHTML = "";
 
   const toast = document.createElement("div");
