@@ -1,5 +1,6 @@
 const idClase = localStorage.getItem("clase");
 const tipoUsuario = localStorage.getItem("tipo");
+const nombreMaestro = localStorage.getItem("maestro") || "Maestro";
 
 // Redirigir si no es maestro
 if (tipoUsuario !== "maestro" || !idClase) {
@@ -7,6 +8,7 @@ if (tipoUsuario !== "maestro" || !idClase) {
 }
 
 document.getElementById("nombreClase").textContent = idClase;
+document.getElementById("nombreMaestro").textContent = nombreMaestro;
 
 // --------------------------- FUNCIONES ---------------------------
 
@@ -60,7 +62,6 @@ function agregarAlumno() {
     });
 }
 
-// ✅ Modal activo para evitar duplicados
 let modalActivo = false;
 
 function eliminarAlumno(idAlumno, nombreAlumno) {
@@ -181,6 +182,7 @@ function mostrarToast(mensaje, tipo = "info") {
   const contenedor = document.getElementById("toast-container");
   if (!contenedor) return;
 
+  contenedor.innerHTML = ""; // limpiar anteriores
   const toast = document.createElement("div");
   toast.className = `toast ${tipo}`;
   toast.textContent = mensaje;
@@ -193,7 +195,9 @@ function mostrarToast(mensaje, tipo = "info") {
 window.onload = () => {
   cargarAlumnos();
 
-  // Activar toggles de bloques
+  document.getElementById("nombreClase").textContent = idClase;
+  document.getElementById("nombreMaestro").textContent = nombreMaestro;
+
   document.querySelectorAll(".bloque h3").forEach(titulo => {
     titulo.addEventListener("click", () => {
       const contenido = titulo.nextElementSibling;
@@ -201,5 +205,3 @@ window.onload = () => {
     });
   });
 };
-
-
