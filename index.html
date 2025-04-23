@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login Escuela Sabática</title>
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
+<body>
   <!-- CABECERA CON LOGO -->
   <header class="top-bar">
     <div class="logo-area">
@@ -19,30 +19,53 @@
   <div class="container">
     <h2>Ingreso Escuela Sabática</h2>
 
-    <!-- Login Maestro -->
-    <div id="loginMaestro">
-      <h3>Login Maestro</h3>
-      <input type="text" id="claseMaestro" placeholder="Nombre de clase (Ej: clase1)">
-      <input type="text" id="claveMaestro" placeholder="Código de ingreso">
-      <button onclick="loginMaestro()">Entrar</button>
+    <div class="bloque">
+      <h3>👨‍🏫 Login Maestro</h3>
+      <div class="contenido">
+        <div class="input-icon">
+          <span class="icono">👤</span>
+          <input type="text" id="claseMaestro" placeholder="ID de Clase (Ej: clase1)">
+        </div>
+        <div class="input-icon">
+          <span class="icono">🔒</span>
+          <input type="password" id="claveMaestro" placeholder="Contraseña">
+        </div>
+        <button onclick="loginMaestro()">Entrar</button>
+      </div>
     </div>
 
-    <hr>
-
-    <!-- Login Alumno con inputs -->
-    <div id="loginAlumno">
-      <h3>Login Alumno</h3>
-      <input type="text" id="claseAlumno" placeholder="Nombre de clase (Ej: clase1)">
-      <input type="text" id="alumno" placeholder="Código de ingreso">
-      <button onclick="loginAlumno()">Entrar</button>
+    <div class="bloque">
+      <h3>👩‍🎓 Login Alumno</h3>
+      <div class="contenido">
+        <div class="input-icon">
+          <span class="icono">👤</span>
+          <input type="text" id="claseAlumno" placeholder="Nombre de clase (Ej: clase1)">
+        </div>
+        <div class="input-icon">
+          <span class="icono">👤</span>
+          <input type="text" id="alumno" placeholder="Tu nombre (Ej: Ana López)">
+        </div>
+        <button onclick="loginAlumno()">Entrar</button>
+      </div>
     </div>
   </div>
 
-  <!-- Contenedor de alertas flotantes -->
   <div id="toast-container"></div>
 
   <script src="conexion.js"></script>
   <script src="login.js"></script>
+
+  <!-- Toggle de secciones -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".bloque h3").forEach(titulo => {
+        titulo.addEventListener("click", () => {
+          const contenido = titulo.nextElementSibling;
+          contenido.style.display = contenido.style.display === "block" ? "none" : "block";
+        });
+      });
+    });
+  </script>
 </body>
 </html>
 
