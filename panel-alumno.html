@@ -32,7 +32,13 @@
   <div id="toast-container"></div>
 
   <script src="conexion.js"></script>
+  <script>
+    // Mostrar nombre e ID de clase desde localStorage
+    document.getElementById("nombreAlumno").textContent = localStorage.getItem("alumno") || "Alumno";
+    document.getElementById("nombreClase").textContent = localStorage.getItem("clase") || "Clase";
+
+    // Aquí puedes agregar más scripts si es necesario, o dejar alumno.js como externo
+  </script>
   <script src="alumno.js"></script>
 </body>
 </html>
-
