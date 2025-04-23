@@ -8,7 +8,8 @@ if (tipoUsuario !== "maestro" || !idClase) {
 
 document.getElementById("nombreClase").textContent = idClase;
 
-// Cargar alumnos en la lista y selector
+// --------------------------- FUNCIONES ---------------------------
+
 function cargarAlumnos() {
   fetch(`${URL}?accion=getAlumnos&clase=${idClase}`)
     .then(res => res.json())
@@ -22,7 +23,7 @@ function cargarAlumnos() {
         const li = document.createElement("li");
         li.innerHTML = `
           ${alumno.NombreAlumno} (${alumno.ID_ALUMNO})
-          <button onclick="eliminarAlumno('${alumno.ID_ALUMNO}')">❌ Eliminar</button>
+          <button onclick="eliminarAlumno('${alumno.ID_ALUMNO}', '${alumno.NombreAlumno}')">❌ Eliminar</button>
         `;
         lista.appendChild(li);
 
@@ -34,10 +35,9 @@ function cargarAlumnos() {
     });
 }
 
-// Agregar alumno
 function agregarAlumno() {
-  const nombre = document.getElementById("nuevoAlumno").value;
-  const id = document.getElementById("nuevoID").value;
+  const nombre = document.getElementById("nuevoAlumno").value.trim();
+  const id = document.getElementById("nuevoID").value.trim();
 
   if (!nombre || !id) {
     mostrarToast("⚠ Por favor completa todos los campos.", "error");
@@ -60,28 +60,36 @@ function agregarAlumno() {
     });
 }
 
-// Eliminar alumno con confirmación personalizada
-function eliminarAlumno(idAlumno) {
-  const alumnoNombre = document.querySelector(`button[onclick="eliminarAlumno('${idAlumno}')"]`).parentElement.textContent.trim().split(' (')[0];
+// ✅ Modal activo para evitar duplicados
+let modalActivo = false;
 
-  // Crear modal flotante personalizado
+function eliminarAlumno(idAlumno, nombreAlumno) {
+  if (modalActivo) return;
+  modalActivo = true;
+
+  const contenedor = document.getElementById("toast-container");
+
   const confirmBox = document.createElement("div");
   confirmBox.className = "toast confirm-box";
   confirmBox.innerHTML = `
-    <div style="font-size: 1.1rem; margin-bottom: 8px;">❓ ¿Eliminar a <strong>${alumnoNombre}</strong>?</div>
+    <div style="font-size: 1.1rem; margin-bottom: 8px;">❓ ¿Eliminar a <strong>${nombreAlumno}</strong>?</div>
     <div style="text-align: right;">
       <button class="btn-confirm" style="margin-right: 10px;">Sí</button>
       <button class="btn-cancel">Cancelar</button>
     </div>
   `;
 
-  const contenedor = document.getElementById("toast-container");
   contenedor.appendChild(confirmBox);
 
-  // Botones
-  confirmBox.querySelector(".btn-cancel").onclick = () => confirmBox.remove();
+  confirmBox.querySelector(".btn-cancel").onclick = () => {
+    confirmBox.remove();
+    modalActivo = false;
+  };
+
   confirmBox.querySelector(".btn-confirm").onclick = () => {
     confirmBox.remove();
+    modalActivo = false;
+
     const datos = new URLSearchParams();
     datos.append("accion", "eliminarAlumno");
     datos.append("clase", idClase);
@@ -96,8 +104,6 @@ function eliminarAlumno(idAlumno) {
   };
 }
 
-
-// Ver todas las respuestas
 function verRespuestas() {
   fetch(`${URL}?accion=getRespuestasClase&clase=${idClase}`)
     .then(res => res.json())
@@ -118,7 +124,6 @@ function verRespuestas() {
     });
 }
 
-// Ver respuestas por alumno
 function verRespuestasPorAlumno() {
   const idAlumno = document.getElementById("selectAlumno").value;
   if (!idAlumno) {
@@ -145,7 +150,6 @@ function verRespuestasPorAlumno() {
     });
 }
 
-// Ver resumen por alumno
 function verResumen() {
   fetch(`${URL}?accion=getResumenClase&clase=${idClase}`)
     .then(res => res.json())
@@ -168,13 +172,11 @@ function verResumen() {
     });
 }
 
-// Cerrar sesión
 function cerrarSesion() {
   localStorage.clear();
   window.location.href = "index.html";
 }
 
-// Mostrar toast
 function mostrarToast(mensaje, tipo = "info") {
   const contenedor = document.getElementById("toast-container");
   if (!contenedor) return;
@@ -187,11 +189,11 @@ function mostrarToast(mensaje, tipo = "info") {
   setTimeout(() => toast.remove(), 3000);
 }
 
-// Activar eventos después de cargar
+// --------------------------- INICIO ---------------------------
 window.onload = () => {
   cargarAlumnos();
 
-  // Activar secciones colapsables
+  // Activar toggles de bloques
   document.querySelectorAll(".bloque h3").forEach(titulo => {
     titulo.addEventListener("click", () => {
       const contenido = titulo.nextElementSibling;
