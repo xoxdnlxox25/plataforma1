@@ -6,9 +6,12 @@ const idClase = localStorage.getItem("clase");
 document.getElementById("nombreAlumno").textContent = nombreAlumno;
 document.getElementById("nombreClase").textContent = idClase;
 
+// URL de la API de Google Apps Script
+const API_URL = 'https://script.google.com/macros/s/AKfycbxbDKjQn51qF-Tc8j8uaplSctI1UT9Wzfo-PEDwnk8Y0YEI2RrS2F7hyyjT4g2PcL1KGQ/exec';
+
 // Cargar los estudios de la semana desde la hoja de Google
 function cargarEstudios() {
-  fetch(`${URL}?accion=getEstudios&clase=${idClase}`)
+  fetch(`${API_URL}?accion=getEstudios&clase=${idClase}`)
     .then(res => res.json())
     .then(data => {
       const contenedor = document.getElementById("semana-estudios");
@@ -35,7 +38,7 @@ function cargarEstudios() {
 
 // Cargar el estudio según el día
 function cargarEstudioPorDia(dia) {
-  fetch(`${URL}?accion=getEstudioPorDia&clase=${idClase}&dia=${dia}`)
+  fetch(`${API_URL}?accion=getEstudioPorDia&clase=${idClase}&dia=${dia}`)
     .then(res => res.json())
     .then(data => {
       const card = document.querySelector('.study-card');
