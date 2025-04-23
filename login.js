@@ -1,4 +1,4 @@
-// Login Maestro
+// Login Maestro (ahora obtiene también el nombre del maestro)
 function loginMaestro() {
   const claseInput = document.getElementById("claseMaestro");
   const claveInput = document.getElementById("claveMaestro");
@@ -6,13 +6,15 @@ function loginMaestro() {
   const clase = claseInput.value.trim();
   const clave = claveInput.value.trim();
 
-  fetch(`${URL}?accion=loginMaestro&clase=${clase}&clave=${clave}`)
-    .then(res => res.text())
+  fetch(`${URL}?accion=getClases`)
+    .then(res => res.json())
     .then(data => {
-      if (data === "ok") {
+      const claseEncontrada = data.find(c => c.ID_CLASE === clase && c.Contraseña === clave);
+
+      if (claseEncontrada) {
         localStorage.setItem("tipo", "maestro");
         localStorage.setItem("clase", clase);
-        localStorage.setItem("maestro", clase); // Se guarda como nombre del maestro
+        localStorage.setItem("maestro", claseEncontrada.Maestro); // ✅ Guarda el nombre real
         window.location.href = "panel-maestro.html";
       } else {
         mostrarToast("❌ Contraseña incorrecta o clase no válida", "error");
@@ -64,13 +66,12 @@ function loginAlumno() {
     });
 }
 
-// ✅ Toast flotante
+// ✅ Toast flotante único
 function mostrarToast(mensaje, tipo = "info") {
   const contenedor = document.getElementById("toast-container");
   if (!contenedor) return;
 
-  // Eliminar cualquier toast previo
-  contenedor.innerHTML = "";
+  contenedor.innerHTML = ""; // Limpiar notificaciones anteriores
 
   const toast = document.createElement("div");
   toast.className = `toast ${tipo}`;
