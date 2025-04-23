@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Panel del Alumno</title>
+  <title>Panel del Maestro</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -17,28 +17,73 @@
   </header>
 
   <div class="container">
-    <h2>Bienvenido (a) : <span id="nombreAlumno"></span></h2>
+    <h2>Bienvenido(a): <span id="nombreMaestro"></span></h2>
     <p>Clase: <span id="nombreClase"></span></p>
 
-    <h3>Preguntas del día</h3>
-    <div id="preguntasContainer">
-      <!-- Aquí se insertarán dinámicamente las preguntas -->
+    <div class="bloque">
+      <h3>📊 Resumen de respuestas por alumno</h3>
+      <div class="contenido">
+        <button onclick="verResumen()">Ver resumen</button>
+        <table id="tablaResumen">
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>Total de respuestas</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
     </div>
 
-    <button onclick="enviarRespuestas()">Enviar respuestas</button>
-    <button onclick="cerrarSesion()">Cerrar sesión</button>
+    <div class="bloque">
+      <h3>📋 Lista de alumnos</h3>
+      <div class="contenido">
+        <ul id="listaAlumnos"></ul>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <h3>➕ Agregar nuevo alumno</h3>
+      <div class="contenido">
+        <input type="text" id="nuevoAlumno" placeholder="Nombre del alumno">
+        <input type="text" id="nuevoID" placeholder="ID del alumno">
+        <button onclick="agregarAlumno()">Agregar</button>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <h3>📄 Respuestas de los alumnos</h3>
+      <div class="contenido">
+        <button onclick="verRespuestas()">Ver respuestas</button>
+        <ul id="listaRespuestas"></ul>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <h3>📘 Ver respuestas por alumno</h3>
+      <div class="contenido">
+        <select id="selectAlumno">
+          <option value="">Selecciona un alumno</option>
+        </select>
+        <button onclick="verRespuestasPorAlumno()">Ver respuestas de alumno</button>
+        <ul id="respuestasAlumno"></ul>
+      </div>
+    </div>
+
+    <div style="text-align: center; margin-top: 40px;">
+      <button onclick="cerrarSesion()">🔒 Cerrar sesión</button>
+    </div>
   </div>
 
   <div id="toast-container"></div>
 
   <script src="conexion.js"></script>
+  <script src="maestro.js"></script>
   <script>
-    // Mostrar nombre e ID de clase desde localStorage
-    document.getElementById("nombreAlumno").textContent = localStorage.getItem("alumno") || "Alumno";
+    // Mostrar nombre del maestro y clase desde localStorage
+    document.getElementById("nombreMaestro").textContent = localStorage.getItem("maestro") || "Maestro";
     document.getElementById("nombreClase").textContent = localStorage.getItem("clase") || "Clase";
-
-    // Aquí puedes agregar más scripts si es necesario, o dejar alumno.js como externo
   </script>
-  <script src="alumno.js"></script>
 </body>
 </html>
