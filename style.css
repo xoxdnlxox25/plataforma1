@@ -309,4 +309,22 @@ button.logout {
   text-decoration: underline;
   color: #1c598d;
 }
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.95rem;
+  color: #555;
+  background-color: #f8f8f8;
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
+}
 
+.footer a {
+  color: #2980b9;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
