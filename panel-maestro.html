@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Login Escuela Sabática</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel del Maestro</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <!-- CABECERA CON LOGO -->
+
+  <!-- Encabezado con logo y nombre -->
   <header class="top-bar">
     <div class="logo-area">
       <img src="logo.png" alt="Logo Escuela" class="logo">
@@ -17,76 +17,70 @@
   </header>
 
   <div class="container">
-    <h2>Ingreso Escuela Sabática</h2>
-
-    <!-- Enlace WhatsApp -->
-    <div style="text-align: right; margin-bottom: 10px;">
-      <a href="https://wa.me/59167891097?text=Hola%2C%20deseo%20administrar%20una%20nueva%20clase%20de%20Escuela%20Sab%C3%A1tica." class="solicitar-clase" target="_blank">
-        📩 Solicitar Clase(s)
-      </a>
-    </div>
+    <h2>Panel del Maestro</h2>
+    <p>Clase: <span id="nombreClase"></span></p>
 
     <div class="bloque">
-      <h3>👨‍🏫 Login Maestro</h3>
+      <h3>📋 Lista de alumnos</h3>
       <div class="contenido">
-        <div class="input-icon">
-          <span class="icono">👤</span>
-          <input type="text" id="claseMaestro" placeholder="ID de Clase (Ej: clase1)">
-        </div>
-        <div class="input-icon">
-          <span class="icono">🔐</span>
-          <input type="password" id="claveMaestro" placeholder="Contraseña">
-        </div>
-        <button onclick="loginMaestro()">Entrar</button>
+        <ul id="listaAlumnos"></ul>
       </div>
     </div>
 
     <div class="bloque">
-      <h3>👩‍🎓 Login Alumno</h3>
+      <h3>➕ Agregar nuevo alumno</h3>
       <div class="contenido">
-        <div class="input-icon">
-          <span class="icono">👤</span>
-          <input type="text" id="claseAlumno" placeholder="Nombre de clase (Ej: clase1)">
-        </div>
-        <div class="input-icon">
-          <span class="icono">👤</span>
-          <input type="text" id="alumno" placeholder="Tu nombre (Ej: Ana López)">
-        </div>
-        <button onclick="loginAlumno()">Entrar</button>
+        <input type="text" id="nuevoAlumno" placeholder="Nombre del alumno">
+        <input type="text" id="nuevoID" placeholder="ID del alumno">
+        <button onclick="agregarAlumno()">Agregar</button>
       </div>
     </div>
-  </div>
 
-  <!-- Modal de Confirmación -->
-  <div id="modalConfirm" class="modal">
-    <div class="modal-content">
-      <p id="modalTexto"></p>
-      <div class="modal-buttons">
-        <button id="confirmarEliminar" class="btn-confirm">Sí, eliminar</button>
-        <button id="cancelarEliminar" class="btn-cancel">Cancelar</button>
+    <div class="bloque">
+      <h3>📄 Respuestas de los alumnos</h3>
+      <div class="contenido">
+        <button onclick="verRespuestas()">Ver respuestas</button>
+        <ul id="listaRespuestas"></ul>
       </div>
+    </div>
+
+    <div class="bloque">
+      <h3>📘 Ver respuestas por alumno</h3>
+      <div class="contenido">
+        <select id="selectAlumno">
+          <option value="">Selecciona un alumno</option>
+        </select>
+        <button onclick="verRespuestasPorAlumno()">Ver respuestas de alumno</button>
+        <ul id="respuestasAlumno"></ul>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <h3>📊 Resumen de respuestas por alumno</h3>
+      <div class="contenido">
+        <button onclick="verResumen()">Ver resumen</button>
+        <table id="tablaResumen">
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>Total de respuestas</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Botón de cerrar sesión al final -->
+    <div style="text-align: center; margin-top: 40px;">
+      <button onclick="cerrarSesion()">🔒 Cerrar sesión</button>
     </div>
   </div>
 
   <div id="toast-container"></div>
 
   <script src="conexion.js"></script>
-  <script src="login.js"></script>
+  <script src="maestro.js"></script>
 
-  <!-- Toggle de secciones -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      document.querySelectorAll(".bloque h3").forEach(titulo => {
-        titulo.addEventListener("click", () => {
-          const contenido = titulo.nextElementSibling;
-          contenido.style.display = contenido.style.display === "block" ? "none" : "block";
-        });
-      });
-    });
-  </script>
-
-  <footer style="text-align:center; margin-top:40px; font-size: 0.9rem; color: #777;">
-    Todos los derechos reservados &copy; 2025 | Sitio desarrollado por el Ministerio: <a href="https://elviene.org" target="_blank">Elviene.org</a>
-  </footer>
 </body>
 </html>
