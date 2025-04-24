@@ -2,110 +2,25 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Panel del Alumno</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-
-  <!-- CABECERA CON LOGO -->
-  <header class="top-bar">
-    <div class="logo-area">
-      <img src="logo.png" alt="Logo Escuela" class="logo" />
-      <h1 class="titulo-escuela">Escuela Sabática</h1>
-    </div>
-  </header>
-
   <div class="container">
-    <h2>Bienvenido(a): <span id="nombreAlumno"></span></h2>
+    <h2>Bienvenido, <span id="nombreAlumno"></span></h2>
     <p>Clase: <span id="nombreClase"></span></p>
 
-    <!-- Contenedor para los días de la semana -->
-    <div id="semana-estudios" class="semana-estudios"></div>
-
-    <!-- Contenedor para el estudio seleccionado -->
-    <div class="study-card">
-      <!-- Aquí se cargará el contenido dinámico según el día seleccionado -->
+    <h3>Preguntas del día</h3>
+    <div id="preguntasContainer">
+      <!-- Aquí se insertarán dinámicamente las preguntas -->
     </div>
+<button onclick="enviarRespuestas()">Enviar respuestas</button>
 
     <button onclick="cerrarSesion()">Cerrar sesión</button>
   </div>
 
-  <div id="toast-container"></div>
-
   <script src="conexion.js"></script>
   <script src="alumno.js"></script>
-  <script>
-    // Mostrar nombre e ID de clase desde localStorage
-    document.getElementById("nombreAlumno").textContent = localStorage.getItem("alumno") || "Alumno";
-    document.getElementById("nombreClase").textContent = localStorage.getItem("clase") || "Clase";
-
-    // Cargar estudios de la semana (botones por día)
-    function cargarEstudios() {
-      const idClase = localStorage.getItem("clase"); // Obtener clase
-
-      obtenerEstudios(idClase) // Usamos la función de conexion.js para obtener los estudios
-        .then(data => {
-          const contenedor = document.getElementById("semana-estudios");
-          contenedor.innerHTML = "";  // Limpiar el contenedor
-
-          if (data.length === 0) {
-            contenedor.innerHTML = "<p>No hay estudios disponibles para esta clase.</p>";
-            return;
-          }
-
-          // Crear los botones para cada día de la semana
-          data.forEach(estudio => {
-            const btn = document.createElement("button");
-            btn.className = `dia-btn`;
-            btn.textContent = estudio.dia; // Usar el día del estudio
-            btn.onclick = () => cargarEstudioPorDia(estudio.dia); // Cargar estudio según el día
-            contenedor.appendChild(btn);
-          });
-        });
-    }
-
-    // Cargar el estudio según el día
-    function cargarEstudioPorDia(dia) {
-      const idClase = localStorage.getItem("clase");
-
-      obtenerEstudioPorDia(idClase, dia) // Usamos la función de conexion.js para obtener el estudio del día
-        .then(data => {
-          const card = document.querySelector('.study-card');
-          card.innerHTML = `<h2>Estudio para el día ${dia}</h2>`;
-
-          if (!data || data.error) {
-            card.innerHTML += `<p>${data.error || "No se encontró ningún estudio disponible."}</p>`;
-            return;
-          }
-
-          // Mostrar las preguntas del estudio
-          data.preguntas.forEach((item, index) => {
-            card.innerHTML += `
-              <div class="bloque-pregunta">
-                <p><strong>${item.Pregunta}</strong></p>
-                <p><strong>Respuesta:</strong></p>
-                ${item.Respuesta.split('<br>').map(r => `
-                  <label><input type="radio" name="respuesta${index}" value="${r.charAt(0)}" onclick="guardarRespuesta('${index}', '${r.charAt(0)}')"> ${r}</label><br>
-                `).join("")}
-              </div>
-            `;
-          });
-
-          // Agregar nota personal
-          card.innerHTML += `
-            <div class="nota-personal">
-              <label><strong>✍️ Mis notas personales:</strong></label><br>
-              <textarea id="notaPersonal" placeholder="Escribe aquí tu reflexión..."></textarea>
-            </div>
-          `;
-        });
-    }
-
-    // Llamar a la función para cargar los estudios cuando se cargue la página
-    window.onload = function() {
-      cargarEstudios(); // Llamar la función para cargar los estudios desde la hoja de Google
-    };
-  </script>
 </body>
 </html>
