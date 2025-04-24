@@ -41,21 +41,22 @@
       </div>
     </div>
 
-    <div class="bloque">
-      <h3>👩‍🎓 Login Alumno</h3>
-      <div class="contenido">
-        <div class="input-icon">
-          <span class="icono">👤</span>
-          <input type="text" id="claseAlumno" placeholder="Nombre de clase (Ej: Clase1)">
-        </div>
-        <div class="input-icon">
-          <span class="icono">👤</span>
-          <input type="text" id="alumno" placeholder="Tu ID (Ej: Ana123)">
-        </div>
-        <button onclick="loginAlumno()">Entrar</button>
-      </div>
+    <!-- En vez de dos campos con íconos iguales 👤, separa con un label claro -->
+<div class="bloque">
+  <h3>👩‍🎓 Login Alumno</h3>
+  <div class="contenido">
+    <div class="input-icon">
+      <span class="icono">🏫</span>
+      <input type="text" id="claseAlumno" placeholder="Clase (Ej: KM6_2)">
     </div>
+    <div class="input-icon">
+      <span class="icono">🆔</span>
+      <input type="text" id="alumno" placeholder="ID del Alumno (Ej: Jos123)">
+    </div>
+    <button onclick="loginAlumno()">Entrar</button>
   </div>
+</div>
+
 
   <!-- Contenedor de alertas flotantes -->
   <div id="toast-container"></div>
