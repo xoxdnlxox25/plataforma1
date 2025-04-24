@@ -378,3 +378,29 @@ button.logout {
   padding: 5px 0;
   font-size: 16px;
 }
+/* Estilo para respuestas con radio alineado */
+.respuesta label {
+  display: flex;
+  align-items: center;
+  background-color: #fffde7;
+  border-left: 4px solid #f1c40f;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  color: #333;
+  gap: 12px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.respuesta label:hover {
+  background-color: #fef9d3;
+}
+
+.respuesta input[type="radio"] {
+  margin: 0;
+  accent-color: #2980b9;
+  transform: scale(1.2);
+  cursor: pointer;
+}
