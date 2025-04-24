@@ -17,19 +17,15 @@
   </header>
 
   <div class="container">
-    <h2>Bienvenido(a) : <span id="nombreAlumno"></span></h2>
+    <h2>Bienvenido (a) : <span id="nombreAlumno"></span></h2>
     <p>Clase: <span id="nombreClase"></span></p>
 
-    <!-- Mostramos los días disponibles -->
-    <h3>Selecciona el día para estudiar</h3>
-    <div id="semana-estudios" class="semana-estudios">
-      <!-- Aquí se insertarán dinámicamente los botones de los días -->
+    <h3>Preguntas del día</h3>
+    <div id="preguntasContainer">
+      <!-- Aquí se insertarán dinámicamente las preguntas -->
     </div>
 
-    <div id="study-card" class="study-card">
-      <!-- Aquí se mostrará el estudio para el día seleccionado -->
-    </div>
-
+    <button onclick="enviarRespuestas()">Enviar respuestas</button>
     <button onclick="cerrarSesion()">Cerrar sesión</button>
   </div>
 
@@ -37,110 +33,12 @@
 
   <script src="conexion.js"></script>
   <script>
-    // Obtener datos del alumno y clase
-    const nombreAlumno = localStorage.getItem("alumno");
-    const idClase = localStorage.getItem("clase");
+    // Mostrar nombre e ID de clase desde localStorage
+    document.getElementById("nombreAlumno").textContent = localStorage.getItem("alumno") || "Alumno";
+    document.getElementById("nombreClase").textContent = localStorage.getItem("clase") || "Clase";
 
-    // Mostrar en pantalla
-    document.getElementById("nombreAlumno").textContent = nombreAlumno || "Alumno";
-    document.getElementById("nombreClase").textContent = idClase || "Clase";
-
-    // Cargar los estudios de la semana desde la API
-    function cargarEstudios() {
-      fetch(`${API_URL}?accion=getEstudios&clase=${idClase}`)
-        .then(res => res.json())
-        .then(data => {
-          const contenedor = document.getElementById("semana-estudios");
-          contenedor.innerHTML = "";
-
-          if (data.length === 0) {
-            contenedor.innerHTML = "<p>No hay estudios disponibles para esta clase.</p>";
-            return;
-          }
-
-          // Crear los botones para cada día de la semana
-          data.forEach(estudio => {
-            const btn = document.createElement("button");
-            btn.className = `dia-btn`;
-            btn.textContent = estudio.dia; // Usar el día del estudio (por ejemplo: "Domingo")
-            btn.onclick = () => cargarEstudioPorDia(estudio.dia); // Cargar estudio según el día
-            contenedor.appendChild(btn);
-          });
-        })
-        .catch(() => {
-          mostrarToast("❌ Error al cargar los estudios.", "error");
-        });
-    }
-
-    // Cargar el estudio del día seleccionado
-    function cargarEstudioPorDia(dia) {
-      fetch(`${API_URL}?accion=getEstudioPorDia&clase=${idClase}&dia=${dia}`)
-        .then(res => res.json())
-        .then(data => {
-          const card = document.getElementById('study-card');
-          card.innerHTML = `<h2>Estudio para el día ${dia}</h2>`;
-
-          if (!data || data.error) {
-            card.innerHTML += `<p>${data.error || "No se encontró ningún estudio disponible."}</p>`;
-            return;
-          }
-
-          // Mostrar las preguntas del estudio
-          data.preguntas.forEach((item, index) => {
-            card.innerHTML += `
-              <div class="bloque-pregunta">
-                <p><strong>${item.Pregunta}</strong></p>
-                <p><strong>Respuesta:</strong></p>
-                ${item.Respuesta.split('<br>').map(r => `
-                  <label><input type="radio" name="respuesta${index}" value="${r.charAt(0)}" onclick="guardarRespuesta('${index}', '${r.charAt(0)}')"> ${r}</label><br>
-                `).join("")}
-              </div>
-            `;
-          });
-
-          // Agregar nota personal
-          card.innerHTML += `
-            <div class="nota-personal">
-              <label><strong>✍️ Mis notas personales:</strong></label><br>
-              <textarea id="notaPersonal" placeholder="Escribe aquí tu reflexión..."></textarea>
-            </div>
-          `;
-        })
-        .catch(() => {
-          mostrarToast("❌ Error al cargar el estudio de este día.", "error");
-        });
-    }
-
-    // Función para guardar las respuestas seleccionadas
-    function guardarRespuesta(index, valor) {
-      localStorage.setItem(`respuesta_${index}`, valor);
-    }
-
-    // Función para mostrar toast flotante
-    function mostrarToast(mensaje, tipo = "info") {
-      const contenedor = document.getElementById("toast-container");
-      if (!contenedor) return;
-
-      const toast = document.createElement("div");
-      toast.className = `toast ${tipo}`;
-      toast.textContent = mensaje;
-      contenedor.appendChild(toast);
-
-      setTimeout(() => toast.remove(), 3000);
-    }
-
-    // Función para cerrar sesión
-    function cerrarSesion() {
-      localStorage.clear();
-      window.location.href = "index.html";
-    }
-
-    // Llamar a la función para cargar los estudios cuando se cargue la página
-    window.onload = function() {
-      cargarEstudios(); // Llamar la función para cargar los estudios desde la hoja de Google
-    };
+    // Aquí puedes agregar más scripts si es necesario, o dejar alumno.js como externo
   </script>
-
   <script src="alumno.js"></script>
 </body>
 </html>
