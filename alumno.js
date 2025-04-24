@@ -38,12 +38,11 @@ function enviarRespuestas() {
   preguntasDelDia.forEach(p => {
     const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
     if (!seleccionada) {
-      alert(`⚠ Por favor responde la pregunta ${p.numero}`);
+      mostrarToast(`⚠ Por favor responde la pregunta ${p.numero}`, "error");
       completas = false;
       return;
     }
 
-    // Usamos URLSearchParams para enviar como formulario
     const datos = new URLSearchParams();
     datos.append("accion", "guardarRespuesta");
     datos.append("clase", idClase);
@@ -64,11 +63,28 @@ function enviarRespuestas() {
   });
 
   if (completas) {
-    alert("✅ ¡Respuestas enviadas correctamente!");
+    mostrarToast("✅ ¡Respuestas enviadas correctamente!", "success");
   }
 }
 
+// Función para cerrar sesión
 function cerrarSesion() {
   localStorage.clear();
   window.location.href = "index.html";
+}
+
+// Función para mostrar toast flotante
+function mostrarToast(mensaje, tipo = "info") {
+  const contenedor = document.getElementById("toast-container");
+  if (!contenedor) return;
+
+  const toast = document.createElement("div");
+  toast.className = `toast ${tipo}`;
+  toast.textContent = mensaje;
+
+  contenedor.appendChild(toast);
+
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
 }
