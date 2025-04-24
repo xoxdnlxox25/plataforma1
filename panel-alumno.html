@@ -7,20 +7,38 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- CABECERA CON LOGO -->
+  <header class="top-bar">
+    <div class="logo-area">
+      <img src="logo.png" alt="Logo Escuela" class="logo" />
+      <h1 class="titulo-escuela">Escuela Sabática</h1>
+    </div>
+  </header>
+
   <div class="container">
-    <h2>Bienvenido, <span id="nombreAlumno"></span></h2>
+    <h2>Bienvenido (a) : <span id="nombreAlumno"></span></h2>
     <p>Clase: <span id="nombreClase"></span></p>
 
     <h3>Preguntas del día</h3>
     <div id="preguntasContainer">
       <!-- Aquí se insertarán dinámicamente las preguntas -->
     </div>
-<button onclick="enviarRespuestas()">Enviar respuestas</button>
 
+    <button onclick="enviarRespuestas()">Enviar respuestas</button>
     <button onclick="cerrarSesion()">Cerrar sesión</button>
   </div>
 
+  <div id="toast-container"></div>
+
   <script src="conexion.js"></script>
+  <script>
+    // Mostrar nombre e ID de clase desde localStorage
+    document.getElementById("nombreAlumno").textContent = localStorage.getItem("alumno") || "Alumno";
+    document.getElementById("nombreClase").textContent = localStorage.getItem("clase") || "Clase";
+
+    // Aquí puedes agregar más scripts si es necesario, o dejar alumno.js como externo
+  </script>
   <script src="alumno.js"></script>
 </body>
 </html>
