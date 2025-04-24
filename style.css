@@ -373,3 +373,8 @@ button.logout {
   border-radius: 6px;
   cursor: pointer;
 }
+.pregunta label {
+  display: block;
+  padding: 5px 0;
+  font-size: 16px;
+}
