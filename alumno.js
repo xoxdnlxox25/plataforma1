@@ -24,7 +24,10 @@ window.onload = () => {
         pregunta: p.Pregunta,
         versiculo: p.Versiculo,
         nota: p.Nota,
-        opciones: (p.Respuesta || "").split(";").map(op => op.trim()).filter(op => op !== ""),
+        opciones: (p.Respuesta || "")
+          .split(/\n|(?=[A-Z]\))/)  // ✅ permite usar saltos de línea o A) B) C)
+          .map(op => op.trim())
+          .filter(op => op !== ""),
         correcta: p.Correcta
       }));
 
