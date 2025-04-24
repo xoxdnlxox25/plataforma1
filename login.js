@@ -29,7 +29,7 @@ function loginMaestro() {
     });
 }
 
-// Login Alumno (por ID_ALUMNO)
+// Login Alumno usando ID_ALUMNO (más seguro)
 function loginAlumno() {
   const claseInput = document.getElementById("claseAlumno");
   const idInput = document.getElementById("alumno");
@@ -45,16 +45,16 @@ function loginAlumno() {
   fetch(`${URL}?accion=getAlumnos&clase=${clase}`)
     .then(res => res.json())
     .then(data => {
-      const alumnoEncontrado = data.find(a => a.ID_ALUMNO.toLowerCase() === idAlumno.toLowerCase());
+      const encontrado = data.find(a => a.ID_ALUMNO.toLowerCase() === idAlumno.toLowerCase());
 
-      if (alumnoEncontrado) {
+      if (encontrado) {
         localStorage.setItem("tipo", "alumno");
         localStorage.setItem("clase", clase);
-        localStorage.setItem("alumno", alumnoEncontrado.NombreAlumno);
-        localStorage.setItem("idAlumno", alumnoEncontrado.ID_ALUMNO);
+        localStorage.setItem("alumno", encontrado.NombreAlumno); // Muestra el nombre correcto después
+        localStorage.setItem("id", encontrado.ID_ALUMNO);
         window.location.href = "panel-alumno.html";
       } else {
-        mostrarToast("❌ ID no encontrado en esa clase", "error");
+        mostrarToast("❌ ID de alumno no encontrado en esa clase", "error");
         claseInput.value = "";
         idInput.value = "";
       }
@@ -65,6 +65,7 @@ function loginAlumno() {
       idInput.value = "";
     });
 }
+
 
 // ✅ Toast flotante único
 function mostrarToast(mensaje, tipo = "info") {
