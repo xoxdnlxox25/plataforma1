@@ -51,15 +51,18 @@ function mostrarPreguntas() {
   preguntasDelDia.forEach(p => {
     const div = document.createElement("div");
     div.className = "pregunta";
+    div.style.marginBottom = "20px";
     div.innerHTML = `
       <p><strong>Pregunta ${p.numero}:</strong> ${p.pregunta}</p>
       <p><strong>Versículo:</strong> ${p.versiculo}</p>
       <p><strong>Nota:</strong> ${p.nota}</p>
-      ${p.opciones.map(op => `
-        <label>
-          <input type="radio" name="preg${p.numero}" value="${op[0]}"> ${op}
-        </label><br>
-      `).join("")}
+      <div class="opciones">
+        ${p.opciones.map(op => `
+          <label style="display:block; margin-bottom: 8px;">
+            <input type="radio" name="preg${p.numero}" value="${op[0]}"> ${op}
+          </label>
+        `).join("")}
+      </div>
     `;
     container.appendChild(div);
   });
