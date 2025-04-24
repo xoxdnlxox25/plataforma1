@@ -1,80 +1,76 @@
-// Obtener datos del alumno y clase
+// Obtener datos del alumno
 const nombreAlumno = localStorage.getItem("alumno");
 const idClase = localStorage.getItem("clase");
 
-// Mostrar en pantalla el nombre del alumno y la clase
+// Mostrar en pantalla
 document.getElementById("nombreAlumno").textContent = nombreAlumno;
 document.getElementById("nombreClase").textContent = idClase;
 
-// Cargar los estudios de la semana desde la hoja de Google
-function cargarEstudios() {
-  fetch(`${API_URL}?accion=getEstudios&clase=${idClase}`)
-    .then(res => res.json())
-    .then(data => {
-      const contenedor = document.getElementById("semana-estudios");
-      contenedor.innerHTML = "";
+// Preguntas simuladas (puedes luego cargarlas desde la hoja si deseas)
+const preguntasDelDia = [
+  { numero: 1, pregunta: "¿Cuál es el primer mandamiento?", opciones: ["A. Amarás a Dios", "B. No robarás", "C. Honra a tu padre"] },
+  { numero: 2, pregunta: "¿Quién escribió el libro de Juan?", opciones: ["A. Pablo", "B. Juan", "C. Pedro"] }
+];
 
-      if (data.length === 0) {
-        contenedor.innerHTML = "<p>No hay estudios disponibles para esta clase.</p>";
-        return;
-      }
+// Mostrar preguntas
+const container = document.getElementById("preguntasContainer");
 
-      // Crear los botones para cada día de la semana
-      data.forEach(estudio => {
-        const btn = document.createElement("button");
-        btn.className = `dia-btn`;
-        btn.textContent = estudio.dia; // Usar el día del estudio (por ejemplo: "Domingo")
-        btn.onclick = () => cargarEstudioPorDia(estudio.dia); // Cargar estudio según el día
-        contenedor.appendChild(btn);
-      });
+preguntasDelDia.forEach(p => {
+  const div = document.createElement("div");
+  div.className = "pregunta";
+  div.innerHTML = `
+    <p><strong>Pregunta ${p.numero}:</strong> ${p.pregunta}</p>
+    ${p.opciones.map(op => `
+      <label>
+        <input type="radio" name="preg${p.numero}" value="${op[0]}"> ${op}
+      </label><br>
+    `).join("")}
+  `;
+  container.appendChild(div);
+});
+
+// Función para guardar todas las respuestas al hacer clic
+function enviarRespuestas() {
+  const fecha = new Date().toISOString().split("T")[0];
+  const diaSemana = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(new Date());
+  let completas = true;
+
+  preguntasDelDia.forEach(p => {
+    const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
+    if (!seleccionada) {
+      mostrarToast(`⚠ Por favor responde la pregunta ${p.numero}`, "error");
+      completas = false;
+      return;
+    }
+
+    const datos = new URLSearchParams();
+    datos.append("accion", "guardarRespuesta");
+    datos.append("clase", idClase);
+    datos.append("alumno", nombreAlumno);
+    datos.append("dia", diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1));
+    datos.append("numero", p.numero);
+    datos.append("respuesta", seleccionada.value);
+    datos.append("fecha", fecha);
+
+    fetch(URL, {
+      method: "POST",
+      body: datos
     })
-    .catch(() => {
-      mostrarToast("❌ Error al cargar los estudios.", "error");
+    .then(res => res.text())
+    .then(resp => {
+      console.log("Guardado:", resp);
     });
+  });
+
+  if (completas) {
+    mostrarToast("✅ ¡Respuestas enviadas correctamente!", "success");
+  }
 }
 
-// Cargar el estudio según el día
-function cargarEstudioPorDia(dia) {
-  fetch(`${API_URL}?accion=getEstudioPorDia&clase=${idClase}&dia=${dia}`)
-    .then(res => res.json())
-    .then(data => {
-      const card = document.querySelector('.study-card');
-      card.innerHTML = `<h2>Estudio para el día ${dia}</h2>`;
-
-      if (!data || data.error) {
-        card.innerHTML += `<p>${data.error || "No se encontró ningún estudio disponible."}</p>`;
-        return;
-      }
-
-      // Mostrar las preguntas del estudio
-      data.preguntas.forEach((item, index) => {
-        card.innerHTML += `
-          <div class="bloque-pregunta">
-            <p><strong>${item.Pregunta}</strong></p>
-            <p><strong>Respuesta:</strong></p>
-            ${item.Respuesta.split('<br>').map(r => `
-              <label><input type="radio" name="respuesta${index}" value="${r.charAt(0)}" onclick="guardarRespuesta('${index}', '${r.charAt(0)}')"> ${r}</label><br>
-            `).join("")}
-          </div>
-        `;
-      });
-
-      // Agregar nota personal
-      card.innerHTML += `
-        <div class="nota-personal">
-          <label><strong>✍️ Mis notas personales:</strong></label><br>
-          <textarea id="notaPersonal" placeholder="Escribe aquí tu reflexión..."></textarea>
-        </div>
-      `;
-    })
-    .catch(() => {
-      mostrarToast("❌ Error al cargar el estudio de este día.", "error");
-    });
-}
-
-// Función para guardar las respuestas seleccionadas
-function guardarRespuesta(index, valor) {
-  localStorage.setItem(`respuesta_${index}`, valor);
+// Función para cerrar sesión
+function cerrarSesion() {
+  localStorage.clear();
+  window.location.href = "index.html";
 }
 
 // Función para mostrar toast flotante
@@ -92,14 +88,3 @@ function mostrarToast(mensaje, tipo = "info") {
     toast.remove();
   }, 3000);
 }
-
-// Función para cerrar sesión
-function cerrarSesion() {
-  localStorage.clear();
-  window.location.href = "index.html";
-}
-
-// Llamar a la función para cargar los estudios cuando se cargue la página
-window.onload = function() {
-  cargarEstudios(); // Llamar la función para cargar los estudios desde la hoja de Google
-};
