@@ -58,8 +58,9 @@ function mostrarPreguntas() {
       <p><strong>Nota:</strong> ${p.nota}</p>
       <div class="opciones">
         ${p.opciones.map(op => `
-          <label style="display:block; margin-bottom: 8px;">
-            <input type="radio" name="preg${p.numero}" value="${op[0]}"> ${op}
+          <label class="opcion-label">
+            <input type="radio" name="preg${p.numero}" value="${op[0]}">
+            <span>${op}</span>
           </label>
         `).join("")}
       </div>
