@@ -58,7 +58,58 @@ button:hover {
   background-color: #2980b9;
 }
 
-/* Preguntas */
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+ul li {
+  background-color: #ecf0f1;
+  margin: 6px 0;
+  padding: 10px 12px;
+  border-radius: 8px;
+  line-height: 1.4;
+}
+
+hr {
+  border: none;
+  height: 1px;
+  background-color: #ddd;
+  margin: 30px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f1f1f1;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+  .container {
+    margin: 10px;
+    padding: 15px;
+  }
+
+  input, select, button {
+    font-size: 0.95rem;
+  }
+
+  table th, table td {
+    font-size: 0.9rem;
+  }
+}
+
 .pregunta {
   margin-bottom: 20px;
   padding: 15px;
@@ -67,35 +118,13 @@ button:hover {
   border-radius: 8px;
 }
 
-/* Opciones alineadas */
-.opcion-label {
-  display: flex;
-  align-items: center;
-  background-color: #fffde7;
-  border-left: 4px solid #f1c40f;
-  padding: 10px 16px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
+label {
+  display: block;
+  margin: 8px 0;
+  font-size: 15px;
 }
 
-.opcion-label:hover {
-  background-color: #fef9d3;
-}
-
-.opcion-label input[type="radio"] {
-  margin-right: 10px;
-  accent-color: #2980b9;
-  transform: scale(1.2);
-}
-
-.opcion-label span {
-  font-size: 16px;
-  color: #333;
-  word-break: break-word;
-}
-
-/* CABECERA */
+/* CABECERA FIJA + ANIMACIÓN */
 .top-bar {
   position: fixed;
   top: 0;
@@ -143,7 +172,7 @@ button:hover {
   }
 }
 
-/* Toasts */
+/* TOASTS */
 #toast-container {
   position: fixed;
   bottom: 20px;
@@ -164,9 +193,17 @@ button:hover {
   min-width: 200px;
 }
 
-.toast.success { background-color: #27ae60; }
-.toast.error   { background-color: #e74c3c; }
-.toast.info    { background-color: #2980b9; }
+.toast.success {
+  background-color: #27ae60;
+}
+
+.toast.error {
+  background-color: #e74c3c;
+}
+
+.toast.info {
+  background-color: #2980b9;
+}
 
 @keyframes fadein {
   from {bottom: 0; opacity: 0;}
@@ -178,10 +215,15 @@ button:hover {
   to {opacity: 0;}
 }
 
-/* Responsive móvil */
+/* MÓVIL */
 @media screen and (max-width: 480px) {
   .container h2 {
     font-size: 1.4rem;
+    word-break: break-word;
+  }
+
+  .container {
+    padding: 16px;
   }
 
   .titulo-escuela {
@@ -199,14 +241,140 @@ button:hover {
     width: 42px;
     height: 42px;
   }
+}
 
-  .opcion-label {
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 10px;
-  }
+/* Login tipo tarjeta */
+.bloque {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  padding: 20px;
+  margin-bottom: 25px;
+  transition: box-shadow 0.3s ease;
+}
 
-  .opcion-label span {
-    font-size: 15px;
-  }
+.bloque:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.bloque h3 {
+  cursor: pointer;
+  padding: 10px 12px;
+  border-bottom: 1px solid #ccc;
+  margin-top: 0;
+  font-weight: bold;
+  font-size: 1.2rem;
+  user-select: none;
+}
+
+.bloque h3:hover {
+  background-color: #f3f7f8;
+}
+
+.bloque .contenido {
+  display: none;
+  margin-top: 15px;
+}
+
+button.logout {
+  background-color: #2980b9;
+  font-size: 1rem;
+  margin-top: 20px;
+}
+.input-icon {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.input-icon input {
+  padding-left: 40px;
+}
+
+.input-icon .icono {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #555;
+}
+.solicitar-clase {
+  color: #2980b9;
+  font-weight: bold;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.solicitar-clase:hover {
+  text-decoration: underline;
+  color: #1c598d;
+}
+.footer {
+  text-align: center;
+  padding: 20px;
+  font-size: 0.95rem;
+  color: #555;
+  background-color: #f8f8f8;
+  border-top: 1px solid #ddd;
+  margin-top: 40px;
+}
+
+.footer a {
+  color: #2980b9;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: white;
+  padding: 20px 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
+
+.modal-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-around;
+}
+
+.btn-confirm {
+  background-color: #e74c3c;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background-color: #ccc;
+  color: black;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.pregunta label {
+  display: block;
+  padding: 5px 0;
+  font-size: 16px;
 }
