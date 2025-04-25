@@ -71,9 +71,9 @@ body {
 
 .container h2 {
   word-break: break-word;
-  font-size: 1.8rem;
+  font-size: 1.4rem; /* Tamaño reducido */
   text-align: center;
-  margin-top: 60px;
+  margin-top: 20px;  /* Menor espacio desde la cabecera */
   margin-bottom: 10px;
 }
 
