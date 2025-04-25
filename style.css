@@ -1,4 +1,6 @@
-/* Estilo para preguntas y radio buttons alineados en panel-alumno.html */
+/* ========================= */
+/* ESTILO BASE GENERAL */
+/* ========================= */
 body {
   font-family: 'Segoe UI', sans-serif;
   background-color: #f4f6f8;
@@ -7,12 +9,67 @@ body {
   color: #333;
 }
 
+/* ========================= */
+/* CABECERA FIJA CON LOGO Y ANIMACIÓN */
+/* ========================= */
+.top-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #2c3e50;
+  padding: 10px 20px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  border-bottom: 4px solid #2980b9;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  height: 70px;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 10px;
+}
+
+.titulo-escuela {
+  font-size: 1.6rem;
+  margin: 0;
+  font-weight: bold;
+  animation: slideIn 0.5s ease forwards;
+  opacity: 0;
+}
+
+/* ANIMACIÓN DEL TÍTULO */
+@keyframes slideIn {
+  from {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* ========================= */
+/* CONTENEDOR PRINCIPAL */
+/* ========================= */
 .container {
   max-width: 960px;
   margin: 0 auto;
+  margin-top: 90px; /* Para que no lo tape la cabecera */
   padding: 20px;
   background-color: white;
-  margin-top: 90px;
 }
 
 .container h2 {
@@ -28,6 +85,9 @@ h2, h3 {
   margin-top: 0;
 }
 
+/* ========================= */
+/* ESTILO PARA PREGUNTAS Y RESPUESTAS */
+/* ========================= */
 .pregunta {
   margin-bottom: 20px;
   padding: 15px;
@@ -38,7 +98,7 @@ h2, h3 {
 
 .container label {
   display: block; /* Cada botón en una nueva línea */
-  margin-bottom: 5px; /* Espacio entre los botones */
+  margin-bottom: 5px; /* Espacio entre botones */
 }
 
 input[type="radio"] {
@@ -46,6 +106,9 @@ input[type="radio"] {
   margin-right: 8px;
 }
 
+/* ========================= */
+/* BOTONES PRINCIPALES */
+/* ========================= */
 button {
   background-color: #3498db;
   color: white;
@@ -62,5 +125,31 @@ button {
 
 button:hover {
   background-color: #2980b9;
+}
+
+/* ========================= */
+/* RESPONSIVE PARA MÓVILES */
+/* ========================= */
+@media screen and (max-width: 480px) {
+  .top-bar {
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    height: auto;
+    text-align: center;
+  }
+
+  .logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .titulo-escuela {
+    font-size: 1.3rem;
+  }
+
+  .container {
+    margin-top: 120px; /* Más espacio en móviles */
+  }
 }
 
