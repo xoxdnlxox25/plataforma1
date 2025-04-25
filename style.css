@@ -360,4 +360,23 @@ button:hover {
   animation: slideIn 0.5s ease forwards;
   opacity: 0;
 }
+/* ========================= */
+/* ETIQUETAS DE BIENVENIDA Y CLASE */
+/* ========================= */
+.etiqueta-alumno,
+.etiqueta-clase {
+  text-align: left;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 0;
+}
+
+.nombre-alumno,
+.nombre-clase {
+  text-align: left;
+  font-size: 1.2rem;
+  margin-top: 2px;
+  margin-bottom: 20px;
+}
 
