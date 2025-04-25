@@ -70,13 +70,14 @@ function mostrarPreguntas() {
       <div id="${idNota}" class="bloque-nota hidden"><strong>Nota:</strong> ${p.nota}</div>
 
       <div class="opciones">
-        ${p.opciones.map(op => `
-          <label class="opcion-label">
-            <input type="radio" name="preg${p.numero}" value="${op[0]}">
-            <span>${op}</span>
-          </label>
-        `).join("")}
-      </div>
+  <p><strong>Respuestas:</strong></p>
+  ${p.opciones.map(op => `
+    <label class="opcion-label">
+      <input type="radio" name="preg${p.numero}" value="${op[0]}">
+      <span>${op}</span>
+    </label>
+  `).join("")}
+</div>
     `;
 
     container.appendChild(div);
