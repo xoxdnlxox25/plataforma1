@@ -70,8 +70,11 @@ body {
   margin-top: 90px; /* Para que no lo tape la cabecera */
   padding: 20px;
   background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.05);
 }
 
+/* Encabezados */
 .container h2 {
   word-break: break-word;
   font-size: 1.8rem;
@@ -128,6 +131,140 @@ button:hover {
 }
 
 /* ========================= */
+/* LOGIN DE MAESTRO Y ALUMNO (TARJETAS) */
+/* ========================= */
+.bloque {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
+  padding: 20px;
+  margin-bottom: 25px;
+  transition: box-shadow 0.3s ease;
+}
+
+.bloque:hover {
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+.bloque h3 {
+  cursor: pointer;
+  padding: 10px 12px;
+  border-bottom: 1px solid #ccc;
+  margin-top: 0;
+  font-weight: bold;
+  font-size: 1.2rem;
+  user-select: none;
+}
+
+.bloque h3:hover {
+  background-color: #f3f7f8;
+}
+
+.bloque .contenido {
+  display: none;
+  margin-top: 15px;
+}
+
+/* Botones especiales en login */
+button.logout {
+  background-color: #2980b9;
+  font-size: 1rem;
+  margin-top: 20px;
+}
+
+.input-icon {
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.input-icon input {
+  padding-left: 40px;
+}
+
+.input-icon .icono {
+  position: absolute;
+  top: 50%;
+  left: 12px;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: #555;
+}
+
+/* Link para solicitar clase */
+.solicitar-clase {
+  color: #2980b9;
+  font-weight: bold;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.solicitar-clase:hover {
+  text-decoration: underline;
+  color: #1c598d;
+}
+
+/* ========================= */
+/* PANEL DEL MAESTRO */
+/* ========================= */
+.panel-maestro {
+  margin-top: 30px;
+}
+
+.panel-maestro .seccion {
+  background-color: #f9f9f9;
+  border-left: 4px solid #3498db;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.panel-maestro .seccion h4 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
+.panel-maestro .seccion p {
+  margin-bottom: 10px;
+  font-size: 1rem;
+  color: #555;
+}
+
+.panel-maestro table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+.panel-maestro table th, .panel-maestro table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.panel-maestro table th {
+  background-color: #e1f5fe;
+  color: #0277bd;
+}
+
+/* Estilo para botones pequeños en el panel */
+.panel-maestro .btn-mini {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 6px 12px;
+  font-size: 0.9em;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+  margin: 5px 0;
+}
+
+.panel-maestro .btn-mini:hover {
+  background-color: #ddd;
+}
+
+/* ========================= */
 /* RESPONSIVE PARA MÓVILES */
 /* ========================= */
 @media screen and (max-width: 480px) {
@@ -150,6 +287,6 @@ button:hover {
 
   .container {
     margin-top: 120px; /* Más espacio en móviles */
+    padding: 16px;
   }
 }
-
