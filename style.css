@@ -9,6 +9,7 @@ body {
   color: #333;
 }
 
+
 /* ========================= */
 /* CABECERA FIJA CON LOGO Y ANIMACIÓN */
 /* ========================= */
@@ -54,6 +55,7 @@ body {
   to { transform: translateX(0); opacity: 1; }
 }
 
+
 /* ========================= */
 /* CONTENEDOR PRINCIPAL */
 /* ========================= */
@@ -67,7 +69,6 @@ body {
   box-shadow: 0 0 20px rgba(0,0,0,0.05);
 }
 
-/* Encabezados */
 .container h2 {
   word-break: break-word;
   font-size: 1.8rem;
@@ -81,13 +82,14 @@ h2, h3 {
   margin-top: 0;
 }
 
+
 /* ========================= */
 /* ESTILO PARA PREGUNTAS Y RESPUESTAS */
 /* ========================= */
 .pregunta {
   margin-bottom: 20px;
   padding: 15px;
-  border-left: 4px solid #3498db;
+  border-left: 4px solid #2c3e50; /* Azul oscuro */
   background-color: #f9f9f9;
   border-radius: 8px;
 }
@@ -101,6 +103,7 @@ input[type="radio"] {
   accent-color: #2980b9;
   margin-right: 8px;
 }
+
 
 /* ========================= */
 /* BOTONES PRINCIPALES */
@@ -122,6 +125,7 @@ button {
 button:hover {
   background-color: #2980b9;
 }
+
 
 /* ========================= */
 /* LOGIN DE MAESTRO Y ALUMNO (TARJETAS) */
@@ -159,7 +163,10 @@ button:hover {
   margin-top: 15px;
 }
 
-/* INPUTS modernos dentro de login */
+
+/* ========================= */
+/* INPUTS MODERNOS EN LOGIN */
+/* ========================= */
 .bloque input[type="text"],
 .bloque input[type="password"],
 .bloque input[type="email"],
@@ -186,7 +193,10 @@ button:hover {
   background-color: #fff;
 }
 
-/* Botones dentro del login */
+
+/* ========================= */
+/* BOTONES EN LOGIN */
+/* ========================= */
 .bloque button {
   width: 100%;
   padding: 12px;
@@ -206,7 +216,10 @@ button:hover {
   box-shadow: 0 4px 10px rgba(41, 128, 185, 0.3);
 }
 
-/* Link especial */
+
+/* ========================= */
+/* ENLACE SOLICITAR CLASE */
+/* ========================= */
 .solicitar-clase {
   color: #2980b9;
   font-weight: bold;
@@ -218,6 +231,7 @@ button:hover {
   text-decoration: underline;
   color: #1c598d;
 }
+
 
 /* ========================= */
 /* PANEL DEL MAESTRO */
@@ -263,7 +277,6 @@ button:hover {
   color: #0277bd;
 }
 
-/* Botones pequeños en panel maestro */
 .panel-maestro .btn-mini {
   background-color: #f0f0f0;
   color: #333;
@@ -280,36 +293,10 @@ button:hover {
   background-color: #ddd;
 }
 
-/* ========================= */
-/* RESPONSIVE PARA MÓVILES */
-/* ========================= */
-@media screen and (max-width: 480px) {
-  .top-bar {
-    flex-direction: column;
-    gap: 6px;
-    padding: 12px;
-    height: auto;
-    text-align: center;
-  }
 
-  .logo {
-    width: 42px;
-    height: 42px;
-  }
-
-  .titulo-escuela {
-    font-size: 1.3rem;
-  }
-
-  .container {
-    margin-top: 120px;
-    padding: 16px;
-  }
-}
 /* ========================= */
 /* ESTILOS PARA VERSÍCULOS Y NOTAS */
 /* ========================= */
-
 .bloque-versiculo {
   background-color: #e3f2fd; /* Azul claro */
   padding: 15px;
@@ -320,15 +307,18 @@ button:hover {
 }
 
 .bloque-nota {
-  background-color: #fff9c4; /* Amarillo claro */
+  background-color: #E0F4F2; /* Sinbad claro */
   padding: 15px;
-  border-left: 5px solid #fbc02d;
+  border-left: 5px solid #A8D8D3; /* Sinbad normal */
   border-radius: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-/* Botones Mostrar/Ocultar */
+
+/* ========================= */
+/* BOTONES Mostrar/Ocultar */
+/* ========================= */
 .toggle-btn {
   background-color: #eeeeee;
   color: #333;
@@ -344,4 +334,12 @@ button:hover {
 
 .toggle-btn:hover {
   background-color: #e0e0e0;
+}
+
+
+/* ========================= */
+/* UTILIDADES */
+/* ========================= */
+.hidden {
+  display: none;
 }
