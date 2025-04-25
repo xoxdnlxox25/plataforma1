@@ -49,16 +49,9 @@ body {
   opacity: 0;
 }
 
-/* ANIMACIÓN DEL TÍTULO */
 @keyframes slideIn {
-  from {
-    transform: translateX(-20px);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
+  from { transform: translateX(-20px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
 }
 
 /* ========================= */
@@ -67,7 +60,7 @@ body {
 .container {
   max-width: 960px;
   margin: 0 auto;
-  margin-top: 90px; /* Para que no lo tape la cabecera */
+  margin-top: 90px;
   padding: 20px;
   background-color: white;
   border-radius: 12px;
@@ -100,8 +93,8 @@ h2, h3 {
 }
 
 .container label {
-  display: block; /* Cada botón en una nueva línea */
-  margin-bottom: 5px; /* Espacio entre botones */
+  display: block;
+  margin-bottom: 5px;
 }
 
 input[type="radio"] {
@@ -138,7 +131,7 @@ button:hover {
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
   padding: 20px;
-  margin-bottom: 25px;
+  margin-bottom: 30px;
   transition: box-shadow 0.3s ease;
 }
 
@@ -152,8 +145,9 @@ button:hover {
   border-bottom: 1px solid #ccc;
   margin-top: 0;
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1.3rem;
   user-select: none;
+  color: #2c3e50;
 }
 
 .bloque h3:hover {
@@ -165,32 +159,54 @@ button:hover {
   margin-top: 15px;
 }
 
-/* Botones especiales en login */
-button.logout {
-  background-color: #2980b9;
+/* INPUTS modernos dentro de login */
+.bloque input[type="text"],
+.bloque input[type="password"],
+.bloque input[type="email"],
+.bloque select {
+  width: 100%;
+  padding: 12px 14px;
+  margin-top: 12px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background-color: #f9f9f9;
   font-size: 1rem;
-  margin-top: 20px;
+  box-sizing: border-box;
+  transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.input-icon {
-  position: relative;
-  margin-bottom: 15px;
+.bloque input[type="text"]:focus,
+.bloque input[type="password"]:focus,
+.bloque input[type="email"]:focus,
+.bloque select:focus {
+  border-color: #3498db;
+  box-shadow: 0 0 6px rgba(52, 152, 219, 0.5);
+  outline: none;
+  background-color: #fff;
 }
 
-.input-icon input {
-  padding-left: 40px;
+/* Botones dentro del login */
+.bloque button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 10px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.input-icon .icono {
-  position: absolute;
-  top: 50%;
-  left: 12px;
-  transform: translateY(-50%);
-  font-size: 18px;
-  color: #555;
+.bloque button:hover {
+  background-color: #2980b9;
+  box-shadow: 0 4px 10px rgba(41, 128, 185, 0.3);
 }
 
-/* Link para solicitar clase */
+/* Link especial */
 .solicitar-clase {
   color: #2980b9;
   font-weight: bold;
@@ -247,7 +263,7 @@ button.logout {
   color: #0277bd;
 }
 
-/* Estilo para botones pequeños en el panel */
+/* Botones pequeños en panel maestro */
 .panel-maestro .btn-mini {
   background-color: #f0f0f0;
   color: #333;
@@ -286,7 +302,7 @@ button.logout {
   }
 
   .container {
-    margin-top: 120px; /* Más espacio en móviles */
+    margin-top: 120px;
     padding: 16px;
   }
 }
