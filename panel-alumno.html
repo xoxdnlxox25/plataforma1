@@ -16,18 +16,16 @@
     </div>
   </header>
 
+  <!-- CONTENIDO PRINCIPAL -->
   <div class="container">
+
+    <!-- TARJETA DE DATOS DEL ALUMNO -->
     <div class="tarjeta-datos">
-  <p class="etiqueta">Bienvenido (a):</p>
-  <p id="nombreAlumno" class="valor"></p>
-  <p class="etiqueta">Clase:</p>
-  <p id="nombreClase" class="valor"></p>
-</div>
-
-
-<h3 class="etiqueta-clase">Clase:</h3>
-<p class="nombre-clase" id="nombreClase"></p>
-
+      <p class="etiqueta">Bienvenido (a):</p>
+      <p id="nombreAlumno" class="valor"></p>
+      <p class="etiqueta">Clase:</p>
+      <p id="nombreClase" class="valor"></p>
+    </div>
 
     <h3>Preguntas del día</h3>
     <div id="preguntasContainer">
@@ -38,15 +36,26 @@
     <button onclick="cerrarSesion()">Cerrar sesión</button>
   </div>
 
+  <!-- CONTENEDOR DE ALERTAS -->
   <div id="toast-container"></div>
 
+  <!-- SCRIPTS -->
   <script src="conexion.js"></script>
   <script>
     // Mostrar nombre e ID de clase desde localStorage
-    document.getElementById("nombreAlumno").textContent = localStorage.getItem("alumno") || "Alumno";
-    document.getElementById("nombreClase").textContent = localStorage.getItem("clase") || "Clase";
+    const alumno = localStorage.getItem("alumno") || "";
+    const clase = localStorage.getItem("clase") || "";
 
-    // Aquí puedes agregar más scripts si es necesario, o dejar alumno.js como externo
+    document.getElementById("nombreAlumno").textContent = alumno;
+    document.getElementById("nombreClase").textContent = clase;
+
+    // Ocultar si está vacío
+    if (!alumno) {
+      document.getElementById("nombreAlumno").parentElement.style.display = "none";
+    }
+    if (!clase) {
+      document.getElementById("nombreClase").parentElement.style.display = "none";
+    }
   </script>
   <script src="alumno.js"></script>
 </body>
