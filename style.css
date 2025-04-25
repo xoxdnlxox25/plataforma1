@@ -9,7 +9,6 @@ body {
   color: #333;
 }
 
-
 /* ========================= */
 /* CABECERA FIJA CON LOGO Y ANIMACIÓN */
 /* ========================= */
@@ -55,7 +54,6 @@ body {
   to { transform: translateX(0); opacity: 1; }
 }
 
-
 /* ========================= */
 /* CONTENEDOR PRINCIPAL */
 /* ========================= */
@@ -71,9 +69,9 @@ body {
 
 .container h2 {
   word-break: break-word;
-  font-size: 1.4rem; /* Tamaño reducido */
+  font-size: 1.4rem;
   text-align: center;
-  margin-top: 20px;  /* Menor espacio desde la cabecera */
+  margin-top: 20px;
   margin-bottom: 10px;
 }
 
@@ -82,14 +80,13 @@ h2, h3 {
   margin-top: 0;
 }
 
-
 /* ========================= */
 /* ESTILO PARA PREGUNTAS Y RESPUESTAS */
 /* ========================= */
 .pregunta {
   margin-bottom: 20px;
   padding: 15px;
-  border-left: 4px solid #2c3e50; /* Azul oscuro */
+  border-left: 4px solid #2c3e50;
   background-color: #f9f9f9;
   border-radius: 8px;
 }
@@ -104,12 +101,11 @@ input[type="radio"] {
   margin-right: 8px;
 }
 
-
 /* ========================= */
 /* BOTONES PRINCIPALES */
 /* ========================= */
-button {
-  background-color: #3498db;
+button, .bloque button, .toggle-btn, .btn-mini {
+  background-color: #2c3e50;
   color: white;
   border: none;
   cursor: pointer;
@@ -120,18 +116,18 @@ button {
   box-sizing: border-box;
   font-size: 1rem;
   margin-top: 20px;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-button:hover {
-  background-color: #2980b9;
+button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
+  background-color: #1f2e3c;
 }
-
 
 /* ========================= */
-/* LOGIN DE MAESTRO Y ALUMNO (TARJETAS) */
+/* TARJETAS DE LOGIN (MAESTRO Y ALUMNO) */
 /* ========================= */
 .bloque {
-  background-color: #ffffff;
+  background-color: #e9eff5;
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.07);
   padding: 20px;
@@ -154,15 +150,10 @@ button:hover {
   color: #2c3e50;
 }
 
-.bloque h3:hover {
-  background-color: #f3f7f8;
-}
-
 .bloque .contenido {
   display: none;
   margin-top: 15px;
 }
-
 
 /* ========================= */
 /* INPUTS MODERNOS EN LOGIN */
@@ -187,35 +178,11 @@ button:hover {
 .bloque input[type="password"]:focus,
 .bloque input[type="email"]:focus,
 .bloque select:focus {
-  border-color: #3498db;
-  box-shadow: 0 0 6px rgba(52, 152, 219, 0.5);
+  border-color: #2980b9;
+  box-shadow: 0 0 6px rgba(41, 128, 185, 0.5);
   outline: none;
   background-color: #fff;
 }
-
-
-/* ========================= */
-/* BOTONES EN LOGIN */
-/* ========================= */
-.bloque button {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 1.1rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.bloque button:hover {
-  background-color: #2980b9;
-  box-shadow: 0 4px 10px rgba(41, 128, 185, 0.3);
-}
-
 
 /* ========================= */
 /* ENLACE SOLICITAR CLASE */
@@ -231,7 +198,6 @@ button:hover {
   text-decoration: underline;
   color: #1c598d;
 }
-
 
 /* ========================= */
 /* PANEL DEL MAESTRO */
@@ -277,28 +243,11 @@ button:hover {
   color: #0277bd;
 }
 
-.panel-maestro .btn-mini {
-  background-color: #f0f0f0;
-  color: #333;
-  padding: 6px 12px;
-  font-size: 0.9em;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: background 0.3s;
-  margin: 5px 0;
-}
-
-.panel-maestro .btn-mini:hover {
-  background-color: #ddd;
-}
-
-
 /* ========================= */
 /* ESTILOS PARA VERSÍCULOS Y NOTAS */
 /* ========================= */
 .bloque-versiculo {
-  background-color: #e3f2fd; /* Azul claro */
+  background-color: #e3f2fd;
   padding: 15px;
   border-left: 5px solid #2196f3;
   border-radius: 10px;
@@ -307,35 +256,13 @@ button:hover {
 }
 
 .bloque-nota {
-  background-color: #E0F4F2; /* Sinbad claro */
+  background-color: #E0F4F2;
   padding: 15px;
-  border-left: 5px solid #A8D8D3; /* Sinbad normal */
+  border-left: 5px solid #A8D8D3;
   border-radius: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
 }
-
-
-/* ========================= */
-/* BOTONES Mostrar/Ocultar */
-/* ========================= */
-.toggle-btn {
-  background-color: #eeeeee;
-  color: #333;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  margin: 10px 0;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: inline-block;
-}
-
-.toggle-btn:hover {
-  background-color: #e0e0e0;
-}
-
 
 /* ========================= */
 /* UTILIDADES */
@@ -343,11 +270,12 @@ button:hover {
 .hidden {
   display: none;
 }
+
 /* ========================= */
-/* TARJETA PARA EL SUBTÍTULO */
+/* TARJETA DE SUBTÍTULO */
 /* ========================= */
 .subtitulo-tarjeta {
-  background-color: #2c3e50; /* Azul oscuro igual que cabecera */
+  background-color: #2c3e50;
   color: white;
   padding: 12px 18px;
   border-radius: 10px;
@@ -360,12 +288,13 @@ button:hover {
   animation: slideIn 0.5s ease forwards;
   opacity: 0;
 }
+
 /* ========================= */
 /* TARJETA DE DATOS DEL ALUMNO */
 /* ========================= */
 .tarjeta-datos {
   background-color: #f9f9f9;
-  border-left: 4px solid #2c3e50; /* azul oscuro */
+  border-left: 4px solid #2c3e50;
   border-radius: 12px;
   padding: 20px;
   margin-bottom: 25px;
@@ -384,4 +313,32 @@ button:hover {
   font-size: 1.1rem;
   color: #333;
 }
+
+/* ========================= */
+/* RESPONSIVE MÓVIL */
+/* ========================= */
+@media screen and (max-width: 480px) {
+  .top-bar {
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    height: auto;
+    text-align: center;
+  }
+
+  .logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .titulo-escuela {
+    font-size: 1.3rem;
+  }
+
+  .container {
+    margin-top: 120px;
+    padding: 16px;
+  }
+}
+
 
