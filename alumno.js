@@ -7,12 +7,12 @@ document.getElementById("nombreClase").textContent = idClase;
 const container = document.getElementById("preguntasContainer");
 let preguntasDelDia = [];
 
-// Obtener el día actual
+// Día actual formateado
 const fecha = new Date();
 const diaSemana = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(fecha);
 const diaCapitalizado = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
 
-// Cargar preguntas desde la hoja de cálculo
+// Cargar preguntas desde la hoja
 window.onload = () => {
   fetch(`${URL}?accion=getPreguntasPorDia&dia=${diaCapitalizado}`)
     .then(res => res.json())
@@ -25,7 +25,7 @@ window.onload = () => {
         versiculo: p.Versiculo,
         nota: p.Nota,
         opciones: (p.Respuesta || "")
-          .split(/\n|(?=[A-Z]\))/)  // ✅ permite usar saltos de línea o A) B) C)
+          .split(/\n|(?=[A-Z]\))/)
           .map(op => op.trim())
           .filter(op => op !== ""),
         correcta: p.Correcta
@@ -55,10 +55,20 @@ function mostrarPreguntas() {
     const div = document.createElement("div");
     div.className = "pregunta";
     div.style.marginBottom = "20px";
+
+    // Versículo oculto por defecto
+    const idVers = `vers${p.numero}`;
+    const idNota = `nota${p.numero}`;
+
     div.innerHTML = `
       <p><strong>Pregunta ${p.numero}:</strong> ${p.pregunta}</p>
-      <p><strong>Versículo:</strong> ${p.versiculo}</p>
-      <p><strong>Nota:</strong> ${p.nota}</p>
+
+      <button class="toggle-btn" onclick="document.getElementById('${idVers}').classList.toggle('hidden')">📖 Mostrar/Ocultar versículo</button>
+      <div id="${idVers}" class="bloque-versiculo hidden"><strong>Versículo:</strong> ${p.versiculo}</div>
+
+      <button class="toggle-btn" onclick="document.getElementById('${idNota}').classList.toggle('hidden')">📜 Mostrar/Ocultar nota</button>
+      <div id="${idNota}" class="bloque-nota hidden"><strong>Nota:</strong> ${p.nota}</div>
+
       <div class="opciones">
         ${p.opciones.map(op => `
           <label class="opcion-label">
@@ -68,6 +78,7 @@ function mostrarPreguntas() {
         `).join("")}
       </div>
     `;
+
     container.appendChild(div);
   });
 }
@@ -124,3 +135,4 @@ function mostrarToast(mensaje, tipo = "info") {
 
   setTimeout(() => toast.remove(), 3000);
 }
+
