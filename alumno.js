@@ -44,11 +44,12 @@ function mostrarPreguntas() {
 
   if (preguntasDelDia.length > 0) {
     const encabezado = document.createElement("div");
-    encabezado.innerHTML = `
-      <h3 style="text-align:center">${preguntasDelDia[0].dia}</h3>
-      <p style="font-style:italic; text-align:center;">${preguntasDelDia[0].subtitulo}</p>
-    `;
-    container.appendChild(encabezado);
+encabezado.innerHTML = `
+  <h3 style="text-align:center">${preguntasDelDia[0].dia}</h3>
+  <div class="subtitulo-tarjeta">${preguntasDelDia[0].subtitulo}</div>
+`;
+container.appendChild(encabezado);
+
   }
 
   preguntasDelDia.forEach(p => {
