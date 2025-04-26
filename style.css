@@ -81,7 +81,7 @@ h2, h3 {
 }
 
 /* ========================= */
-/* ESTILO PARA PREGUNTAS Y RESPUESTAS */
+/* PREGUNTAS Y RESPUESTAS */
 /* ========================= */
 .pregunta {
   margin-bottom: 20px;
@@ -102,7 +102,7 @@ input[type="radio"] {
 }
 
 /* ========================= */
-/* BOTONES PRINCIPALES */
+/* BOTONES GENERALES */
 /* ========================= */
 button, .bloque button, .toggle-btn, .btn-mini {
   background-color: #2c3e50;
@@ -124,7 +124,7 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
 }
 
 /* ========================= */
-/* TARJETAS DE LOGIN (MAESTRO Y ALUMNO) */
+/* TARJETAS LOGIN */
 /* ========================= */
 .bloque {
   background-color: #e9eff5;
@@ -156,7 +156,7 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
 }
 
 /* ========================= */
-/* INPUTS MODERNOS EN LOGIN */
+/* INPUTS MODERNOS */
 /* ========================= */
 .bloque input[type="text"],
 .bloque input[type="password"],
@@ -170,13 +170,10 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   border-radius: 10px;
   background-color: #f9f9f9;
   font-size: 1rem;
-  box-sizing: border-box;
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.bloque input[type="text"]:focus,
-.bloque input[type="password"]:focus,
-.bloque input[type="email"]:focus,
+.bloque input:focus,
 .bloque select:focus {
   border-color: #2980b9;
   box-shadow: 0 0 6px rgba(41, 128, 185, 0.5);
@@ -185,7 +182,7 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
 }
 
 /* ========================= */
-/* ENLACE SOLICITAR CLASE */
+/* LINK SOLICITAR CLASE */
 /* ========================= */
 .solicitar-clase {
   color: #2980b9;
@@ -220,12 +217,6 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   color: #2c3e50;
 }
 
-.panel-maestro .seccion p {
-  margin-bottom: 10px;
-  font-size: 1rem;
-  color: #555;
-}
-
 .panel-maestro table {
   width: 100%;
   border-collapse: collapse;
@@ -244,15 +235,14 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
 }
 
 /* ========================= */
-/* ESTILOS PARA VERSÍCULOS Y NOTAS */
+/* TARJETAS DE VERSÍCULOS Y NOTAS */
 /* ========================= */
 .bloque-versiculo {
   background-color: #e3f2fd;
   padding: 15px;
   border-left: 5px solid #2196f3;
   border-radius: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 .bloque-nota {
@@ -260,8 +250,7 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   padding: 15px;
   border-left: 5px solid #A8D8D3;
   border-radius: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
+  margin: 10px 0;
 }
 
 /* ========================= */
@@ -272,7 +261,7 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
 }
 
 /* ========================= */
-/* TARJETA DE SUBTÍTULO */
+/* TARJETAS DE SUBTÍTULO */
 /* ========================= */
 .subtitulo-tarjeta {
   background-color: #2c3e50;
@@ -315,40 +304,14 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
 }
 
 /* ========================= */
-/* RESPONSIVE MÓVIL */
-/* ========================= */
-@media screen and (max-width: 480px) {
-  .top-bar {
-    flex-direction: column;
-    gap: 6px;
-    padding: 12px;
-    height: auto;
-    text-align: center;
-  }
-
-  .logo {
-    width: 42px;
-    height: 42px;
-  }
-
-  .titulo-escuela {
-    font-size: 1.3rem;
-  }
-
-  .container {
-    margin-top: 120px;
-    padding: 16px;
-  }
-}
-/* ========================= */
-/* MODAL CONFIRMAR ELIMINACIÓN */
+/* MODAL DE CONFIRMACIÓN */
 /* ========================= */
 .toast.confirm-box {
   background: white;
   color: #333;
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
   text-align: center;
   min-width: 250px;
   margin: 10px;
@@ -378,4 +341,29 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   cursor: pointer;
 }
 
+/* ========================= */
+/* RESPONSIVE MOVIL */
+/* ========================= */
+@media screen and (max-width: 480px) {
+  .top-bar {
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    height: auto;
+    text-align: center;
+  }
 
+  .logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .titulo-escuela {
+    font-size: 1.3rem;
+  }
+
+  .container {
+    margin-top: 120px;
+    padding: 16px;
+  }
+}
