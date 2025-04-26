@@ -1,3 +1,4 @@
+// --------------------------- VARIABLES ---------------------------
 const idClase = localStorage.getItem("clase");
 const tipoUsuario = localStorage.getItem("tipo");
 const nombreMaestro = localStorage.getItem("maestro") || "Maestro";
@@ -7,11 +8,15 @@ if (tipoUsuario !== "maestro" || !idClase) {
   window.location.href = "index.html";
 }
 
+// Mostrar datos en pantalla
 document.getElementById("nombreClase").textContent = idClase;
 document.getElementById("nombreMaestro").textContent = nombreMaestro;
 
+let modalActivo = false;
+
 // --------------------------- FUNCIONES ---------------------------
 
+// Cargar alumnos de la clase
 function cargarAlumnos() {
   fetch(`${URL}?accion=getAlumnos&clase=${idClase}`)
     .then(res => res.json())
@@ -25,7 +30,7 @@ function cargarAlumnos() {
         const li = document.createElement("li");
         li.innerHTML = `
           ${alumno.NombreAlumno} (${alumno.ID_ALUMNO})
-          <button onclick="eliminarAlumno('${alumno.ID_ALUMNO}', '${alumno.NombreAlumno}')">❌ Eliminar</button>
+          <button onclick="confirmarEliminarAlumno('${alumno.ID_ALUMNO}', '${alumno.NombreAlumno}')">❌ Eliminar</button>
         `;
         lista.appendChild(li);
 
@@ -37,6 +42,58 @@ function cargarAlumnos() {
     });
 }
 
+// Confirmar eliminación de alumno
+function confirmarEliminarAlumno(idAlumno, nombreAlumno) {
+  if (modalActivo) return;
+  modalActivo = true;
+
+  const contenedor = document.getElementById("toast-container");
+  contenedor.innerHTML = "";
+
+  const confirmBox = document.createElement("div");
+  confirmBox.className = "toast confirm-box";
+  confirmBox.innerHTML = `
+    <div style="font-size: 1.1rem; margin-bottom: 8px;">❓ ¿Eliminar a <strong>${nombreAlumno}</strong>?</div>
+    <div style="text-align: right;">
+      <button class="btn-confirm" style="margin-right: 10px;">Sí</button>
+      <button class="btn-cancel">Cancelar</button>
+    </div>
+  `;
+
+  contenedor.appendChild(confirmBox);
+
+  confirmBox.querySelector(".btn-cancel").onclick = () => {
+    confirmBox.remove();
+    modalActivo = false;
+  };
+
+  confirmBox.querySelector(".btn-confirm").onclick = () => {
+    confirmBox.remove();
+    modalActivo = false;
+    eliminarAlumno(idAlumno);
+  };
+}
+
+// Eliminar alumno de la base
+function eliminarAlumno(idAlumno) {
+  const datos = new URLSearchParams();
+  datos.append("accion", "eliminarAlumno");
+  datos.append("clase", idClase);
+  datos.append("id", idAlumno);
+
+  fetch(URL, { method: "POST", body: datos })
+    .then(res => res.text())
+    .then(resp => {
+      mostrarToast(resp.includes('✅') ? "✅ Alumno eliminado." : "⚠ No se pudo eliminar.", resp.includes('✅') ? "success" : "error");
+      cargarAlumnos();
+    })
+    .catch(err => {
+      console.error("Error eliminando:", err);
+      mostrarToast("❌ Error de conexión", "error");
+    });
+}
+
+// Agregar nuevo alumno
 function agregarAlumno() {
   const nombre = document.getElementById("nuevoAlumno").value.trim();
   const id = document.getElementById("nuevoID").value.trim();
@@ -62,49 +119,7 @@ function agregarAlumno() {
     });
 }
 
-let modalActivo = false;
-
-function eliminarAlumno(idAlumno, nombreAlumno) {
-  if (modalActivo) return;
-  modalActivo = true;
-
-  const contenedor = document.getElementById("toast-container");
-
-  const confirmBox = document.createElement("div");
-  confirmBox.className = "toast confirm-box";
-  confirmBox.innerHTML = `
-    <div style="font-size: 1.1rem; margin-bottom: 8px;">❓ ¿Eliminar a <strong>${nombreAlumno}</strong>?</div>
-    <div style="text-align: right;">
-      <button class="btn-confirm" style="margin-right: 10px;">Sí</button>
-      <button class="btn-cancel">Cancelar</button>
-    </div>
-  `;
-
-  contenedor.appendChild(confirmBox);
-
-  confirmBox.querySelector(".btn-cancel").onclick = () => {
-    confirmBox.remove();
-    modalActivo = false;
-  };
-
-  confirmBox.querySelector(".btn-confirm").onclick = () => {
-    confirmBox.remove();
-    modalActivo = false;
-
-    const datos = new URLSearchParams();
-    datos.append("accion", "eliminarAlumno");
-    datos.append("clase", idClase);
-    datos.append("id", idAlumno);
-
-    fetch(URL, { method: "POST", body: datos })
-      .then(res => res.text())
-      .then(resp => {
-        mostrarToast(resp, "info");
-        cargarAlumnos();
-      });
-  };
-}
-
+// Ver respuestas de toda la clase
 function verRespuestas() {
   fetch(`${URL}?accion=getRespuestasClase&clase=${idClase}`)
     .then(res => res.json())
@@ -125,6 +140,7 @@ function verRespuestas() {
     });
 }
 
+// Ver respuestas específicas de un alumno
 function verRespuestasPorAlumno() {
   const idAlumno = document.getElementById("selectAlumno").value;
   if (!idAlumno) {
@@ -151,6 +167,7 @@ function verRespuestasPorAlumno() {
     });
 }
 
+// Ver resumen general de respuestas
 function verResumen() {
   fetch(`${URL}?accion=getResumenClase&clase=${idClase}`)
     .then(res => res.json())
@@ -173,16 +190,18 @@ function verResumen() {
     });
 }
 
+// Cerrar sesión
 function cerrarSesion() {
   localStorage.clear();
   window.location.href = "index.html";
 }
 
+// Mostrar toast de notificación
 function mostrarToast(mensaje, tipo = "info") {
   const contenedor = document.getElementById("toast-container");
   if (!contenedor) return;
 
-  contenedor.innerHTML = ""; // limpiar anteriores
+  contenedor.innerHTML = "";
   const toast = document.createElement("div");
   toast.className = `toast ${tipo}`;
   toast.textContent = mensaje;
@@ -195,9 +214,6 @@ function mostrarToast(mensaje, tipo = "info") {
 window.onload = () => {
   cargarAlumnos();
 
-  document.getElementById("nombreClase").textContent = idClase;
-  document.getElementById("nombreMaestro").textContent = nombreMaestro;
-
   document.querySelectorAll(".bloque h3").forEach(titulo => {
     titulo.addEventListener("click", () => {
       const contenido = titulo.nextElementSibling;
@@ -205,3 +221,4 @@ window.onload = () => {
     });
   });
 };
+
