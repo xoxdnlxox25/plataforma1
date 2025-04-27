@@ -1,88 +1,95 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel del Maestro</title>
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <!-- CABECERA CON LOGO -->
+  <!-- Encabezado con logo y nombre -->
   <header class="top-bar">
     <div class="logo-area">
       <img src="logo.png" alt="Logo Escuela" class="logo">
-      <h1 class="titulo-escuela">Panel del Maestro</h1>
+      <h1 class="titulo-escuela">Escuela Sabática</h1>
     </div>
   </header>
 
-  <!-- CONTENIDO PRINCIPAL -->
   <div class="container">
+    <h2>Bienvenido(a): <span id="nombreMaestro"></span></h2>
+    <p>Clase: <span id="nombreClase"></span></p>
 
-    <h2>Gestión de la Clase</h2>
-
-    <div class="panel-maestro">
-
-      <!-- Sección: Lista de alumnos -->
-      <div class="seccion fade-in">
-        <h4>📋 Lista de alumnos</h4>
-        <div id="listaAlumnos">
-          <!-- Aquí se insertan los alumnos -->
-        </div>
+    <div class="bloque">
+      <h3>📊 Resumen de respuestas por alumno</h3>
+      <div class="contenido">
+        <button onclick="verResumen()">Ver resumen</button>
+        <table id="tablaResumen">
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>Total de respuestas</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
-
-      <!-- Sección: Agregar nuevo alumno -->
-      <div class="seccion fade-in">
-        <h4>➕ Agregar nuevo alumno</h4>
-        <div id="formAgregarAlumno">
-          <input type="text" id="nuevoID" placeholder="ID del Alumno">
-          <input type="text" id="nuevoNombre" placeholder="Nombre del Alumno">
-          <button onclick="agregarAlumno()">Agregar</button>
-        </div>
-      </div>
-
-      <!-- Sección: Respuestas de los alumnos -->
-      <div class="seccion fade-in">
-        <h4>✅ Respuestas de los alumnos</h4>
-        <div id="respuestasAlumnos">
-          <!-- Aquí se insertan las respuestas -->
-        </div>
-      </div>
-
-      <!-- Sección: Ver respuestas por alumno -->
-      <div class="seccion fade-in">
-        <h4>🔎 Ver respuestas por alumno</h4>
-        <select id="selectAlumno" onchange="verRespuestasAlumno()">
-          <option value="">Selecciona un alumno</option>
-          <!-- Opciones se cargan dinámicamente -->
-        </select>
-        <div id="respuestasIndividuales">
-          <!-- Respuestas individuales -->
-        </div>
-      </div>
-
-      <!-- Sección: Resumen de respuestas -->
-      <div class="seccion fade-in">
-        <h4>📊 Resumen de respuestas</h4>
-        <div id="resumenRespuestas">
-          <!-- Resumen de respuestas -->
-        </div>
-      </div>
-
     </div>
 
-    <!-- BOTÓN CERRAR SESIÓN -->
-    <button onclick="cerrarSesion()">🔒 Cerrar sesión</button>
+    <div class="bloque">
+      <h3>📋 Lista de alumnos</h3>
+      <div class="contenido">
+        <ul id="listaAlumnos"></ul>
+      </div>
+    </div>
 
-    <!-- CONTENEDOR DE ALERTAS -->
-    <div id="toast-container"></div>
+    <div class="bloque">
+      <h3>➕ Agregar nuevo alumno</h3>
+      <div class="contenido">
+        <input type="text" id="nuevoAlumno" placeholder="Nombre del alumno">
+        <input type="text" id="nuevoID" placeholder="ID del alumno">
+        <button onclick="agregarAlumno()">Agregar</button>
+      </div>
+    </div>
 
+    <div class="bloque">
+      <h3>📄 Respuestas de los alumnos</h3>
+      <div class="contenido">
+        <button onclick="verRespuestas()">Ver respuestas</button>
+        <ul id="listaRespuestas"></ul>
+      </div>
+    </div>
+
+    <div class="bloque">
+      <h3>📘 Ver respuestas por alumno</h3>
+      <div class="contenido">
+        <select id="selectAlumno">
+          <option value="">Selecciona un alumno</option>
+        </select>
+        <button onclick="verRespuestasPorAlumno()">Ver respuestas de alumno</button>
+        <ul id="respuestasAlumno"></ul>
+      </div>
+    </div>
+
+    <!-- Botón de cerrar sesión al final -->
+    <div style="text-align: center; margin-top: 40px;">
+      <button onclick="cerrarSesion()">🔒 Cerrar sesión</button>
+    </div>
   </div>
 
-  <!-- SCRIPTS -->
+  <div id="toast-container"></div>
+
   <script src="conexion.js"></script>
   <script src="maestro.js"></script>
 
+  <!-- Mostrar nombre del maestro y clase -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const clase = localStorage.getItem("clase") || "";
+      const maestro = localStorage.getItem("maestro") || clase;
+      document.getElementById("nombreClase").textContent = clase;
+      document.getElementById("nombreMaestro").textContent = maestro;
+    });
+  </script>
 </body>
 </html>
