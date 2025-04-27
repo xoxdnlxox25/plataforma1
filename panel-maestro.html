@@ -27,7 +27,7 @@
       <!-- Sección: Lista de alumnos -->
       <div class="seccion fade-in">
         <h4>📋 Lista de alumnos</h4>
-        <div id="listaAlumnos">
+        <div id="listaAlumnos" style="display: none;">
           <!-- Aquí se insertarán los alumnos -->
         </div>
       </div>
@@ -35,7 +35,7 @@
       <!-- Sección: Agregar nuevo alumno -->
       <div class="seccion fade-in">
         <h4>➕ Agregar nuevo alumno</h4>
-        <div id="formAgregarAlumno">
+        <div id="formAgregarAlumno" style="display: none;">
           <input type="text" id="nuevoAlumno" placeholder="Nombre del Alumno">
           <input type="text" id="nuevoID" placeholder="ID del Alumno">
           <button onclick="agregarAlumno()">Agregar</button>
@@ -45,7 +45,7 @@
       <!-- Sección: Respuestas de los alumnos -->
       <div class="seccion fade-in">
         <h4>✅ Respuestas de los alumnos</h4>
-        <div id="respuestasAlumnos">
+        <div id="respuestasAlumnos" style="display: none;">
           <!-- Aquí se insertarán las respuestas -->
         </div>
       </div>
@@ -53,19 +53,21 @@
       <!-- Sección: Ver respuestas por alumno -->
       <div class="seccion fade-in">
         <h4>🔎 Ver respuestas por alumno</h4>
-        <select id="selectAlumno" onchange="verRespuestasAlumno()">
-          <option value="">Selecciona un alumno</option>
-          <!-- Opciones de alumnos cargadas dinámicamente -->
-        </select>
-        <div id="respuestasIndividuales">
-          <!-- Respuestas individuales -->
+        <div style="display: none;">
+          <select id="selectAlumno" onchange="verRespuestasAlumno()">
+            <option value="">Selecciona un alumno</option>
+            <!-- Opciones de alumnos cargadas dinámicamente -->
+          </select>
+          <div id="respuestasIndividuales">
+            <!-- Respuestas individuales -->
+          </div>
         </div>
       </div>
 
       <!-- Sección: Resumen de respuestas -->
       <div class="seccion fade-in">
         <h4>📊 Resumen de respuestas</h4>
-        <div id="resumenRespuestas">
+        <div id="resumenRespuestas" style="display: none;">
           <!-- Resumen de respuestas -->
         </div>
       </div>
@@ -84,5 +86,22 @@
   <script src="conexion.js"></script>
   <script src="maestro.js"></script>
 
+  <!-- Script para desplegar o colapsar bloques -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      document.querySelectorAll(".seccion h4").forEach(titulo => {
+        titulo.addEventListener("click", () => {
+          const contenido = titulo.nextElementSibling;
+          if (contenido.style.display === "block") {
+            contenido.style.display = "none";
+          } else {
+            contenido.style.display = "block";
+          }
+        });
+      });
+    });
+  </script>
+
 </body>
 </html>
+
