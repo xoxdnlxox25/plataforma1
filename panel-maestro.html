@@ -28,7 +28,7 @@
       <div class="seccion fade-in">
         <h4>📋 Lista de alumnos</h4>
         <div id="listaAlumnos">
-          <!-- Aquí se insertan los alumnos -->
+          <!-- Aquí se insertarán los alumnos -->
         </div>
       </div>
 
@@ -36,8 +36,8 @@
       <div class="seccion fade-in">
         <h4>➕ Agregar nuevo alumno</h4>
         <div id="formAgregarAlumno">
+          <input type="text" id="nuevoAlumno" placeholder="Nombre del Alumno">
           <input type="text" id="nuevoID" placeholder="ID del Alumno">
-          <input type="text" id="nuevoNombre" placeholder="Nombre del Alumno">
           <button onclick="agregarAlumno()">Agregar</button>
         </div>
       </div>
@@ -46,7 +46,7 @@
       <div class="seccion fade-in">
         <h4>✅ Respuestas de los alumnos</h4>
         <div id="respuestasAlumnos">
-          <!-- Aquí se insertan las respuestas -->
+          <!-- Aquí se insertarán las respuestas -->
         </div>
       </div>
 
@@ -55,7 +55,7 @@
         <h4>🔎 Ver respuestas por alumno</h4>
         <select id="selectAlumno" onchange="verRespuestasAlumno()">
           <option value="">Selecciona un alumno</option>
-          <!-- Opciones se cargan dinámicamente -->
+          <!-- Opciones de alumnos cargadas dinámicamente -->
         </select>
         <div id="respuestasIndividuales">
           <!-- Respuestas individuales -->
@@ -86,4 +86,3 @@
 
 </body>
 </html>
-
