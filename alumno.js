@@ -21,6 +21,7 @@ window.onload = () => {
         numero: index + 1,
         dia: p.Día,
         subtitulo: p.Subtitulos,
+        encabezado: p.Encabezado || `Pregunta ${index + 1}`, // 🎯 Si no hay, pone Pregunta 1, Pregunta 2...
         pregunta: p.Pregunta,
         versiculo: p.Versiculo,
         nota: p.Nota,
@@ -60,7 +61,7 @@ function mostrarPreguntas() {
     const idVers = `vers${p.numero}`;
     const idNota = `nota${p.numero}`;
 
-    let contenidoHTML = `<p><strong>Pregunta ${p.numero}:</strong> ${p.pregunta}</p>`;
+    let contenidoHTML = `<p><strong>${p.encabezado}:</strong> ${p.pregunta}</p>`; // 🎯 Ahora usa el encabezado
 
     // Solo mostrar botón de versículo si existe
     if (p.versiculo && p.versiculo.trim() !== "") {
