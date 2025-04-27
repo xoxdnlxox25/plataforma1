@@ -83,7 +83,7 @@ function mostrarPreguntas() {
         <p><strong>Respuestas:</strong></p>
         ${p.opciones.map(op => `
           <label class="opcion-label">
-            <input type="radio" name="preg${p.numero}" value="${op[0]}">
+            <input type="radio" name="preg${p.numero}" value="${op[0]}" onchange="verificarRespuestasCompletas()">
             <span>${op}</span>
           </label>
         `).join("")}
@@ -93,6 +93,41 @@ function mostrarPreguntas() {
     div.innerHTML = contenidoHTML;
     container.appendChild(div);
   });
+
+  // Agregar contenedor para el botón de enviar
+  const contenedorBoton = document.createElement("div");
+  contenedorBoton.id = "botonEnviarContainer";
+  container.appendChild(contenedorBoton);
+}
+
+function verificarRespuestasCompletas() {
+  const totalPreguntas = preguntasDelDia.length;
+  let totalRespondidas = 0;
+
+  preguntasDelDia.forEach(p => {
+    const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
+    if (seleccionada) {
+      totalRespondidas++;
+    }
+  });
+
+  const contenedorBoton = document.getElementById("botonEnviarContainer");
+
+  if (totalRespondidas === totalPreguntas) {
+    if (!document.getElementById("btnEnviar")) {
+      const btn = document.createElement("button");
+      btn.id = "btnEnviar";
+      btn.textContent = "✅ Enviar respuestas";
+      btn.className = "toggle-btn";
+      btn.onclick = enviarRespuestas;
+      contenedorBoton.appendChild(btn);
+    }
+  } else {
+    const boton = document.getElementById("btnEnviar");
+    if (boton) {
+      boton.remove();
+    }
+  }
 }
 
 function enviarRespuestas() {
