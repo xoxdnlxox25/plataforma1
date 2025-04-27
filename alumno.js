@@ -44,7 +44,7 @@ function mostrarPreguntas() {
 
   if (preguntasDelDia.length > 0) {
     const encabezado = document.createElement("div");
-    encabezado.classList.add("fade-in"); // 🎯 Agregamos animación al encabezado
+    encabezado.classList.add("fade-in");
     encabezado.innerHTML = `
       <h3 style="text-align:center">${preguntasDelDia[0].dia}</h3>
       <div class="subtitulo-tarjeta">${preguntasDelDia[0].subtitulo}</div>
@@ -54,7 +54,7 @@ function mostrarPreguntas() {
 
   preguntasDelDia.forEach(p => {
     const div = document.createElement("div");
-    div.className = "pregunta fade-in"; // 🎯 Aquí agregamos la animación
+    div.className = "pregunta fade-in";
     div.style.marginBottom = "20px";
 
     const idVers = `vers${p.numero}`;
@@ -64,17 +64,27 @@ function mostrarPreguntas() {
 
     // Solo mostrar botón de versículo si existe
     if (p.versiculo && p.versiculo.trim() !== "") {
+      const versiculoParrafos = p.versiculo
+        .split('\n')
+        .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`)
+        .join("");
+
       contenidoHTML += `
         <button class="toggle-btn" onclick="document.getElementById('${idVers}').classList.toggle('hidden')">📖 Mostrar/Ocultar versículo</button>
-        <div id="${idVers}" class="bloque-versiculo hidden"><strong>Versículo:</strong> ${p.versiculo}</div>
+        <div id="${idVers}" class="bloque-versiculo hidden"><strong>Versículo:</strong>${versiculoParrafos}</div>
       `;
     }
 
     // Solo mostrar botón de nota si existe
     if (p.nota && p.nota.trim() !== "") {
+      const notaParrafos = p.nota
+        .split('\n')
+        .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`)
+        .join("");
+
       contenidoHTML += `
         <button class="toggle-btn" onclick="document.getElementById('${idNota}').classList.toggle('hidden')">📜 Mostrar/Ocultar nota</button>
-        <div id="${idNota}" class="bloque-nota hidden"><strong>Nota:</strong> ${p.nota}</div>
+        <div id="${idNota}" class="bloque-nota hidden"><strong>Nota:</strong>${notaParrafos}</div>
       `;
     }
 
@@ -119,7 +129,7 @@ function verificarRespuestasCompletas() {
       const btn = document.createElement("button");
       btn.id = "btnEnviar";
       btn.textContent = "✅ Enviar respuestas";
-      btn.className = "toggle-btn fade-in"; // 🎯 También animación para el botón
+      btn.className = "toggle-btn fade-in";
       btn.onclick = enviarRespuestas;
       contenedorBoton.appendChild(btn);
     }
