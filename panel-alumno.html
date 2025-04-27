@@ -20,7 +20,7 @@
   <div class="container">
 
     <!-- TARJETA DE DATOS DEL ALUMNO -->
-    <div class="tarjeta-datos">
+    <div class="tarjeta-datos fade-in">
       <p class="etiqueta">Bienvenido(a):</p>
       <p id="nombreAlumno" class="valor"></p>
       <p class="etiqueta">Clase:</p>
@@ -28,38 +28,26 @@
     </div>
 
     <h3>Preguntas del día</h3>
+
+    <!-- CONTENEDOR DE PREGUNTAS -->
     <div id="preguntasContainer">
       <!-- Aquí se insertarán dinámicamente las preguntas -->
     </div>
 
-    <!-- CONTENEDOR DINÁMICO DEL BOTÓN ENVIAR -->
+    <!-- CONTENEDOR DEL BOTÓN DE ENVIAR -->
     <div id="botonEnviarContainer"></div>
 
-    <!-- BOTÓN DE CERRAR SESIÓN -->
+    <!-- BOTÓN CERRAR SESIÓN -->
     <button onclick="cerrarSesion()">🔒 Cerrar sesión</button>
-  </div>
 
-  <!-- CONTENEDOR DE ALERTAS -->
-  <div id="toast-container"></div>
+    <!-- CONTENEDOR DE ALERTAS -->
+    <div id="toast-container"></div>
+
+  </div>
 
   <!-- SCRIPTS -->
   <script src="conexion.js"></script>
   <script src="alumno.js"></script>
-  <script>
-    // Mostrar nombre e ID de clase desde localStorage
-    const alumno = localStorage.getItem("alumno") || "";
-    const clase = localStorage.getItem("clase") || "";
 
-    document.getElementById("nombreAlumno").textContent = alumno;
-    document.getElementById("nombreClase").textContent = clase;
-
-    // Ocultar si está vacío
-    if (!alumno) {
-      document.getElementById("nombreAlumno").parentElement.style.display = "none";
-    }
-    if (!clase) {
-      document.getElementById("nombreClase").parentElement.style.display = "none";
-    }
-  </script>
 </body>
 </html>
