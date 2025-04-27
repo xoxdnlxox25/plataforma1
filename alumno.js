@@ -44,6 +44,7 @@ function mostrarPreguntas() {
 
   if (preguntasDelDia.length > 0) {
     const encabezado = document.createElement("div");
+    encabezado.classList.add("fade-in"); // 🎯 Agregamos animación al encabezado
     encabezado.innerHTML = `
       <h3 style="text-align:center">${preguntasDelDia[0].dia}</h3>
       <div class="subtitulo-tarjeta">${preguntasDelDia[0].subtitulo}</div>
@@ -53,7 +54,7 @@ function mostrarPreguntas() {
 
   preguntasDelDia.forEach(p => {
     const div = document.createElement("div");
-    div.className = "pregunta";
+    div.className = "pregunta fade-in"; // 🎯 Aquí agregamos la animación
     div.style.marginBottom = "20px";
 
     const idVers = `vers${p.numero}`;
@@ -118,7 +119,7 @@ function verificarRespuestasCompletas() {
       const btn = document.createElement("button");
       btn.id = "btnEnviar";
       btn.textContent = "✅ Enviar respuestas";
-      btn.className = "toggle-btn";
+      btn.className = "toggle-btn fade-in"; // 🎯 También animación para el botón
       btn.onclick = enviarRespuestas;
       contenedorBoton.appendChild(btn);
     }
