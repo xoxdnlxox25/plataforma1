@@ -44,12 +44,11 @@ function mostrarPreguntas() {
 
   if (preguntasDelDia.length > 0) {
     const encabezado = document.createElement("div");
-encabezado.innerHTML = `
-  <h3 style="text-align:center">${preguntasDelDia[0].dia}</h3>
-  <div class="subtitulo-tarjeta">${preguntasDelDia[0].subtitulo}</div>
-`;
-container.appendChild(encabezado);
-
+    encabezado.innerHTML = `
+      <h3 style="text-align:center">${preguntasDelDia[0].dia}</h3>
+      <div class="subtitulo-tarjeta">${preguntasDelDia[0].subtitulo}</div>
+    `;
+    container.appendChild(encabezado);
   }
 
   preguntasDelDia.forEach(p => {
@@ -57,30 +56,41 @@ container.appendChild(encabezado);
     div.className = "pregunta";
     div.style.marginBottom = "20px";
 
-    // Versículo oculto por defecto
     const idVers = `vers${p.numero}`;
     const idNota = `nota${p.numero}`;
 
-    div.innerHTML = `
-      <p><strong>Pregunta ${p.numero}:</strong> ${p.pregunta}</p>
+    let contenidoHTML = `<p><strong>Pregunta ${p.numero}:</strong> ${p.pregunta}</p>`;
 
-      <button class="toggle-btn" onclick="document.getElementById('${idVers}').classList.toggle('hidden')">📖 Mostrar/Ocultar versículo</button>
-      <div id="${idVers}" class="bloque-versiculo hidden"><strong>Versículo:</strong> ${p.versiculo}</div>
+    // Solo mostrar botón de versículo si existe
+    if (p.versiculo && p.versiculo.trim() !== "") {
+      contenidoHTML += `
+        <button class="toggle-btn" onclick="document.getElementById('${idVers}').classList.toggle('hidden')">📖 Mostrar/Ocultar versículo</button>
+        <div id="${idVers}" class="bloque-versiculo hidden"><strong>Versículo:</strong> ${p.versiculo}</div>
+      `;
+    }
 
-      <button class="toggle-btn" onclick="document.getElementById('${idNota}').classList.toggle('hidden')">📜 Mostrar/Ocultar nota</button>
-      <div id="${idNota}" class="bloque-nota hidden"><strong>Nota:</strong> ${p.nota}</div>
+    // Solo mostrar botón de nota si existe
+    if (p.nota && p.nota.trim() !== "") {
+      contenidoHTML += `
+        <button class="toggle-btn" onclick="document.getElementById('${idNota}').classList.toggle('hidden')">📜 Mostrar/Ocultar nota</button>
+        <div id="${idNota}" class="bloque-nota hidden"><strong>Nota:</strong> ${p.nota}</div>
+      `;
+    }
 
+    // Opciones de respuesta
+    contenidoHTML += `
       <div class="opciones">
-  <p><strong>Respuestas:</strong></p>
-  ${p.opciones.map(op => `
-    <label class="opcion-label">
-      <input type="radio" name="preg${p.numero}" value="${op[0]}">
-      <span>${op}</span>
-    </label>
-  `).join("")}
-</div>
+        <p><strong>Respuestas:</strong></p>
+        ${p.opciones.map(op => `
+          <label class="opcion-label">
+            <input type="radio" name="preg${p.numero}" value="${op[0]}">
+            <span>${op}</span>
+          </label>
+        `).join("")}
+      </div>
     `;
 
+    div.innerHTML = contenidoHTML;
     container.appendChild(div);
   });
 }
@@ -137,4 +147,3 @@ function mostrarToast(mensaje, tipo = "info") {
 
   setTimeout(() => toast.remove(), 3000);
 }
-
