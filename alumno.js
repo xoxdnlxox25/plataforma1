@@ -48,7 +48,6 @@ function mostrarPreguntas() {
     encabezado.classList.add("fade-in");
     encabezado.innerHTML = `
       <h3 style="text-align:center">${preguntasDelDia[0].dia}</h3>
-      <div class="subtitulo-tarjeta">${preguntasDelDia[0].subtitulo}</div>
     `;
     container.appendChild(encabezado);
   }
@@ -61,9 +60,18 @@ function mostrarPreguntas() {
     const idVers = `vers${p.numero}`;
     const idNota = `nota${p.numero}`;
 
-    let contenidoHTML = `<p><strong>${p.encabezado}:</strong> ${p.pregunta}</p>`;
+    let contenidoHTML = "";
 
-    // Solo mostrar botón de versículo si existe
+    // Mostrar subtítulo solo si existe
+    if (p.subtitulo && p.subtitulo.trim() !== "") {
+      contenidoHTML += `
+        <div class="subtitulo-tarjeta">${p.subtitulo}</div>
+      `;
+    }
+
+    contenidoHTML += `<p><strong>${p.encabezado}:</strong> ${p.pregunta}</p>`;
+
+    // Mostrar versículo si existe
     if (p.versiculo && p.versiculo.trim() !== "") {
       const versiculoParrafos = p.versiculo
         .split('\n')
@@ -76,7 +84,7 @@ function mostrarPreguntas() {
       `;
     }
 
-    // Solo mostrar botón de nota si existe
+    // Mostrar nota si existe
     if (p.nota && p.nota.trim() !== "") {
       const notaParrafos = p.nota
         .split('\n')
@@ -89,7 +97,7 @@ function mostrarPreguntas() {
       `;
     }
 
-    // Opciones de respuesta (solo si existen)
+    // Opciones de respuesta si existen
     if (p.opciones.length > 0) {
       contenidoHTML += `
         <div class="opciones">
