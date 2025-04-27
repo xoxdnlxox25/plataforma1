@@ -21,7 +21,7 @@ window.onload = () => {
         numero: index + 1,
         dia: p.Día,
         subtitulo: p.Subtitulos,
-        encabezado: p.Encabezado || `Pregunta ${index + 1}`, // 🎯 Si no hay, pone Pregunta 1, Pregunta 2...
+        encabezado: p.Encabezado || `Pregunta ${index + 1}`,
         pregunta: p.Pregunta,
         versiculo: p.Versiculo,
         nota: p.Nota,
@@ -61,7 +61,7 @@ function mostrarPreguntas() {
     const idVers = `vers${p.numero}`;
     const idNota = `nota${p.numero}`;
 
-    let contenidoHTML = `<p><strong>${p.encabezado}:</strong> ${p.pregunta}</p>`; // 🎯 Ahora usa el encabezado
+    let contenidoHTML = `<p><strong>${p.encabezado}:</strong> ${p.pregunta}</p>`;
 
     // Solo mostrar botón de versículo si existe
     if (p.versiculo && p.versiculo.trim() !== "") {
@@ -89,18 +89,20 @@ function mostrarPreguntas() {
       `;
     }
 
-    // Opciones de respuesta
-    contenidoHTML += `
-      <div class="opciones">
-        <p><strong>Respuestas:</strong></p>
-        ${p.opciones.map(op => `
-          <label class="opcion-label">
-            <input type="radio" name="preg${p.numero}" value="${op[0]}" onchange="verificarRespuestasCompletas()">
-            <span>${op}</span>
-          </label>
-        `).join("")}
-      </div>
-    `;
+    // Opciones de respuesta (solo si existen)
+    if (p.opciones.length > 0) {
+      contenidoHTML += `
+        <div class="opciones">
+          <p><strong>Respuestas:</strong></p>
+          ${p.opciones.map(op => `
+            <label class="opcion-label">
+              <input type="radio" name="preg${p.numero}" value="${op[0]}" onchange="verificarRespuestasCompletas()">
+              <span>${op}</span>
+            </label>
+          `).join("")}
+        </div>
+      `;
+    }
 
     div.innerHTML = contenidoHTML;
     container.appendChild(div);
