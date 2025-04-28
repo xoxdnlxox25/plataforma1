@@ -167,7 +167,7 @@ function verRespuestasPorAlumno() {
     });
 }
 
-// Ver resumen general de respuestas
+// ✅ Ver resumen general de respuestas - actualizado
 function verResumen() {
   fetch(`${URL}?accion=getResumenClase&clase=${idClase}`)
     .then(res => res.json())
@@ -177,14 +177,22 @@ function verResumen() {
 
       if (data.length === 0) {
         const fila = document.createElement("tr");
-        fila.innerHTML = `<td colspan="2">No hay datos para mostrar.</td>`;
+        fila.innerHTML = `<td colspan="8">No hay datos para mostrar.</td>`;
         tbody.appendChild(fila);
         return;
       }
 
       data.forEach(r => {
         const fila = document.createElement("tr");
-        fila.innerHTML = `<td>${r.ID_ALUMNO}</td><td>${r.Total}</td>`;
+        fila.innerHTML = `
+          <td>${r.ID_ALUMNO}</td>
+          <td>${r.Domingo ? '✔️' : '❌'}</td>
+          <td>${r.Lunes ? '✔️' : '❌'}</td>
+          <td>${r.Martes ? '✔️' : '❌'}</td>
+          <td>${r.Miércoles ? '✔️' : '❌'}</td>
+          <td>${r.Jueves ? '✔️' : '❌'}</td>
+          <td>${r.Viernes ? '✔️' : '❌'}</td>
+        `;
         tbody.appendChild(fila);
       });
     });
@@ -221,4 +229,3 @@ window.onload = () => {
     });
   });
 };
-
