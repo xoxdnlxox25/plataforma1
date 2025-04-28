@@ -399,3 +399,14 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
     opacity: 1;
   }
 }
+/* ========================= */
+/* SCROLL PARA TABLAS EN MÓVILES */
+/* ========================= */
+.tabla-scroll {
+  overflow-x: auto;
+  width: 100%;
+}
+
+.tabla-scroll table {
+  min-width: 600px; /* Ancho mínimo para que no se apriete */
+}
