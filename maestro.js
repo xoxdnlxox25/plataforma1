@@ -167,7 +167,7 @@ function verRespuestasPorAlumno() {
     });
 }
 
-// ✅ Ver resumen general de respuestas (✔️ y ❌ dinámico, encabezados abreviados)
+// ✅ Ver resumen general de respuestas (✔️ y ❌ dinámico, encabezados abreviados usando nombre)
 function verResumen() {
   fetch(`${URL}?accion=getResumenClase&clase=${idClase}`)
     .then(res => res.json())
@@ -199,7 +199,7 @@ function verResumen() {
       data.forEach(r => {
         const fila = document.createElement("tr");
         fila.innerHTML = `
-          <td>${r.ID_ALUMNO}</td>
+          <td style="font-size: 12px;">${r.ID_ALUMNO}</td> <!-- 🛠️ Aquí muestra el nombre -->
           <td>${r.Domingo ? '✔️' : '❌'}</td>
           <td>${r.Lunes ? '✔️' : '❌'}</td>
           <td>${r.Martes ? '✔️' : '❌'}</td>
@@ -243,3 +243,4 @@ window.onload = () => {
     });
   });
 };
+
