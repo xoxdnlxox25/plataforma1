@@ -167,7 +167,7 @@ function verRespuestasPorAlumno() {
     });
 }
 
-// ✅ Ver resumen general de respuestas - actualizado
+// ✅ Ver resumen general de respuestas (✔️ y ❌ dinámico)
 function verResumen() {
   fetch(`${URL}?accion=getResumenClase&clase=${idClase}`)
     .then(res => res.json())
@@ -229,3 +229,4 @@ window.onload = () => {
     });
   });
 };
+
