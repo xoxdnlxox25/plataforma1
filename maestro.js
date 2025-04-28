@@ -180,7 +180,7 @@ function verResumen() {
       thead.innerHTML = `
         <tr>
           <th>Alumno</th>
-          <th>S</th>
+          <th>D</th>
           <th>L</th>
           <th>M</th>
           <th>M</th>
