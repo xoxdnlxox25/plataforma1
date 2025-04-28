@@ -410,3 +410,8 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
 .tabla-scroll table {
   min-width: 600px; /* Ancho mínimo para que no se apriete */
 }
+/* Ajustar tamaño del nombre en tabla resumen */
+#tablaResumen td:first-child {
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
