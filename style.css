@@ -415,3 +415,11 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   font-size: 0.85rem;
   white-space: nowrap;
 }
+/* Mejorar visualización de nombres largos en el resumen */
+#tablaResumen td:first-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px; /* Ajusta si quieres más o menos ancho */
+  font-size: 0.9rem; /* Un poquito más pequeño sólo en los nombres */
+}
