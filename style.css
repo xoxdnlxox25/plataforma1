@@ -237,6 +237,17 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
 }
 
 /* ========================= */
+/* NUEVO: Ajuste para tabla de resumen con ✔ y ❌ */
+/* ========================= */
+#tablaResumen td {
+  font-size: 1.2rem;
+}
+#tablaResumen th {
+  font-size: 0.95rem;
+  padding: 8px;
+}
+
+/* ========================= */
 /* TARJETAS DE VERSÍCULOS Y NOTAS */
 /* ========================= */
 .bloque-versiculo {
@@ -365,7 +376,7 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   }
 
   .container {
-    margin-top: 80px; /* 🎯 Aquí corregimos el exceso de espacio en móvil */
+    margin-top: 80px;
     padding: 16px;
   }
 }
