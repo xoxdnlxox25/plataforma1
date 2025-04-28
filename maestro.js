@@ -167,17 +167,31 @@ function verRespuestasPorAlumno() {
     });
 }
 
-// ✅ Ver resumen general de respuestas (✔️ y ❌ dinámico)
+// ✅ Ver resumen general de respuestas (✔️ y ❌ dinámico, encabezados abreviados)
 function verResumen() {
   fetch(`${URL}?accion=getResumenClase&clase=${idClase}`)
     .then(res => res.json())
     .then(data => {
       const tbody = document.querySelector("#tablaResumen tbody");
+      const thead = document.querySelector("#tablaResumen thead");
       tbody.innerHTML = "";
+
+      // Actualizar el encabezado de la tabla
+      thead.innerHTML = `
+        <tr>
+          <th>Alumno</th>
+          <th>S</th>
+          <th>L</th>
+          <th>M</th>
+          <th>M</th>
+          <th>J</th>
+          <th>V</th>
+        </tr>
+      `;
 
       if (data.length === 0) {
         const fila = document.createElement("tr");
-        fila.innerHTML = `<td colspan="8">No hay datos para mostrar.</td>`;
+        fila.innerHTML = `<td colspan="7">No hay datos para mostrar.</td>`;
         tbody.appendChild(fila);
         return;
       }
@@ -229,4 +243,3 @@ window.onload = () => {
     });
   });
 };
-
