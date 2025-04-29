@@ -5,34 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel del Maestro</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* Ajustes solo para la tabla resumen dentro del HTML */
-    #tablaResumen {
-      width: 100%;
-      table-layout: fixed;
-    }
-
-    #tablaResumen td, #tablaResumen th {
-      font-size: 0.85rem;
-      padding: 6px;
-      text-align: center;
-      vertical-align: middle;
-      word-break: break-word;
-    }
-
-    #tablaResumen td:first-child {
-      font-size: 0.85rem;
-      max-width: 100px;
-      white-space: normal;
-    }
-
-    @media screen and (max-width: 480px) {
-      #tablaResumen td, #tablaResumen th {
-        font-size: 0.8rem;
-        padding: 5px;
-      }
-    }
-  </style>
 </head>
 <body>
 
@@ -52,22 +24,20 @@
       <h3>📊 Resumen de respuestas por alumno</h3>
       <div class="contenido">
         <button onclick="verResumen()">Ver resumen</button>
-        <div>
-          <table id="tablaResumen">
-            <thead>
-              <tr>
-                <th>Alumno</th>
-                <th>D</th>
-                <th>L</th>
-                <th>M</th>
-                <th>Mi</th>
-                <th>J</th>
-                <th>V</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
+        <table id="tablaResumen">
+          <thead>
+            <tr>
+              <th>Alumno</th>
+              <th>D</th>
+              <th>L</th>
+              <th>M</th>
+              <th>M</th>
+              <th>J</th>
+              <th>V</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
       </div>
     </div>
 
@@ -117,6 +87,7 @@
   <script src="conexion.js"></script>
   <script src="maestro.js"></script>
 
+  <!-- Mostrar nombre del maestro y clase -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const clase = localStorage.getItem("clase") || "";
