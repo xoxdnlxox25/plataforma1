@@ -10,7 +10,7 @@ body {
 }
 
 /* ========================= */
-/* CABECERA FIJA CON LOGO */
+/* CABECERA FIJA CON LOGO Y ANIMACIÓN */
 /* ========================= */
 .top-bar {
   position: fixed;
@@ -67,39 +67,45 @@ body {
   box-shadow: 0 0 20px rgba(0,0,0,0.05);
 }
 
-.container h2, h3 {
+.container h2 {
   word-break: break-word;
+  font-size: 1.4rem;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+h2, h3 {
   color: #2c3e50;
   margin-top: 0;
-  text-align: center;
 }
 
 /* ========================= */
-/* PREGUNTAS Y BOTONES */
+/* PREGUNTAS Y RESPUESTAS */
 /* ========================= */
-.pregunta, .bloque, .panel-maestro .seccion, .bloque-versiculo, .bloque-nota, .tarjeta-datos {
-  background-color: #ffffff;
-  border-radius: 12px;
-  padding: 20px;
-  margin-bottom: 20px;
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
 .pregunta {
+  margin-bottom: 20px;
+  padding: 15px;
   border-left: 4px solid #2c3e50;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
 }
 
-.bloque h3 {
-  cursor: pointer;
-  padding: 10px 12px;
-  border-bottom: 1px solid #ccc;
-  font-weight: bold;
-  font-size: 1.3rem;
-  user-select: none;
-  color: #2c3e50;
+.container label {
+  display: block;
+  margin-bottom: 5px;
 }
 
-button, .toggle-btn, .btn-mini {
+input[type="radio"] {
+  accent-color: #2980b9;
+  margin-right: 8px;
+}
+
+/* ========================= */
+/* BOTONES GENERALES */
+/* ========================= */
+button, .bloque button, .toggle-btn, .btn-mini {
   background-color: #2c3e50;
   color: white;
   border: none;
@@ -114,13 +120,40 @@ button, .toggle-btn, .btn-mini {
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-button:hover, .toggle-btn:hover, .btn-mini:hover {
+button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   background-color: #1f2e3c;
 }
 
-input[type="radio"] {
-  accent-color: #2980b9;
-  margin-right: 8px;
+/* ========================= */
+/* TARJETAS LOGIN */
+/* ========================= */
+.bloque {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+  margin-bottom: 30px;
+  transition: box-shadow 0.3s ease;
+}
+
+.bloque:hover {
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.bloque h3 {
+  cursor: pointer;
+  padding: 10px 12px;
+  border-bottom: 1px solid #ccc;
+  margin-top: 0;
+  font-weight: bold;
+  font-size: 1.3rem;
+  user-select: none;
+  color: #2c3e50;
+}
+
+.bloque .contenido {
+  display: none;
+  margin-top: 15px;
 }
 
 /* ========================= */
@@ -132,7 +165,8 @@ input[type="radio"] {
 .bloque select {
   width: 100%;
   padding: 12px 14px;
-  margin: 12px 0;
+  margin-top: 12px;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 10px;
   background-color: #f9f9f9;
@@ -140,16 +174,21 @@ input[type="radio"] {
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-.bloque input:focus, .bloque select:focus {
+.bloque input:focus,
+.bloque select:focus {
   border-color: #2980b9;
   box-shadow: 0 0 6px rgba(41, 128, 185, 0.5);
   outline: none;
   background-color: #fff;
 }
 
+/* ========================= */
+/* LINK SOLICITAR CLASE */
+/* ========================= */
 .solicitar-clase {
   color: #2980b9;
   font-weight: bold;
+  font-size: 0.95rem;
   text-decoration: none;
 }
 
@@ -161,6 +200,25 @@ input[type="radio"] {
 /* ========================= */
 /* PANEL DEL MAESTRO */
 /* ========================= */
+.panel-maestro {
+  margin-top: 30px;
+}
+
+.panel-maestro .seccion {
+  background-color: #ffffff;
+  border-left: 4px solid #3498db;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.panel-maestro .seccion h4 {
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #2c3e50;
+}
+
 .panel-maestro table {
   width: 100%;
   border-collapse: collapse;
@@ -179,31 +237,152 @@ input[type="radio"] {
 }
 
 /* ========================= */
-/* TABLA RESUMEN ✔️❌⏳ */
+/* NUEVO: Ajuste para tabla de resumen con ✔ y ❌ */
 /* ========================= */
-#tablaResumen {
-  width: 100%;
-  table-layout: fixed;
-}
-
-#tablaResumen th,
 #tablaResumen td {
-  font-size: 0.85rem;
-  padding: 6px;
-  text-align: center;
-  vertical-align: middle;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  font-size: 1.2rem;
 }
-
-#tablaResumen td:first-child {
+#tablaResumen th {
   font-size: 0.95rem;
-  max-width: 150px;
+  padding: 8px;
 }
 
 /* ========================= */
-/* ANIMACIONES Y UTILIDADES */
+/* TARJETAS DE VERSÍCULOS Y NOTAS */
+/* ========================= */
+.bloque-versiculo {
+  background-color: #e3f2fd;
+  padding: 15px;
+  border-left: 5px solid #2196f3;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.bloque-nota {
+  background-color: #E0F4F2;
+  padding: 15px;
+  border-left: 5px solid #A8D8D3;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+/* ========================= */
+/* UTILIDADES */
+/* ========================= */
+.hidden {
+  display: none;
+}
+
+/* ========================= */
+/* TARJETAS DE SUBTÍTULO */
+/* ========================= */
+.subtitulo-tarjeta {
+  background-color: #2c3e50;
+  color: white;
+  padding: 12px 18px;
+  border-radius: 10px;
+  margin: 15px auto 25px auto;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 500;
+  max-width: 600px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  animation: slideIn 0.5s ease forwards;
+  opacity: 0;
+}
+
+/* ========================= */
+/* TARJETA DE DATOS DEL ALUMNO */
+/* ========================= */
+.tarjeta-datos {
+  background-color: #ffffff;
+  border-left: 5px solid #2c3e50;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.tarjeta-datos .etiqueta {
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 5px 0 2px;
+  font-size: 1.1rem;
+}
+
+.tarjeta-datos .valor {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* ========================= */
+/* MODAL DE CONFIRMACIÓN */
+/* ========================= */
+.toast.confirm-box {
+  background: white;
+  color: #333;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  text-align: center;
+  min-width: 250px;
+  margin: 10px;
+  animation: fadein 0.4s;
+  font-size: 1rem;
+}
+
+.btn-confirm {
+  background-color: #e74c3c;
+  color: white;
+  padding: 8px 16px;
+  margin: 8px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.btn-cancel {
+  background-color: #95a5a6;
+  color: white;
+  padding: 8px 16px;
+  margin: 8px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* ========================= */
+/* RESPONSIVE MOVIL */
+/* ========================= */
+@media screen and (max-width: 480px) {
+  .top-bar {
+    flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    height: auto;
+    text-align: center;
+  }
+
+  .logo {
+    width: 42px;
+    height: 42px;
+  }
+
+  .titulo-escuela {
+    font-size: 1.3rem;
+  }
+
+  .container {
+    margin-top: 80px;
+    padding: 16px;
+  }
+}
+
+/* ========================= */
+/* NUEVA ANIMACIÓN FADE-IN TARJETAS */
 /* ========================= */
 .fade-in {
   animation: fadeIn 0.8s ease forwards;
@@ -211,31 +390,36 @@ input[type="radio"] {
 }
 
 @keyframes fadeIn {
-  from { transform: translateY(30px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 }
-
-.hidden {
-  display: none;
-}
-
+/* ========================= */
+/* SCROLL PARA TABLAS EN MÓVILES */
+/* ========================= */
 .tabla-scroll {
   overflow-x: auto;
   width: 100%;
 }
 
 .tabla-scroll table {
-  min-width: 600px;
+  min-width: 600px; /* Ancho mínimo para que no se apriete */
 }
-
-/* ========================= */
-/* RESPONSIVE MOVIL */
-/* ========================= */
-@media screen and (max-width: 480px) {
-  #tablaResumen th,
-  #tablaResumen td {
-    font-size: 0.8rem;
-    padding: 5px;
-  }
+/* Ajustar tamaño del nombre en tabla resumen */
+#tablaResumen td:first-child {
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
-
+/* Mejorar visualización de nombres largos en el resumen */
+#tablaResumen td:first-child {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 120px; /* Ajusta si quieres más o menos ancho */
+  font-size: 0.9rem; /* Un poquito más pequeño sólo en los nombres */
+}
