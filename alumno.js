@@ -14,6 +14,7 @@ const diaCapitalizado = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
 
 // Cargar preguntas desde la hoja
 window.onload = () => {
+  mostrarSpinner("⏳ Cargando preguntas...");
   fetch(`${URL}?accion=getPreguntasPorDia&dia=${diaCapitalizado}`)
     .then(res => res.json())
     .then(data => {
@@ -37,6 +38,9 @@ window.onload = () => {
     .catch(err => {
       console.error("Error cargando preguntas:", err);
       mostrarToast("❌ Error al cargar preguntas", "error");
+    })
+    .finally(() => {
+      ocultarSpinner();
     });
 };
 
@@ -147,7 +151,6 @@ function verificarRespuestasCompletas() {
   }
 }
 
-// ✅ AQUÍ VIENE LA FUNCIÓN ACTUALIZADA
 async function enviarRespuestas() {
   const fecha = new Date().toISOString().split("T")[0];
   let completas = true;
@@ -203,4 +206,22 @@ function mostrarToast(mensaje, tipo = "info") {
   contenedor.appendChild(toast);
 
   setTimeout(() => toast.remove(), 3000);
+}
+
+// ✅ FUNCIONES PARA SPINNER
+function mostrarSpinner(mensaje = "⏳ Cargando...") {
+  const contenedor = document.getElementById("toast-container");
+  if (!contenedor) return;
+
+  contenedor.innerHTML = "";
+  const spinner = document.createElement("div");
+  spinner.className = "toast info";
+  spinner.textContent = mensaje;
+  contenedor.appendChild(spinner);
+}
+
+function ocultarSpinner() {
+  const contenedor = document.getElementById("toast-container");
+  if (!contenedor) return;
+  contenedor.innerHTML = "";
 }
