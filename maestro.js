@@ -189,7 +189,7 @@ function verRespuestasPorAlumno() {
     });
 }
 
-// ✅ Ver resumen general de respuestas (✔️ y ❌ dinámico)
+// ✅ Ver resumen general de respuestas (✔️ ❌ ⏳ dinámico)
 function verResumen() {
   mostrarSpinner("⏳ Cargando resumen...");
   fetch(`${URL}?accion=getResumenClase&clase=${idClase}`)
@@ -222,12 +222,12 @@ function verResumen() {
         const fila = document.createElement("tr");
         fila.innerHTML = `
           <td style="font-size: 12px;">${r.ID_ALUMNO}</td>
-          <td>${r.Domingo ? '✔️' : '❌'}</td>
-          <td>${r.Lunes ? '✔️' : '❌'}</td>
-          <td>${r.Martes ? '✔️' : '❌'}</td>
-          <td>${r.Miércoles ? '✔️' : '❌'}</td>
-          <td>${r.Jueves ? '✔️' : '❌'}</td>
-          <td>${r.Viernes ? '✔️' : '❌'}</td>
+          <td>${r.Domingo || ""}</td>
+          <td>${r.Lunes || ""}</td>
+          <td>${r.Martes || ""}</td>
+          <td>${r.Miércoles || ""}</td>
+          <td>${r.Jueves || ""}</td>
+          <td>${r.Viernes || ""}</td>
         `;
         tbody.appendChild(fila);
       });
