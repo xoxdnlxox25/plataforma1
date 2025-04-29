@@ -167,7 +167,7 @@ function verRespuestasPorAlumno() {
     });
 }
 
-// ✅ Ver resumen general de respuestas (✔️ y ❌ dinámico, encabezados abreviados usando nombre)
+// ✅ Ver resumen general de respuestas (✔️ y ❌ dinámico, encabezados corregidos)
 function verResumen() {
   fetch(`${URL}?accion=getResumenClase&clase=${idClase}`)
     .then(res => res.json())
@@ -176,14 +176,14 @@ function verResumen() {
       const thead = document.querySelector("#tablaResumen thead");
       tbody.innerHTML = "";
 
-      // Actualizar el encabezado de la tabla
+      // 🔵 Aquí está corregido:
       thead.innerHTML = `
         <tr>
           <th>Alumno</th>
           <th>D</th>
           <th>L</th>
           <th>M</th>
-          <th>M</th>
+          <th>Mi</th> <!-- ✅ Ahora dice "Mi" para miércoles -->
           <th>J</th>
           <th>V</th>
         </tr>
@@ -199,7 +199,7 @@ function verResumen() {
       data.forEach(r => {
         const fila = document.createElement("tr");
         fila.innerHTML = `
-          <td style="font-size: 12px;">${r.ID_ALUMNO}</td> <!-- 🛠️ Aquí muestra el nombre -->
+          <td style="font-size: 12px;">${r.ID_ALUMNO}</td>
           <td>${r.Domingo ? '✔️' : '❌'}</td>
           <td>${r.Lunes ? '✔️' : '❌'}</td>
           <td>${r.Martes ? '✔️' : '❌'}</td>
