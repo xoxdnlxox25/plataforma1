@@ -14,7 +14,6 @@ const diaCapitalizado = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
 
 // Cargar preguntas desde la hoja
 window.onload = () => {
-  mostrarSpinner("⏳ Cargando preguntas...");
   fetch(`${URL}?accion=getPreguntasPorDia&dia=${diaCapitalizado}`)
     .then(res => res.json())
     .then(data => {
@@ -38,9 +37,6 @@ window.onload = () => {
     .catch(err => {
       console.error("Error cargando preguntas:", err);
       mostrarToast("❌ Error al cargar preguntas", "error");
-    })
-    .finally(() => {
-      ocultarSpinner();
     });
 };
 
@@ -66,6 +62,7 @@ function mostrarPreguntas() {
 
     let contenidoHTML = "";
 
+    // Mostrar subtítulo solo si existe
     if (p.subtitulo && p.subtitulo.trim() !== "") {
       contenidoHTML += `
         <div class="subtitulo-tarjeta">${p.subtitulo}</div>
@@ -74,6 +71,7 @@ function mostrarPreguntas() {
 
     contenidoHTML += `<p><strong>${p.encabezado}:</strong> ${p.pregunta}</p>`;
 
+    // Mostrar versículo si existe
     if (p.versiculo && p.versiculo.trim() !== "") {
       const versiculoParrafos = p.versiculo
         .split('\n')
@@ -86,6 +84,7 @@ function mostrarPreguntas() {
       `;
     }
 
+    // Mostrar nota si existe
     if (p.nota && p.nota.trim() !== "") {
       const notaParrafos = p.nota
         .split('\n')
@@ -98,6 +97,7 @@ function mostrarPreguntas() {
       `;
     }
 
+    // Opciones de respuesta si existen
     if (p.opciones.length > 0) {
       contenidoHTML += `
         <div class="opciones">
@@ -116,6 +116,7 @@ function mostrarPreguntas() {
     container.appendChild(div);
   });
 
+  // Agregar contenedor para el botón de enviar
   const contenedorBoton = document.createElement("div");
   contenedorBoton.id = "botonEnviarContainer";
   container.appendChild(contenedorBoton);
@@ -151,10 +152,9 @@ function verificarRespuestasCompletas() {
   }
 }
 
-async function enviarRespuestas() {
+function enviarRespuestas() {
   const fecha = new Date().toISOString().split("T")[0];
   let completas = true;
-  const fetches = [];
 
   preguntasDelDia.forEach(p => {
     const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
@@ -173,20 +173,17 @@ async function enviarRespuestas() {
     datos.append("respuesta", seleccionada.value);
     datos.append("fecha", fecha);
 
-    fetches.push(fetch(URL, {
+    fetch(URL, {
       method: "POST",
       body: datos
-    }));
+    }).then(res => res.text())
+      .then(resp => {
+        console.log("Guardado:", resp);
+      });
   });
 
   if (completas) {
-    try {
-      await Promise.all(fetches);
-      mostrarToast("✅ ¡Respuestas enviadas correctamente!", "success");
-    } catch (error) {
-      console.error("Error enviando respuestas:", error);
-      mostrarToast("❌ Error al enviar respuestas", "error");
-    }
+    mostrarToast("✅ ¡Respuestas enviadas correctamente!", "success");
   }
 }
 
@@ -206,22 +203,4 @@ function mostrarToast(mensaje, tipo = "info") {
   contenedor.appendChild(toast);
 
   setTimeout(() => toast.remove(), 3000);
-}
-
-// ✅ FUNCIONES PARA SPINNER
-function mostrarSpinner(mensaje = "⏳ Cargando...") {
-  const contenedor = document.getElementById("toast-container");
-  if (!contenedor) return;
-
-  contenedor.innerHTML = "";
-  const spinner = document.createElement("div");
-  spinner.className = "toast info";
-  spinner.textContent = mensaje;
-  contenedor.appendChild(spinner);
-}
-
-function ocultarSpinner() {
-  const contenedor = document.getElementById("toast-container");
-  if (!contenedor) return;
-  contenedor.innerHTML = "";
 }
