@@ -229,3 +229,29 @@ input[type="radio"] {
 .tabla-scroll table {
   min-width: 600px;
 }
+/* ✅ Ajustes para que la tabla sea compacta y no se desborde en móvil */
+#tablaResumen {
+  width: 100%;
+  table-layout: fixed;
+}
+
+#tablaResumen td, #tablaResumen th {
+  font-size: 0.85rem;
+  padding: 6px;
+  text-align: center;
+  vertical-align: middle;
+  word-break: break-word;
+}
+
+#tablaResumen td:first-child {
+  font-size: 0.85rem;
+  max-width: 100px;
+  white-space: normal;
+}
+
+@media screen and (max-width: 480px) {
+  #tablaResumen td, #tablaResumen th {
+    font-size: 0.8rem;
+    padding: 5px;
+  }
+}
