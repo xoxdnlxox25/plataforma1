@@ -279,6 +279,12 @@ function ocultarSpinner() {
 window.onload = () => {
   cargarAlumnos();
 
+  // 🔧 SOLUCIÓN: Ocultar todos los contenidos desplegables al cargar
+  document.querySelectorAll(".bloque .contenido").forEach(div => {
+    div.style.display = "none";
+  });
+
+  // Activar toggle al hacer clic
   document.querySelectorAll(".bloque h3").forEach(titulo => {
     titulo.addEventListener("click", () => {
       const contenido = titulo.nextElementSibling;
