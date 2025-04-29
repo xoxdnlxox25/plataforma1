@@ -24,20 +24,23 @@
       <h3>📊 Resumen de respuestas por alumno</h3>
       <div class="contenido">
         <button onclick="verResumen()">Ver resumen</button>
-        <table id="tablaResumen">
-          <thead>
-            <tr>
-              <th>Alumno</th>
-              <th>D</th>
-              <th>L</th>
-              <th>M</th>
-              <th>Mi</th> <!-- 👈 Cambio aquí: ahora dice "Mi" para miércoles -->
-              <th>J</th>
-              <th>V</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
+        <!-- ✅ Envuelto en tabla-scroll para evitar desbordes en móvil -->
+        <div class="tabla-scroll">
+          <table id="tablaResumen">
+            <thead>
+              <tr>
+                <th>Alumno</th>
+                <th>D</th>
+                <th>L</th>
+                <th>M</th>
+                <th>Mi</th>
+                <th>J</th>
+                <th>V</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -87,7 +90,6 @@
   <script src="conexion.js"></script>
   <script src="maestro.js"></script>
 
-  <!-- Mostrar nombre del maestro y clase -->
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const clase = localStorage.getItem("clase") || "";
