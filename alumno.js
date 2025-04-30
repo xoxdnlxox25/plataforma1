@@ -62,7 +62,6 @@ function mostrarPreguntas() {
 
     let contenidoHTML = "";
 
-    // Mostrar subtítulo solo si existe
     if (p.subtitulo && p.subtitulo.trim() !== "") {
       contenidoHTML += `
         <div class="subtitulo-tarjeta">${p.subtitulo}</div>
@@ -71,7 +70,6 @@ function mostrarPreguntas() {
 
     contenidoHTML += `<p><strong>${p.encabezado}:</strong> ${p.pregunta}</p>`;
 
-    // Mostrar versículo si existe
     if (p.versiculo && p.versiculo.trim() !== "") {
       const versiculoParrafos = p.versiculo
         .split('\n')
@@ -84,7 +82,6 @@ function mostrarPreguntas() {
       `;
     }
 
-    // Mostrar nota si existe
     if (p.nota && p.nota.trim() !== "") {
       const notaParrafos = p.nota
         .split('\n')
@@ -97,7 +94,6 @@ function mostrarPreguntas() {
       `;
     }
 
-    // Opciones de respuesta si existen
     if (p.opciones.length > 0) {
       contenidoHTML += `
         <div class="opciones">
@@ -116,7 +112,6 @@ function mostrarPreguntas() {
     container.appendChild(div);
   });
 
-  // Agregar contenedor para el botón de enviar
   const contenedorBoton = document.createElement("div");
   contenedorBoton.id = "botonEnviarContainer";
   container.appendChild(contenedorBoton);
@@ -168,6 +163,7 @@ function enviarRespuestas() {
     datos.append("accion", "guardarRespuesta");
     datos.append("clase", idClase);
     datos.append("alumno", nombreAlumno);
+    datos.append("id", localStorage.getItem("id")); // ✅ ID_ALUMNO agregado
     datos.append("dia", p.dia);
     datos.append("numero", p.numero);
     datos.append("respuesta", seleccionada.value);
