@@ -27,15 +27,12 @@ function cargarAlumnos() {
       selector.innerHTML = '<option value="">Selecciona un alumno</option>';
 
       data.forEach(alumno => {
-        const item = document.createElement("li");
-        item.textContent = `${alumno.NombreAlumno} (${alumno.ID_ALUMNO})`;
-
-        const btn = document.createElement("button");
-        btn.textContent = "❌";
-        btn.onclick = () => eliminarAlumno(alumno.ID_ALUMNO);
-        item.appendChild(btn);
-
-        lista.appendChild(item);
+        const li = document.createElement("li");
+        li.innerHTML = `
+          ${alumno.NombreAlumno} (${alumno.ID_ALUMNO})
+          <button onclick="confirmarEliminarAlumno('${alumno.ID_ALUMNO}', '${alumno.NombreAlumno}')">❌ Eliminar</button>
+        `;
+        lista.appendChild(li);
 
         const option = document.createElement("option");
         option.value = alumno.ID_ALUMNO;
@@ -45,13 +42,64 @@ function cargarAlumnos() {
     });
 }
 
+// Confirmar eliminación de alumno
+function confirmarEliminarAlumno(idAlumno, nombreAlumno) {
+  if (modalActivo) return;
+  modalActivo = true;
+
+  const contenedor = document.getElementById("toast-container");
+  contenedor.innerHTML = "";
+
+  const confirmBox = document.createElement("div");
+  confirmBox.className = "toast confirm-box";
+  confirmBox.innerHTML = `
+    <div style="font-size: 1.1rem; margin-bottom: 8px;">❓ ¿Eliminar a <strong>${nombreAlumno}</strong>?</div>
+    <div style="text-align: right;">
+      <button class="btn-confirm" style="margin-right: 10px;">Sí</button>
+      <button class="btn-cancel">Cancelar</button>
+    </div>
+  `;
+
+  contenedor.appendChild(confirmBox);
+
+  confirmBox.querySelector(".btn-cancel").onclick = () => {
+    confirmBox.remove();
+    modalActivo = false;
+  };
+
+  confirmBox.querySelector(".btn-confirm").onclick = () => {
+    confirmBox.remove();
+    modalActivo = false;
+    eliminarAlumno(idAlumno);
+  };
+}
+
+// Eliminar alumno de la base
+function eliminarAlumno(idAlumno) {
+  const datos = new URLSearchParams();
+  datos.append("accion", "eliminarAlumno");
+  datos.append("clase", idClase);
+  datos.append("id", idAlumno);
+
+  fetch(URL, { method: "POST", body: datos })
+    .then(res => res.text())
+    .then(resp => {
+      mostrarToast(resp.includes('✅') ? "✅ Alumno eliminado." : "⚠ No se pudo eliminar.", resp.includes('✅') ? "success" : "error");
+      cargarAlumnos();
+    })
+    .catch(err => {
+      console.error("Error eliminando:", err);
+      mostrarToast("❌ Error de conexión", "error");
+    });
+}
+
 // Agregar nuevo alumno
-function agregarNuevoAlumno() {
-  const nombre = document.getElementById("nuevoNombre").value.trim();
+function agregarAlumno() {
+  const nombre = document.getElementById("nuevoAlumno").value.trim();
   const id = document.getElementById("nuevoID").value.trim();
 
   if (!nombre || !id) {
-    mostrarToast("⚠️ Ingresa nombre e ID", "error");
+    mostrarToast("⚠ Por favor completa todos los campos.", "error");
     return;
   }
 
@@ -61,87 +109,92 @@ function agregarNuevoAlumno() {
   datos.append("nombre", nombre);
   datos.append("id", id);
 
-  fetch(URL, {
-    method: "POST",
-    body: datos
-  })
-    .then(res => res.text())
-    .then(() => {
-      mostrarToast("✅ Alumno agregado", "success");
-      document.getElementById("nuevoNombre").value = "";
-      document.getElementById("nuevoID").value = "";
-      cargarAlumnos();
-    });
-}
-
-// Eliminar alumno
-function eliminarAlumno(id) {
-  if (!confirm("¿Eliminar este alumno?")) return;
-
-  const datos = new URLSearchParams();
-  datos.append("accion", "eliminarAlumno");
-  datos.append("clase", idClase);
-  datos.append("id", id);
-
-  fetch(URL, {
-    method: "POST",
-    body: datos
-  })
+  fetch(URL, { method: "POST", body: datos })
     .then(res => res.text())
     .then(resp => {
-      mostrarToast(resp.includes("✅") ? resp : "❌ No encontrado", resp.includes("✅") ? "success" : "error");
+      mostrarToast(resp, "success");
       cargarAlumnos();
+      document.getElementById("nuevoAlumno").value = "";
+      document.getElementById("nuevoID").value = "";
     });
 }
 
-// Ver respuestas por alumno
-function verRespuestasAlumno() {
+// Ver respuestas de toda la clase
+function verRespuestas() {
+  fetch(`${URL}?accion=getRespuestasClase&clase=${idClase}`)
+    .then(res => res.json())
+    .then(data => {
+      const lista = document.getElementById("listaRespuestas");
+      lista.innerHTML = "";
+
+      if (data.length === 0) {
+        lista.innerHTML = "<li>No hay respuestas registradas aún.</li>";
+        return;
+      }
+
+      data.forEach(r => {
+        const li = document.createElement("li");
+        li.innerHTML = `<strong>${r.ID_ALUMNO}</strong> — ${r.Dia} (P${r.PreguntaN}): <em>${r.Respuesta}</em> [${r.Fecha}]`;
+        lista.appendChild(li);
+      });
+    });
+}
+
+// Ver respuestas específicas de un alumno
+function verRespuestasPorAlumno() {
   const idAlumno = document.getElementById("selectAlumno").value;
-  if (!idAlumno) return;
+  if (!idAlumno) {
+    mostrarToast("⚠ Por favor selecciona un alumno.", "error");
+    return;
+  }
 
   fetch(`${URL}?accion=getRespuestasAlumno&clase=${idClase}&alumno=${idAlumno}`)
     .then(res => res.json())
     .then(data => {
-      const contenedor = document.getElementById("respuestasAlumno");
-      contenedor.innerHTML = "";
+      const lista = document.getElementById("respuestasAlumno");
+      lista.innerHTML = "";
 
       if (data.length === 0) {
-        contenedor.innerHTML = "<p>No hay respuestas registradas.</p>";
+        lista.innerHTML = "<li>Este alumno aún no ha registrado respuestas.</li>";
         return;
       }
 
-      const tabla = document.createElement("table");
-      tabla.innerHTML = `
-        <thead>
-          <tr>
-            <th>Día</th>
-            <th>N°</th>
-            <th>Respuesta</th>
-            <th>Fecha</th>
-          </tr>
-        </thead>
-        <tbody>
-          ${data.map(r => `
-            <tr>
-              <td>${r.Dia}</td>
-              <td>${r.PreguntaN}</td>
-              <td>${r.Respuesta}</td>
-              <td>${r.Fecha}</td>
-            </tr>
-          `).join("")}
-        </tbody>
-      `;
-      contenedor.appendChild(tabla);
+      data.forEach(r => {
+        const li = document.createElement("li");
+        li.innerHTML = `Día: <strong>${r.Dia}</strong> | Pregunta ${r.PreguntaN} → <em>${r.Respuesta}</em> [${r.Fecha}]`;
+        lista.appendChild(li);
+      });
     });
 }
 
-// Ver resumen por clase con ✔️ ❌ ⏳
+// ✅ Ver resumen general de respuestas (✔️, ❌ y ⏳ correctamente mostrados)
 function verResumen() {
   fetch(`${URL}?accion=getResumenClase&clase=${idClase}`)
     .then(res => res.json())
     .then(data => {
-      const tbody = document.getElementById("resumenTabla");
+      const tbody = document.querySelector("#tablaResumen tbody");
+      const thead = document.querySelector("#tablaResumen thead");
       tbody.innerHTML = "";
+
+      // Encabezado de la tabla
+      thead.innerHTML = `
+        <tr>
+          <th>Alumno</th>
+          <th>D</th>
+          <th>L</th>
+          <th>M</th>
+          <th>M</th>
+          <th>J</th>
+          <th>V</th>
+        </tr>
+      `;
+
+      if (data.length === 0) {
+        const fila = document.createElement("tr");
+        fila.innerHTML = `<td colspan="7">No hay datos para mostrar.</td>`;
+        tbody.appendChild(fila);
+        return;
+      }
 
       data.forEach(r => {
         const fila = document.createElement("tr");
@@ -165,13 +218,12 @@ function cerrarSesion() {
   window.location.href = "index.html";
 }
 
-// Toast flotante
+// Mostrar toast de notificación
 function mostrarToast(mensaje, tipo = "info") {
   const contenedor = document.getElementById("toast-container");
   if (!contenedor) return;
 
   contenedor.innerHTML = "";
-
   const toast = document.createElement("div");
   toast.className = `toast ${tipo}`;
   toast.textContent = mensaje;
@@ -180,5 +232,14 @@ function mostrarToast(mensaje, tipo = "info") {
   setTimeout(() => toast.remove(), 3000);
 }
 
-// --------------------------- INICIALIZACIÓN ---------------------------
-cargarAlumnos();
+// --------------------------- INICIO ---------------------------
+window.onload = () => {
+  cargarAlumnos();
+
+  document.querySelectorAll(".bloque h3").forEach(titulo => {
+    titulo.addEventListener("click", () => {
+      const contenido = titulo.nextElementSibling;
+      contenido.style.display = contenido.style.display === "block" ? "none" : "block";
+    });
+  });
+};
