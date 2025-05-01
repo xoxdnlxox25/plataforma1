@@ -29,7 +29,8 @@ window.onload = () => {
           .split(/\n|(?=[A-Z]\))/)
           .map(op => op.trim())
           .filter(op => op !== ""),
-        correcta: p.Correcta
+        correcta: p.Correcta,
+        TextoExtra: p.TextoExtra || "" // ✅ NUEVO: columna I (mensaje adicional del día)
       }));
 
       mostrarPreguntas();
@@ -50,6 +51,16 @@ function mostrarPreguntas() {
       <h3 style="text-align:center">${preguntasDelDia[0].dia}</h3>
     `;
     container.appendChild(encabezado);
+
+    // ✅ NUEVO: Tarjeta extra desde columna I
+    const textoExtra = preguntasDelDia[0]?.TextoExtra?.trim();
+    if (textoExtra) {
+      const tarjeta = document.createElement("div");
+      tarjeta.className = "bloque-nota fade-in";
+      tarjeta.style.marginTop = "12px";
+      tarjeta.innerHTML = `<strong>📌 Nota especial:</strong><br>${textoExtra}`;
+      container.appendChild(tarjeta);
+    }
   }
 
   preguntasDelDia.forEach(p => {
@@ -200,3 +211,4 @@ function mostrarToast(mensaje, tipo = "info") {
 
   setTimeout(() => toast.remove(), 3000);
 }
+
