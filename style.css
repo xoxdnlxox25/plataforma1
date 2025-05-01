@@ -453,3 +453,42 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   font-size: 13px;
   padding-left: 8px;
 }
+/* Estilo para tabla con líneas como Excel */
+#tablaResumen {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+  border: 2px solid #2c3e50;
+}
+
+#tablaResumen thead th {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  font-weight: bold;
+  padding: 6px;
+  border: 1px solid #2c3e50;
+  word-wrap: break-word;
+  font-size: 0.85rem;
+}
+
+/* Fila de datos */
+#tablaResumen tbody td {
+  padding: 6px;
+  text-align: center;
+  border: 1px solid #2c3e50;
+  word-wrap: break-word;
+  font-size: 1.1rem;
+}
+
+/* Columna del nombre del alumno (más ancha y legible) */
+#tablaResumen td:first-child,
+#tablaResumen th:first-child {
+  width: 40%;
+  max-width: 180px;
+  min-width: 120px;
+  font-size: 0.95rem;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
