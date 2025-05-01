@@ -52,15 +52,23 @@ function mostrarPreguntas() {
     `;
     container.appendChild(encabezado);
 
-    // ✅ NUEVO: Tarjeta extra desde columna I
+    // ✅ NUEVO: Tarjeta extra desde columna I (con soporte para saltos de línea como párrafos)
 const textoExtra = preguntasDelDia[0]?.TextoExtra?.trim();
 if (textoExtra) {
   const tarjeta = document.createElement("div");
   tarjeta.className = "bloque-nota fade-in";
   tarjeta.style.marginTop = "12px";
-  tarjeta.innerHTML = textoExtra; // Solo el contenido tal como está en la hoja
+
+  // Convertir los saltos de línea en párrafos
+  const contenidoFormateado = textoExtra
+    .split('\n')
+    .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`)
+    .join("");
+
+  tarjeta.innerHTML = contenidoFormateado;
   container.appendChild(tarjeta);
 }
+
 
   }
 
