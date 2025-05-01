@@ -489,6 +489,8 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   min-width: 120px;
   font-size: 0.95rem;
   text-align: left;
-  white-space: normal;
-  overflow-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
