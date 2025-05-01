@@ -493,4 +493,9 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+#tablaResumen tbody td:not(:first-child) {
+  font-size: 1rem; /* tamaño más pequeño para los emojis */
+  line-height: 1.2;
+  padding: 4px; /* menos espacio interno para que no se monte */
+}
 
