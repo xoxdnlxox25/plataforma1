@@ -53,14 +53,15 @@ function mostrarPreguntas() {
     container.appendChild(encabezado);
 
     // ✅ NUEVO: Tarjeta extra desde columna I
-    const textoExtra = preguntasDelDia[0]?.TextoExtra?.trim();
-    if (textoExtra) {
-      const tarjeta = document.createElement("div");
-      tarjeta.className = "bloque-nota fade-in";
-      tarjeta.style.marginTop = "12px";
-      tarjeta.innerHTML = `<strong>📌 Nota especial:</strong><br>${textoExtra}`;
-      container.appendChild(tarjeta);
-    }
+const textoExtra = preguntasDelDia[0]?.TextoExtra?.trim();
+if (textoExtra) {
+  const tarjeta = document.createElement("div");
+  tarjeta.className = "bloque-nota fade-in";
+  tarjeta.style.marginTop = "12px";
+  tarjeta.innerHTML = textoExtra; // Solo el contenido tal como está en la hoja
+  container.appendChild(tarjeta);
+}
+
   }
 
   preguntasDelDia.forEach(p => {
