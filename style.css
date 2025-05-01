@@ -423,3 +423,22 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   max-width: 120px; /* Ajusta si quieres más o menos ancho */
   font-size: 0.9rem; /* Un poquito más pequeño sólo en los nombres */
 }
+/* Estilo para tabla con líneas como Excel */
+#tablaResumen {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 14px;
+}
+
+#tablaResumen thead th,
+#tablaResumen tbody td {
+  border: 2px solid #2c3e50; /* Azul oscuro */
+  padding: 8px;
+  text-align: center;
+}
+
+#tablaResumen thead th {
+  background-color: #ecf0f1;
+  color: #2c3e50;
+  font-weight: bold;
+}
