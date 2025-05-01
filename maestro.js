@@ -196,19 +196,20 @@ function verResumen() {
         return;
       }
 
-      data.forEach(r => {
-        const fila = document.createElement("tr");
-        fila.innerHTML = `
-          <td style="font-size: 12px;">${r.ID_ALUMNO}</td>
-          <td>${r.Domingo === "✔️" ? "✔️" : r.Domingo === "❌" ? "❌" : "⏳"}</td>
-          <td>${r.Lunes === "✔️" ? "✔️" : r.Lunes === "❌" ? "❌" : "⏳"}</td>
-          <td>${r.Martes === "✔️" ? "✔️" : r.Martes === "❌" ? "❌" : "⏳"}</td>
-          <td>${r.Miércoles === "✔️" ? "✔️" : r.Miércoles === "❌" ? "❌" : "⏳"}</td>
-          <td>${r.Jueves === "✔️" ? "✔️" : r.Jueves === "❌" ? "❌" : "⏳"}</td>
-          <td>${r.Viernes === "✔️" ? "✔️" : r.Viernes === "❌" ? "❌" : "⏳"}</td>
-        `;
-        tbody.appendChild(fila);
-      });
+      data.forEach((r, index) => {
+  const fila = document.createElement("tr");
+  fila.innerHTML = `
+    <td style="font-size: 12px;">${index + 1}.- ${r.ID_ALUMNO}</td>
+    <td>${r.Domingo === "✔️" ? "✔️" : r.Domingo === "❌" ? "❌" : "⏳"}</td>
+    <td>${r.Lunes === "✔️" ? "✔️" : r.Lunes === "❌" ? "❌" : "⏳"}</td>
+    <td>${r.Martes === "✔️" ? "✔️" : r.Martes === "❌" ? "❌" : "⏳"}</td>
+    <td>${r.Miércoles === "✔️" ? "✔️" : r.Miércoles === "❌" ? "❌" : "⏳"}</td>
+    <td>${r.Jueves === "✔️" ? "✔️" : r.Jueves === "❌" ? "❌" : "⏳"}</td>
+    <td>${r.Viernes === "✔️" ? "✔️" : r.Viernes === "❌" ? "❌" : "⏳"}</td>
+  `;
+  tbody.appendChild(fila);
+});
+
     });
 }
 
