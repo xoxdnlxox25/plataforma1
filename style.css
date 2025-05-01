@@ -425,20 +425,31 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
 }
 /* Estilo para tabla con líneas como Excel */
 #tablaResumen {
-  border-collapse: collapse;
   width: 100%;
-  font-size: 14px;
-}
-
-#tablaResumen thead th,
-#tablaResumen tbody td {
-  border: 2px solid #2c3e50; /* Azul oscuro */
-  padding: 8px;
-  text-align: center;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 13px;
+  border: 2px solid #2c3e50;
 }
 
 #tablaResumen thead th {
   background-color: #ecf0f1;
   color: #2c3e50;
   font-weight: bold;
+  padding: 6px;
+  border: 1px solid #2c3e50;
+  word-wrap: break-word;
+}
+
+#tablaResumen tbody td {
+  padding: 6px;
+  text-align: center;
+  border: 1px solid #2c3e50;
+  word-wrap: break-word;
+}
+
+#tablaResumen td:first-child {
+  text-align: left;
+  font-size: 13px;
+  padding-left: 8px;
 }
