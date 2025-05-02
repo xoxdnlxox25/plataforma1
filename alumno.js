@@ -30,7 +30,7 @@ window.onload = () => {
           .map(op => op.trim())
           .filter(op => op !== ""),
         correcta: p.Correcta,
-        TextoExtra: p.TextoExtra || "" // ✅ NUEVO: columna I (mensaje adicional del día)
+        TextoExtra: p.TextoExtra || ""
       }));
 
       mostrarPreguntas();
@@ -47,32 +47,35 @@ function mostrarPreguntas() {
   if (preguntasDelDia.length > 0) {
     const encabezado = document.createElement("div");
     encabezado.classList.add("fade-in");
-    encabezado.innerHTML = `
-      <h3 style="text-align:center">${preguntasDelDia[0].dia}</h3>
-    `;
+    encabezado.innerHTML = `<h3 style="text-align:center">${preguntasDelDia[0].dia}</h3>`;
     container.appendChild(encabezado);
 
     // ✅ NUEVO: Tarjeta extra desde columna I (con soporte para saltos de línea como párrafos)
-const textoExtra = preguntasDelDia[0]?.TextoExtra?.trim();
-if (textoExtra) {
-  const tarjeta = document.createElement("div");
-  tarjeta.className = "bloque-nota fade-in";
-  tarjeta.style.marginTop = "12px";
+    const textoExtra = preguntasDelDia[0]?.TextoExtra?.trim();
+    if (textoExtra) {
+      const tarjeta = document.createElement("div");
+      tarjeta.className = "bloque-nota fade-in";
+      tarjeta.style.marginTop = "12px";
 
-  // Convertir los saltos de línea en párrafos
-  const contenidoFormateado = textoExtra
-    .split('\n')
-    .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`)
-    .join("");
+      const contenidoFormateado = textoExtra
+        .split('\n')
+        .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`)
+        .join("");
 
-  tarjeta.innerHTML = contenidoFormateado;
-  container.appendChild(tarjeta);
-}
-
-
+      tarjeta.innerHTML = contenidoFormateado;
+      container.appendChild(tarjeta);
+    }
   }
 
   preguntasDelDia.forEach(p => {
+    // ✅ Mostrar subtítulo fuera del bloque pregunta
+    if (p.subtitulo && p.subtitulo.trim() !== "") {
+      const subtituloDiv = document.createElement("div");
+      subtituloDiv.className = "subtitulo-tarjeta fade-in";
+      subtituloDiv.textContent = p.subtitulo;
+      container.appendChild(subtituloDiv);
+    }
+
     const div = document.createElement("div");
     div.className = "pregunta fade-in";
     div.style.marginBottom = "20px";
@@ -80,15 +83,7 @@ if (textoExtra) {
     const idVers = `vers${p.numero}`;
     const idNota = `nota${p.numero}`;
 
-    let contenidoHTML = "";
-
-    if (p.subtitulo && p.subtitulo.trim() !== "") {
-      contenidoHTML += `
-        <div class="subtitulo-tarjeta">${p.subtitulo}</div>
-      `;
-    }
-
-    contenidoHTML += `<p><strong>${p.encabezado}:</strong> ${p.pregunta}</p>`;
+    let contenidoHTML = `<p><strong>${p.encabezado}:</strong> ${p.pregunta}</p>`;
 
     if (p.versiculo && p.versiculo.trim() !== "") {
       const versiculoParrafos = p.versiculo
@@ -183,7 +178,7 @@ function enviarRespuestas() {
     datos.append("accion", "guardarRespuesta");
     datos.append("clase", idClase);
     datos.append("alumno", nombreAlumno);
-    datos.append("id", localStorage.getItem("id")); // ✅ ID_ALUMNO agregado
+    datos.append("id", localStorage.getItem("id"));
     datos.append("dia", p.dia);
     datos.append("numero", p.numero);
     datos.append("respuesta", seleccionada.value);
@@ -220,4 +215,3 @@ function mostrarToast(mensaje, tipo = "info") {
 
   setTimeout(() => toast.remove(), 3000);
 }
-
