@@ -46,9 +46,11 @@ function mostrarPreguntas() {
 
   if (preguntasDelDia.length > 0) {
     const encabezado = document.createElement("div");
-    encabezado.classList.add("fade-in");
-    encabezado.innerHTML = `<h3 style="text-align:center">${preguntasDelDia[0].dia}</h3>`;
-    container.appendChild(encabezado);
+encabezado.classList.add("subtitulo-tarjeta", "fade-in");
+encabezado.style.marginBottom = "16px";
+encabezado.textContent = preguntasDelDia[0].dia;
+container.appendChild(encabezado);
+
 
     // ✅ NUEVO: Tarjeta extra desde columna I (con soporte para saltos de línea como párrafos)
     const textoExtra = preguntasDelDia[0]?.TextoExtra?.trim();
