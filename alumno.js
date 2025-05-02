@@ -56,7 +56,7 @@ container.appendChild(encabezado);
     const textoExtra = preguntasDelDia[0]?.TextoExtra?.trim();
     if (textoExtra) {
       const tarjeta = document.createElement("div");
-      tarjeta.className = "bloque-nota fade-in";
+      tarjeta.className = "pregunta fade-in";
       tarjeta.style.marginTop = "12px";
 
       const contenidoFormateado = textoExtra
