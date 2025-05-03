@@ -153,7 +153,7 @@ function mostrarPreguntas() {
     contenidoHTML += `
       <div class="campo-reflexion">
         <label><strong>✍️ Reflexión / Comentario:</strong></label>
-        <textarea rows="3" style="width:100%;" placeholder="Escribe aquí..." oninput="guardarReflexion(${p.numero}, this.value)">${valorGuardado}</textarea>
+        <textarea rows="3" style="width:100%;" placeholder="Escribe aquí..." oninput="guardarReflexion('${p.dia}', ${p.numero}, this.value)">${valorGuardado}</textarea>
       </div>
     `;
 
@@ -166,11 +166,11 @@ function mostrarPreguntas() {
   container.appendChild(contenedorBoton);
 }
 
-function guardarReflexion(numero, texto) {
-  const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${p.dia}_${p.numero}`;
-localStorage.setItem(clave, texto);
-
+function guardarReflexion(dia, numero, texto) {
+  const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${dia}_${numero}`;
+  localStorage.setItem(clave, texto);
 }
+
 
 function mostrarRepasoSemanal(data) {
   container.innerHTML = "";
@@ -209,7 +209,8 @@ function mostrarRepasoSemanal(data) {
         contenidoHTML += `<div class='bloque-nota'><strong>Nota:</strong>${nota}</div>`;
       }
 
-      const reflexion = localStorage.getItem(`reflexion_preg${p.numero}`);
+     const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${dia}_${p.numero}`;
+const reflexion = localStorage.getItem(clave);
       if (reflexion) {
         contenidoHTML += `<div class='bloque-nota'><strong>📝 Reflexión escrita:</strong><br>${reflexion.replace(/\n/g, '<br>')}</div>`;
       }
