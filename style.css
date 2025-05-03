@@ -574,4 +574,8 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
 .btn-dia:active {
   transform: scale(0.95);
 }
+.btn-dia.activo {
+  background-color: #2980b9;
+  box-shadow: 0 0 8px rgba(41, 128, 185, 0.6);
+}
 
