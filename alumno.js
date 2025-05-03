@@ -39,6 +39,14 @@ window.onload = () => {
       document.getElementById("loader").classList.add("oculto");
       container.classList.remove("oculto");
       mostrarPreguntas();
+      // Resaltar botón del día actual en el scroll horizontal
+const diaActual = diaCapitalizado.toLowerCase(); // ej. "miércoles"
+document.querySelectorAll('.btn-dia').forEach(btn => {
+  if (btn.textContent.toLowerCase() === diaActual) {
+    btn.classList.add('activo');
+  }
+});
+
     })
     .catch(err => {
       console.error("Error cargando preguntas:", err);
