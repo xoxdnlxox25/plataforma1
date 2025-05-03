@@ -14,6 +14,9 @@ const diaCapitalizado = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
 
 // Cargar preguntas desde la hoja
 window.onload = () => {
+  document.getElementById("loader").classList.remove("oculto");
+  container.classList.add("oculto");
+
   fetch(`${URL}?accion=getPreguntasPorDia&dia=${diaCapitalizado}`)
     .then(res => res.json())
     .then(data => {
@@ -33,13 +36,17 @@ window.onload = () => {
         TextoExtra: p.TextoExtra || ""
       }));
 
+      document.getElementById("loader").classList.add("oculto");
+      container.classList.remove("oculto");
       mostrarPreguntas();
     })
     .catch(err => {
       console.error("Error cargando preguntas:", err);
       mostrarToast("❌ Error al cargar preguntas", "error");
+      document.getElementById("loader").classList.add("oculto");
     });
 };
+
 
 function mostrarPreguntas() {
   container.innerHTML = "";
