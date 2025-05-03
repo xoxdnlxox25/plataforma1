@@ -556,14 +556,16 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   background-color: #2c3e50;
   color: white;
   border: none;
-  padding: 12px 18px;
+  padding: 10px 14px; /* Reducido para adaptarse al texto */
   border-radius: 12px;
   font-weight: bold;
   font-size: 1rem;
-  white-space: nowrap;               /* ✅ Evita salto de línea en texto */
+  white-space: nowrap;
+  width: auto;         /* ⚠️ Se asegura de que no se fije el ancho */
   cursor: pointer;
   transition: background 0.3s;
 }
+
 
 .btn-dia:hover {
   background-color: #34495e;
