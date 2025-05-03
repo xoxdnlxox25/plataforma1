@@ -17,30 +17,36 @@ function cargarPreguntasPorDia(dia) {
   document.getElementById("loader").classList.remove("oculto");
   container.classList.add("oculto");
 
-  fetch(`${URL}?accion=getPreguntasPorDia&dia=${dia}`)
+  const accion = dia.toLowerCase() === "sábado" ? "getPreguntasSemana" : "getPreguntasPorDia&dia=" + dia;
+
+  fetch(`${URL}?accion=${accion}`)
     .then(res => res.json())
     .then(data => {
-      preguntasDelDia = data.map((p, index) => ({
-        numero: index + 1,
-        dia: p.Día,
-        subtitulo: p.Subtitulos,
-        encabezado: p.Encabezado || `Pregunta ${index + 1}`,
-        pregunta: p.Pregunta,
-        versiculo: p.Versiculo,
-        nota: p.Nota,
-        opciones: (p.Respuesta || "")
-          .split(/\n|(?=[A-Z]\))/)
-          .map(op => op.trim())
-          .filter(op => op !== ""),
-        correcta: p.Correcta,
-        TextoExtra: p.TextoExtra || ""
-      }));
+      if (dia.toLowerCase() === "sábado") {
+        mostrarRepasoSemanal(data);
+      } else {
+        preguntasDelDia = data.map((p, index) => ({
+          numero: index + 1,
+          dia: p.Día,
+          subtitulo: p.Subtitulos,
+          encabezado: p.Encabezado || `Pregunta ${index + 1}`,
+          pregunta: p.Pregunta,
+          versiculo: p.Versiculo,
+          nota: p.Nota,
+          opciones: (p.Respuesta || "")
+            .split(/\n|(?=[A-Z]\))/)
+            .map(op => op.trim())
+            .filter(op => op !== ""),
+          correcta: p.Correcta,
+          TextoExtra: p.TextoExtra || ""
+        }));
+
+        mostrarPreguntas();
+      }
 
       document.getElementById("loader").classList.add("oculto");
       container.classList.remove("oculto");
-      mostrarPreguntas();
 
-      // Resaltar botón del día activo
       document.querySelectorAll(".btn-dia").forEach(btn => {
         btn.classList.remove("activo");
         if (btn.textContent.trim().toLowerCase() === dia.toLowerCase()) {
@@ -55,11 +61,9 @@ function cargarPreguntasPorDia(dia) {
     });
 }
 
-// 🔹 Ejecutar al cargar la página
 window.onload = () => {
   cargarPreguntasPorDia(diaCapitalizado);
 
-  // Asignar eventos a los botones de días
   document.querySelectorAll(".btn-dia").forEach(btn => {
     btn.addEventListener("click", () => {
       const diaSeleccionado = btn.textContent.trim();
@@ -83,12 +87,10 @@ function mostrarPreguntas() {
       const tarjeta = document.createElement("div");
       tarjeta.className = "pregunta fade-in";
       tarjeta.style.marginTop = "12px";
-
       const contenidoFormateado = textoExtra
         .split('\n')
         .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`)
         .join("");
-
       tarjeta.innerHTML = contenidoFormateado;
       container.appendChild(tarjeta);
     }
@@ -158,6 +160,49 @@ function mostrarPreguntas() {
   const contenedorBoton = document.createElement("div");
   contenedorBoton.id = "botonEnviarContainer";
   container.appendChild(contenedorBoton);
+}
+
+function mostrarRepasoSemanal(data) {
+  container.innerHTML = "";
+  const aviso = document.createElement("div");
+  aviso.className = "subtitulo-tarjeta fade-in";
+  aviso.innerHTML = "<strong>📚 Estás viendo el repaso semanal (Domingo a Viernes). Este contenido es solo de lectura.</strong>";
+  container.appendChild(aviso);
+
+  const agrupado = {};
+  data.forEach((p, index) => {
+    const dia = p.Día || "Sin día";
+    if (!agrupado[dia]) agrupado[dia] = [];
+    agrupado[dia].push({ ...p, numero: agrupado[dia].length + 1 });
+  });
+
+  Object.keys(agrupado).forEach(dia => {
+    const titulo = document.createElement("h3");
+    titulo.textContent = `📆 ${dia}`;
+    titulo.className = "subtitulo-tarjeta fade-in";
+    container.appendChild(titulo);
+
+    agrupado[dia].forEach(p => {
+      const div = document.createElement("div");
+      div.className = "pregunta fade-in";
+      div.style.marginBottom = "20px";
+
+      let contenidoHTML = `<p><strong>${p.Encabezado || `Pregunta ${p.numero}`}:</strong> ${p.Pregunta}</p>`;
+
+      if (p.Versiculo) {
+        const versiculo = p.Versiculo.split('\n').map(l => `<p style='margin: 8px 0;'>${l.trim()}</p>`).join("");
+        contenidoHTML += `<div class='bloque-versiculo'><strong>Versículo:</strong>${versiculo}</div>`;
+      }
+
+      if (p.Nota) {
+        const nota = p.Nota.split('\n').map(l => `<p style='margin: 8px 0;'>${l.trim()}</p>`).join("");
+        contenidoHTML += `<div class='bloque-nota'><strong>Nota:</strong>${nota}</div>`;
+      }
+
+      div.innerHTML = contenidoHTML;
+      container.appendChild(div);
+    });
+  });
 }
 
 function verificarRespuestasCompletas() {
