@@ -12,12 +12,12 @@ const fecha = new Date();
 const diaSemana = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(fecha);
 const diaCapitalizado = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
 
-// Cargar preguntas desde la hoja
-window.onload = () => {
+// 🔹 Función para cargar preguntas desde la hoja
+function cargarPreguntasPorDia(dia) {
   document.getElementById("loader").classList.remove("oculto");
   container.classList.add("oculto");
 
-  fetch(`${URL}?accion=getPreguntasPorDia&dia=${diaCapitalizado}`)
+  fetch(`${URL}?accion=getPreguntasPorDia&dia=${dia}`)
     .then(res => res.json())
     .then(data => {
       preguntasDelDia = data.map((p, index) => ({
@@ -39,35 +39,45 @@ window.onload = () => {
       document.getElementById("loader").classList.add("oculto");
       container.classList.remove("oculto");
       mostrarPreguntas();
-      // Resaltar botón del día actual en el scroll horizontal
-const diaActual = diaCapitalizado.toLowerCase(); // ej. "miércoles"
-document.querySelectorAll('.btn-dia').forEach(btn => {
-  if (btn.textContent.toLowerCase() === diaActual) {
-    btn.classList.add('activo');
-  }
-});
 
+      // Resaltar botón del día activo
+      document.querySelectorAll(".btn-dia").forEach(btn => {
+        btn.classList.remove("activo");
+        if (btn.textContent.trim().toLowerCase() === dia.toLowerCase()) {
+          btn.classList.add("activo");
+        }
+      });
     })
     .catch(err => {
       console.error("Error cargando preguntas:", err);
       mostrarToast("❌ Error al cargar preguntas", "error");
       document.getElementById("loader").classList.add("oculto");
     });
-};
+}
 
+// 🔹 Ejecutar al cargar la página
+window.onload = () => {
+  cargarPreguntasPorDia(diaCapitalizado);
+
+  // Asignar eventos a los botones de días
+  document.querySelectorAll(".btn-dia").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const diaSeleccionado = btn.textContent.trim();
+      cargarPreguntasPorDia(diaSeleccionado);
+    });
+  });
+};
 
 function mostrarPreguntas() {
   container.innerHTML = "";
 
   if (preguntasDelDia.length > 0) {
     const encabezado = document.createElement("div");
-encabezado.classList.add("subtitulo-tarjeta", "fade-in");
-encabezado.style.marginBottom = "16px";
-encabezado.textContent = preguntasDelDia[0].dia;
-container.appendChild(encabezado);
+    encabezado.classList.add("subtitulo-tarjeta", "fade-in");
+    encabezado.style.marginBottom = "16px";
+    encabezado.textContent = preguntasDelDia[0].dia;
+    container.appendChild(encabezado);
 
-
-    // ✅ NUEVO: Tarjeta extra desde columna I (con soporte para saltos de línea como párrafos)
     const textoExtra = preguntasDelDia[0]?.TextoExtra?.trim();
     if (textoExtra) {
       const tarjeta = document.createElement("div");
@@ -85,20 +95,16 @@ container.appendChild(encabezado);
   }
 
   preguntasDelDia.forEach(p => {
-    // ✅ Mostrar subtítulo fuera del bloque pregunta
-   if (p.subtitulo && p.subtitulo.trim() !== "") {
-  const subtituloDiv = document.createElement("div");
-  subtituloDiv.className = "subtitulo-tarjeta fade-in";
-
-  // ✅ Soporte para saltos de línea en subtítulo
-  const subtituloHTML = p.subtitulo
-    .split('\n')
-    .map(linea => `<p style="margin: 6px 0;">${linea.trim()}</p>`)
-    .join("");
-
-  subtituloDiv.innerHTML = subtituloHTML;
-  container.appendChild(subtituloDiv);
-}
+    if (p.subtitulo && p.subtitulo.trim() !== "") {
+      const subtituloDiv = document.createElement("div");
+      subtituloDiv.className = "subtitulo-tarjeta fade-in";
+      const subtituloHTML = p.subtitulo
+        .split('\n')
+        .map(linea => `<p style="margin: 6px 0;">${linea.trim()}</p>`)
+        .join("");
+      subtituloDiv.innerHTML = subtituloHTML;
+      container.appendChild(subtituloDiv);
+    }
 
     const div = document.createElement("div");
     div.className = "pregunta fade-in";
@@ -114,7 +120,6 @@ container.appendChild(encabezado);
         .split('\n')
         .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`)
         .join("");
-
       contenidoHTML += `
         <button class="toggle-btn" onclick="document.getElementById('${idVers}').classList.toggle('hidden')">📖 Mostrar/Ocultar versículo</button>
         <div id="${idVers}" class="bloque-versiculo hidden"><strong>Versículo:</strong>${versiculoParrafos}</div>
@@ -126,7 +131,6 @@ container.appendChild(encabezado);
         .split('\n')
         .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`)
         .join("");
-
       contenidoHTML += `
         <button class="toggle-btn" onclick="document.getElementById('${idNota}').classList.toggle('hidden')">📜 Mostrar/Ocultar nota</button>
         <div id="${idNota}" class="bloque-nota hidden"><strong>Nota:</strong>${notaParrafos}</div>
@@ -162,9 +166,7 @@ function verificarRespuestasCompletas() {
 
   preguntasDelDia.forEach(p => {
     const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
-    if (seleccionada) {
-      totalRespondidas++;
-    }
+    if (seleccionada) totalRespondidas++;
   });
 
   const contenedorBoton = document.getElementById("botonEnviarContainer");
@@ -180,9 +182,7 @@ function verificarRespuestasCompletas() {
     }
   } else {
     const boton = document.getElementById("btnEnviar");
-    if (boton) {
-      boton.remove();
-    }
+    if (boton) boton.remove();
   }
 }
 
