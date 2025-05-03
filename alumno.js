@@ -71,12 +71,19 @@ container.appendChild(encabezado);
 
   preguntasDelDia.forEach(p => {
     // ✅ Mostrar subtítulo fuera del bloque pregunta
-    if (p.subtitulo && p.subtitulo.trim() !== "") {
-      const subtituloDiv = document.createElement("div");
-      subtituloDiv.className = "subtitulo-tarjeta fade-in";
-      subtituloDiv.textContent = p.subtitulo;
-      container.appendChild(subtituloDiv);
-    }
+   if (p.subtitulo && p.subtitulo.trim() !== "") {
+  const subtituloDiv = document.createElement("div");
+  subtituloDiv.className = "subtitulo-tarjeta fade-in";
+
+  // ✅ Soporte para saltos de línea en subtítulo
+  const subtituloHTML = p.subtitulo
+    .split('\n')
+    .map(linea => `<p style="margin: 6px 0;">${linea.trim()}</p>`)
+    .join("");
+
+  subtituloDiv.innerHTML = subtituloHTML;
+  container.appendChild(subtituloDiv);
+}
 
     const div = document.createElement("div");
     div.className = "pregunta fade-in";
