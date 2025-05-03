@@ -149,7 +149,6 @@ function mostrarPreguntas() {
       `;
     }
 
-    // ✅ Campo adicional editable para reflexión del alumno
     const valorGuardado = localStorage.getItem(`reflexion_preg${p.numero}`) || "";
     contenidoHTML += `
       <div class="campo-reflexion">
@@ -206,6 +205,11 @@ function mostrarRepasoSemanal(data) {
       if (p.Nota) {
         const nota = p.Nota.split('\n').map(l => `<p style='margin: 8px 0;'>${l.trim()}</p>`).join("");
         contenidoHTML += `<div class='bloque-nota'><strong>Nota:</strong>${nota}</div>`;
+      }
+
+      const reflexion = localStorage.getItem(`reflexion_preg${p.numero}`);
+      if (reflexion) {
+        contenidoHTML += `<div class='bloque-nota'><strong>📝 Reflexión escrita:</strong><br>${reflexion.replace(/\n/g, '<br>')}</div>`;
       }
 
       div.innerHTML = contenidoHTML;
