@@ -7,12 +7,10 @@ document.getElementById("nombreClase").textContent = idClase;
 const container = document.getElementById("preguntasContainer");
 let preguntasDelDia = [];
 
-// Día actual formateado
 const fecha = new Date();
 const diaSemana = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(fecha);
 const diaCapitalizado = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
 
-// 🔹 Función para cargar preguntas desde la hoja
 function cargarPreguntasPorDia(dia) {
   document.getElementById("loader").classList.remove("oculto");
   container.classList.add("oculto");
@@ -40,7 +38,6 @@ function cargarPreguntasPorDia(dia) {
           correcta: p.Correcta,
           TextoExtra: p.TextoExtra || ""
         }));
-
         mostrarPreguntas();
       }
 
@@ -63,7 +60,6 @@ function cargarPreguntasPorDia(dia) {
 
 window.onload = () => {
   cargarPreguntasPorDia(diaCapitalizado);
-
   document.querySelectorAll(".btn-dia").forEach(btn => {
     btn.addEventListener("click", () => {
       const diaSeleccionado = btn.textContent.trim();
@@ -153,6 +149,15 @@ function mostrarPreguntas() {
       `;
     }
 
+    // ✅ Campo adicional editable para reflexión del alumno
+    const valorGuardado = localStorage.getItem(`reflexion_preg${p.numero}`) || "";
+    contenidoHTML += `
+      <div class="campo-reflexion">
+        <label><strong>✍️ Reflexión / Comentario:</strong></label>
+        <textarea rows="3" style="width:100%;" placeholder="Escribe aquí..." oninput="guardarReflexion(${p.numero}, this.value)">${valorGuardado}</textarea>
+      </div>
+    `;
+
     div.innerHTML = contenidoHTML;
     container.appendChild(div);
   });
@@ -160,6 +165,10 @@ function mostrarPreguntas() {
   const contenedorBoton = document.createElement("div");
   contenedorBoton.id = "botonEnviarContainer";
   container.appendChild(contenedorBoton);
+}
+
+function guardarReflexion(numero, texto) {
+  localStorage.setItem(`reflexion_preg${numero}`, texto);
 }
 
 function mostrarRepasoSemanal(data) {
