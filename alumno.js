@@ -149,7 +149,8 @@ function mostrarPreguntas() {
       `;
     }
 
-    const valorGuardado = localStorage.getItem(`reflexion_preg${p.numero}`) || "";
+    const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${p.dia}_${p.numero}`;
+const valorGuardado = localStorage.getItem(clave) || "";
     contenidoHTML += `
       <div class="campo-reflexion">
         <label><strong>✍️ Reflexión / Comentario:</strong></label>
