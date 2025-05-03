@@ -498,4 +498,34 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   line-height: 1.2;
   padding: 4px; /* menos espacio interno para que no se monte */
 }
+/* Loader profesional */
+.loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+  color: #2c3e50;
+  font-weight: bold;
+  text-align: center;
+}
+
+.loader .spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #2c3e50;
+  border-top: 4px solid transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Ocultar por defecto */
+.oculto {
+  display: none;
+}
 
