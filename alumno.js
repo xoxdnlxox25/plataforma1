@@ -167,7 +167,9 @@ function mostrarPreguntas() {
 }
 
 function guardarReflexion(numero, texto) {
-  localStorage.setItem(`reflexion_preg${numero}`, texto);
+  const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${p.dia}_${p.numero}`;
+localStorage.setItem(clave, texto);
+
 }
 
 function mostrarRepasoSemanal(data) {
