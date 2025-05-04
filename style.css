@@ -579,8 +579,14 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   box-shadow: 0 0 8px rgba(41, 128, 185, 0.6);
 }
 
+.campo-reflexion {
+  margin-top: 10px;
+}
+
 .campo-reflexion textarea {
+  display: block;
   width: 100%;
+  max-width: 100%;
   padding: 10px 12px;
   font-size: 1rem;
   font-family: inherit;
@@ -588,6 +594,7 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   border-radius: 8px;
   resize: vertical;
   background-color: #fdfdfd;
+  box-sizing: border-box;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -595,11 +602,4 @@ button:hover, .bloque button:hover, .toggle-btn:hover, .btn-mini:hover {
   border-color: #2980b9;
   box-shadow: 0 0 4px rgba(41, 128, 185, 0.5);
   outline: none;
-}
-
-.campo-reflexion label {
-  display: block;
-  margin-bottom: 6px;
-  font-weight: bold;
-  color: #2c3e50;
 }
