@@ -150,7 +150,7 @@ function mostrarPreguntas() {
     }
 
     const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${p.dia}_${p.numero}`;
-const valorGuardado = localStorage.getItem(clave) || "";
+    const valorGuardado = localStorage.getItem(clave) || "";
     contenidoHTML += `
       <div class="campo-reflexion">
         <label><strong>✍️ Reflexión / Comentario:</strong></label>
@@ -167,11 +167,89 @@ const valorGuardado = localStorage.getItem(clave) || "";
   container.appendChild(contenedorBoton);
 }
 
+async function verificarRespuestasCompletas() {
+  const totalPreguntas = preguntasDelDia.length;
+  let totalRespondidas = 0;
+
+  preguntasDelDia.forEach(p => {
+    const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
+    if (seleccionada) totalRespondidas++;
+  });
+
+  const contenedorBoton = document.getElementById("botonEnviarContainer");
+  const diaHoy = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(new Date());
+  const diaActual = diaHoy.charAt(0).toUpperCase() + diaHoy.slice(1);
+  const diaSeleccionado = preguntasDelDia[0]?.dia;
+
+  const botonExistente = document.getElementById("btnEnviar");
+  if (botonExistente) botonExistente.remove();
+
+  if (totalRespondidas === totalPreguntas && diaSeleccionado === diaActual) {
+    const yaRespondio = await verificarSiYaRespondio(diaSeleccionado);
+    if (!yaRespondio) {
+      const btn = document.createElement("button");
+      btn.id = "btnEnviar";
+      btn.textContent = "✅ Enviar respuestas";
+      btn.className = "toggle-btn fade-in";
+      btn.onclick = enviarRespuestas;
+      contenedorBoton.appendChild(btn);
+    }
+  }
+}
+
+async function verificarSiYaRespondio(dia) {
+  const id = localStorage.getItem("id");
+  const clase = localStorage.getItem("clase");
+  try {
+    const res = await fetch(`${URL}?accion=verificarRespuestas&dia=${dia}&id=${id}&clase=${clase}`);
+    const data = await res.json();
+    return data?.respondio === true;
+  } catch (err) {
+    console.error("Error al verificar si ya respondió:", err);
+    return false;
+  }
+}
+
 function guardarReflexion(dia, numero, texto) {
   const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${dia}_${numero}`;
   localStorage.setItem(clave, texto);
 }
 
+function enviarRespuestas() {
+  const fecha = new Date().toISOString().split("T")[0];
+  let completas = true;
+
+  preguntasDelDia.forEach(p => {
+    const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
+    if (!seleccionada) {
+      mostrarToast(`⚠ Responde la pregunta ${p.numero}`, "error");
+      completas = false;
+      return;
+    }
+
+    const datos = new URLSearchParams();
+    datos.append("accion", "guardarRespuesta");
+    datos.append("clase", idClase);
+    datos.append("alumno", nombreAlumno);
+    datos.append("id", localStorage.getItem("id"));
+    datos.append("dia", p.dia);
+    datos.append("numero", p.numero);
+    datos.append("respuesta", seleccionada.value);
+    datos.append("fecha", fecha);
+
+    fetch(URL, {
+      method: "POST",
+      body: datos
+    }).then(res => res.text())
+      .then(resp => {
+        console.log("Guardado:", resp);
+      });
+  });
+
+  if (completas) {
+    mostrarToast("✅ ¡Respuestas enviadas correctamente!", "success");
+  }
+}
 
 function mostrarRepasoSemanal(data) {
   container.innerHTML = "";
@@ -210,8 +288,8 @@ function mostrarRepasoSemanal(data) {
         contenidoHTML += `<div class='bloque-nota'><strong>Nota:</strong>${nota}</div>`;
       }
 
-     const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${dia}_${p.numero}`;
-const reflexion = localStorage.getItem(clave);
+      const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${dia}_${p.numero}`;
+      const reflexion = localStorage.getItem(clave);
       if (reflexion) {
         contenidoHTML += `<div class='bloque-nota'><strong>📝 Reflexión escrita:</strong><br>${reflexion.replace(/\n/g, '<br>')}</div>`;
       }
@@ -220,68 +298,6 @@ const reflexion = localStorage.getItem(clave);
       container.appendChild(div);
     });
   });
-}
-
-function verificarRespuestasCompletas() {
-  const totalPreguntas = preguntasDelDia.length;
-  let totalRespondidas = 0;
-
-  preguntasDelDia.forEach(p => {
-    const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
-    if (seleccionada) totalRespondidas++;
-  });
-
-  const contenedorBoton = document.getElementById("botonEnviarContainer");
-
-  if (totalRespondidas === totalPreguntas) {
-    if (!document.getElementById("btnEnviar")) {
-      const btn = document.createElement("button");
-      btn.id = "btnEnviar";
-      btn.textContent = "✅ Enviar respuestas";
-      btn.className = "toggle-btn fade-in";
-      btn.onclick = enviarRespuestas;
-      contenedorBoton.appendChild(btn);
-    }
-  } else {
-    const boton = document.getElementById("btnEnviar");
-    if (boton) boton.remove();
-  }
-}
-
-function enviarRespuestas() {
-  const fecha = new Date().toISOString().split("T")[0];
-  let completas = true;
-
-  preguntasDelDia.forEach(p => {
-    const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
-    if (!seleccionada) {
-      mostrarToast(`⚠ Responde la pregunta ${p.numero}`, "error");
-      completas = false;
-      return;
-    }
-
-    const datos = new URLSearchParams();
-    datos.append("accion", "guardarRespuesta");
-    datos.append("clase", idClase);
-    datos.append("alumno", nombreAlumno);
-    datos.append("id", localStorage.getItem("id"));
-    datos.append("dia", p.dia);
-    datos.append("numero", p.numero);
-    datos.append("respuesta", seleccionada.value);
-    datos.append("fecha", fecha);
-
-    fetch(URL, {
-      method: "POST",
-      body: datos
-    }).then(res => res.text())
-      .then(resp => {
-        console.log("Guardado:", resp);
-      });
-  });
-
-  if (completas) {
-    mostrarToast("✅ ¡Respuestas enviadas correctamente!", "success");
-  }
 }
 
 function cerrarSesion() {
