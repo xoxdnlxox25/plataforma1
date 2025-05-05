@@ -31,13 +31,11 @@ function cargarPreguntasPorDia(dia) {
   fetch(url)
     .then(res => res.json())
     .then(async data => {
-      console.log("📦 Preguntas recibidas:", data); // ✅ DEBUG: Muestra datos cargados
-
+      // ✅ NUEVO: Guardamos si ya respondió hoy para el día seleccionado
       const hoy = new Date();
       const nombreDiaActual = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(hoy);
       const diaActual = nombreDiaActual.charAt(0).toUpperCase() + nombreDiaActual.slice(1);
       yaRespondioHoy = (dia === diaActual) ? await verificarSiYaRespondio(dia) : true;
-
       if (dia.toLowerCase() === "sábado") {
         mostrarRepasoSemanal(data);
       } else {
@@ -50,14 +48,13 @@ function cargarPreguntasPorDia(dia) {
           versiculo: p.Versiculo,
           nota: p.Nota,
           opciones: (p.Respuesta || "")
-            .split(/
-|(?=[A-Z]\))/)
+            .split(/\n|(?=[A-Z]\))/)
             .map(op => op.trim())
             .filter(op => op !== ""),
           correcta: p.Correcta,
           TextoExtra: p.TextoExtra || ""
         }));
-        mostrarPreguntas(); // ✅ Siempre se llama aunque ya respondió
+        mostrarPreguntas();
       }
 
       document.getElementById("loader").classList.add("oculto");
@@ -197,17 +194,12 @@ async function verificarRespuestasCompletas() {
   const diaHoy = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(new Date());
   const diaActual = diaHoy.charAt(0).toUpperCase() + diaHoy.slice(1);
   const diaSeleccionado = preguntasDelDia[0]?.dia;
+  // ✅ YA NO VOLVEMOS A CONSULTAR; usamos el valor guardado en la carga
 
-  // ✅ Eliminar el botón si existe
   const botonExistente = document.getElementById("btnEnviar");
   if (botonExistente) botonExistente.remove();
 
-  // ✅ NUEVO BLOQUE — impedir botón si ya respondió
-  if (yaRespondioHoy || diaSeleccionado !== diaActual) {
-    return; // 👈 Nunca mostrar botón si ya respondió o no es el día actual
-  }
-
-  if (totalRespondidas === totalPreguntas) {
+  if (!yaRespondioHoy && totalRespondidas === totalPreguntas && diaSeleccionado === diaActual) {
     const btn = document.createElement("button");
     btn.id = "btnEnviar";
     btn.textContent = "✅ Enviar respuestas";
@@ -216,12 +208,10 @@ async function verificarRespuestasCompletas() {
       enviarRespuestas().then(() => {
         const b = document.getElementById("btnEnviar");
         if (b) b.remove();
-        yaRespondioHoy = true; // ✅ Importante: no mostrar botón después de enviar
       });
     };
     contenedorBoton.appendChild(btn);
   }
-}
 }
 
 // ===============================================
