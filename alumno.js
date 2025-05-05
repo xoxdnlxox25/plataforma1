@@ -217,3 +217,52 @@ function guardarReflexion(dia, numero, texto) {
   const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${dia}_${numero}`;
   localStorage.setItem(clave, texto);
 }
+
+function mostrarRepasoSemanal(data) {
+  container.innerHTML = "";
+  const aviso = document.createElement("div");
+  aviso.className = "subtitulo-tarjeta fade-in";
+  aviso.innerHTML = "<strong>📚 Estás viendo el repaso semanal (Domingo a Viernes). Este contenido es solo de lectura.</strong>";
+  container.appendChild(aviso);
+
+  const agrupado = {};
+  data.forEach((p, index) => {
+    const dia = p.Día || "Sin día";
+    if (!agrupado[dia]) agrupado[dia] = [];
+    agrupado[dia].push({ ...p, numero: agrupado[dia].length + 1 });
+  });
+
+  Object.keys(agrupado).forEach(dia => {
+    const titulo = document.createElement("h3");
+    titulo.textContent = `📆 ${dia}`;
+    titulo.className = "subtitulo-tarjeta fade-in";
+    container.appendChild(titulo);
+
+    agrupado[dia].forEach(p => {
+      const div = document.createElement("div");
+      div.className = "pregunta fade-in";
+      div.style.marginBottom = "20px";
+
+      let contenidoHTML = `<p><strong>${p.Encabezado || `Pregunta ${p.numero}`}:</strong> ${p.Pregunta}</p>`;
+
+      if (p.Versiculo) {
+        const versiculo = p.Versiculo.split('\n').map(l => `<p style='margin: 8px 0;'>${l.trim()}</p>`).join("");
+        contenidoHTML += `<div class='bloque-versiculo'><strong>Versículo:</strong>${versiculo}</div>`;
+      }
+
+      if (p.Nota) {
+        const nota = p.Nota.split('\n').map(l => `<p style='margin: 8px 0;'>${l.trim()}</p>`).join("");
+        contenidoHTML += `<div class='bloque-nota'><strong>Nota:</strong>${nota}</div>`;
+      }
+
+      const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${dia}_${p.numero}`;
+      const reflexion = localStorage.getItem(clave);
+      if (reflexion) {
+        contenidoHTML += `<div class='bloque-nota'><strong>📝 Reflexión escrita:</strong><br>${reflexion.replace(/\n/g, '<br>')}</div>`;
+      }
+
+      div.innerHTML = contenidoHTML;
+      container.appendChild(div);
+    });
+  });
+}
