@@ -181,20 +181,29 @@ async function verificarRespuestasCompletas() {
   const diaActual = diaHoy.charAt(0).toUpperCase() + diaHoy.slice(1);
   const diaSeleccionado = preguntasDelDia[0]?.dia;
 
-  const botonExistente = document.getElementById("btnEnviar");
-
-// Solo crear el botón si aún no existe y si cumple las condiciones
-if (!botonExistente && totalRespondidas === totalPreguntas && diaSeleccionado === diaActual) {
+  // Verifica si ya respondió hoy
   const yaRespondio = await verificarSiYaRespondio(diaSeleccionado);
-  if (!yaRespondio) {
+
+  // Quitar botón si ya respondió o si no cumplió condiciones
+  const botonExistente = document.getElementById("btnEnviar");
+  if (botonExistente) botonExistente.remove();
+
+  if (!yaRespondio && totalRespondidas === totalPreguntas && diaSeleccionado === diaActual) {
     const btn = document.createElement("button");
     btn.id = "btnEnviar";
     btn.textContent = "✅ Enviar respuestas";
     btn.className = "toggle-btn fade-in";
-    btn.onclick = enviarRespuestas;
+    btn.onclick = () => {
+      enviarRespuestas().then(() => {
+        // Una vez enviadas, elimina el botón
+        const b = document.getElementById("btnEnviar");
+        if (b) b.remove();
+      });
+    };
     contenedorBoton.appendChild(btn);
   }
 }
+
 }
 
 async function verificarSiYaRespondio(dia) {
