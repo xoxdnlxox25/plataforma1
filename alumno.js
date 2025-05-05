@@ -1,37 +1,28 @@
-// Obtener el nombre del alumno y clase desde localStorage
 const nombreAlumno = localStorage.getItem("alumno");
 const idClase = localStorage.getItem("clase");
 
-// Mostrar nombre y clase en pantalla
 document.getElementById("nombreAlumno").textContent = nombreAlumno;
 document.getElementById("nombreClase").textContent = idClase;
 
-// Referencia al contenedor donde se mostrarán las preguntas
 const container = document.getElementById("preguntasContainer");
 let preguntasDelDia = [];
 
-// Obtener el día actual en español, capitalizando la primera letra
 const fecha = new Date();
 const diaSemana = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(fecha);
 const diaCapitalizado = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
 
-// Función principal que carga las preguntas según el día
 function cargarPreguntasPorDia(dia) {
   document.getElementById("loader").classList.remove("oculto");
   container.classList.add("oculto");
 
-  // Definir la acción a ejecutar dependiendo si es sábado o no
   const accion = dia.toLowerCase() === "sábado" ? "getPreguntasSemana" : "getPreguntasPorDia&dia=" + dia;
 
-  // Llamada al backend con fetch
   fetch(`${URL}?accion=${accion}`)
     .then(res => res.json())
     .then(data => {
-      // Si es sábado, mostrar el resumen semanal
       if (dia.toLowerCase() === "sábado") {
         mostrarRepasoSemanal(data);
       } else {
-        // Si es otro día, mapear las preguntas recibidas
         preguntasDelDia = data.map((p, index) => ({
           numero: index + 1,
           dia: p.Día,
@@ -50,11 +41,9 @@ function cargarPreguntasPorDia(dia) {
         mostrarPreguntas();
       }
 
-      // Restaurar visibilidad
       document.getElementById("loader").classList.add("oculto");
       container.classList.remove("oculto");
 
-      // Marcar el botón del día activo
       document.querySelectorAll(".btn-dia").forEach(btn => {
         btn.classList.remove("activo");
         if (btn.textContent.trim().toLowerCase() === dia.toLowerCase()) {
@@ -69,7 +58,6 @@ function cargarPreguntasPorDia(dia) {
     });
 }
 
-// Ejecutar al cargar la página
 window.onload = () => {
   cargarPreguntasPorDia(diaCapitalizado);
   document.querySelectorAll(".btn-dia").forEach(btn => {
@@ -80,11 +68,9 @@ window.onload = () => {
   });
 };
 
-// Mostrar preguntas en pantalla
 function mostrarPreguntas() {
   container.innerHTML = "";
 
-  // Mostrar encabezado del día y texto adicional si lo hay
   if (preguntasDelDia.length > 0) {
     const encabezado = document.createElement("div");
     encabezado.classList.add("subtitulo-tarjeta", "fade-in");
@@ -106,7 +92,6 @@ function mostrarPreguntas() {
     }
   }
 
-  // Recorrer y mostrar cada pregunta
   preguntasDelDia.forEach(p => {
     if (p.subtitulo && p.subtitulo.trim() !== "") {
       const subtituloDiv = document.createElement("div");
@@ -128,7 +113,6 @@ function mostrarPreguntas() {
 
     let contenidoHTML = `<p><strong>${p.encabezado}:</strong> ${p.pregunta}</p>`;
 
-    // Mostrar versículo con botón ocultar/mostrar
     if (p.versiculo && p.versiculo.trim() !== "") {
       const versiculoParrafos = p.versiculo
         .split('\n')
@@ -140,7 +124,6 @@ function mostrarPreguntas() {
       `;
     }
 
-    // Mostrar nota con botón ocultar/mostrar
     if (p.nota && p.nota.trim() !== "") {
       const notaParrafos = p.nota
         .split('\n')
@@ -152,7 +135,6 @@ function mostrarPreguntas() {
       `;
     }
 
-    // Mostrar opciones tipo test
     if (p.opciones.length > 0) {
       contenidoHTML += `
         <div class="opciones">
@@ -167,7 +149,6 @@ function mostrarPreguntas() {
       `;
     }
 
-    // Área para escribir reflexión o comentario
     const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${p.dia}_${p.numero}`;
     const valorGuardado = localStorage.getItem(clave) || "";
     contenidoHTML += `
@@ -181,13 +162,11 @@ function mostrarPreguntas() {
     container.appendChild(div);
   });
 
-  // Contenedor del botón de envío
   const contenedorBoton = document.createElement("div");
   contenedorBoton.id = "botonEnviarContainer";
   container.appendChild(contenedorBoton);
 }
 
-// Verifica si todas las preguntas están respondidas y muestra el botón "Enviar"
 async function verificarRespuestasCompletas() {
   const totalPreguntas = preguntasDelDia.length;
   let totalRespondidas = 0;
@@ -218,7 +197,6 @@ async function verificarRespuestasCompletas() {
   }
 }
 
-// Llama al backend para saber si ya se respondió en la fecha actual
 async function verificarSiYaRespondio(dia) {
   const id = localStorage.getItem("id");
   const clase = localStorage.getItem("clase");
@@ -234,60 +212,56 @@ async function verificarSiYaRespondio(dia) {
   }
 }
 
-// Guarda el comentario/reflexión en localStorage
 function guardarReflexion(dia, numero, texto) {
   const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${dia}_${numero}`;
   localStorage.setItem(clave, texto);
 }
 
-// Mostrar el repaso completo de la semana (solo lectura)
-function mostrarRepasoSemanal(data) {
-  container.innerHTML = "";
-  const aviso = document.createElement("div");
-  aviso.className = "subtitulo-tarjeta fade-in";
-  aviso.innerHTML = "<strong>📚 Estás viendo el repaso semanal (Domingo a Viernes). Este contenido es solo de lectura.</strong>";
-  container.appendChild(aviso);
+function enviarRespuestas() {
+  const fecha = new Date().toISOString().split("T")[0];
+  const id = localStorage.getItem("id");
+  const clase = localStorage.getItem("clase");
+  let completas = true;
 
-  // Agrupar por día
-  const agrupado = {};
-  data.forEach((p, index) => {
-    const dia = p.Día || "Sin día";
-    if (!agrupado[dia]) agrupado[dia] = [];
-    agrupado[dia].push({ ...p, numero: agrupado[dia].length + 1 });
+  preguntasDelDia.forEach(p => {
+    const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
+    if (!seleccionada) {
+      mostrarToast(`⚠ Responde la pregunta ${p.numero}`, "error");
+      completas = false;
+      return;
+    }
+
+    const datos = new URLSearchParams();
+    datos.append("accion", "guardarRespuesta");
+    datos.append("clase", clase);
+    datos.append("alumno", nombreAlumno);
+    datos.append("id", id);
+    datos.append("dia", p.dia);
+    datos.append("numero", p.numero);
+    datos.append("respuesta", seleccionada.value);
+    datos.append("fecha", fecha);
+
+    fetch(URL, {
+      method: "POST",
+      body: datos
+    }).then(res => res.text())
+      .then(resp => console.log("Guardado:", resp));
   });
 
-  // Mostrar cada día con sus preguntas
-  Object.keys(agrupado).forEach(dia => {
-    const titulo = document.createElement("h3");
-    titulo.textContent = `📆 ${dia}`;
-    titulo.className = "subtitulo-tarjeta fade-in";
-    container.appendChild(titulo);
+  if (completas) {
+    mostrarToast("✅ ¡Respuestas enviadas correctamente!", "success");
+  }
+}
 
-    agrupado[dia].forEach(p => {
-      const div = document.createElement("div");
-      div.className = "pregunta fade-in";
-      div.style.marginBottom = "20px";
+function mostrarToast(mensaje, tipo = "info") {
+  const contenedor = document.getElementById("toast-container");
+  if (!contenedor) return;
 
-      let contenidoHTML = `<p><strong>${p.Encabezado || `Pregunta ${p.numero}`}:</strong> ${p.Pregunta}</p>`;
+  const toast = document.createElement("div");
+  toast.className = `toast ${tipo}`;
+  toast.textContent = mensaje;
+  contenedor.innerHTML = "";
+  contenedor.appendChild(toast);
 
-      if (p.Versiculo) {
-        const versiculo = p.Versiculo.split('\n').map(l => `<p style='margin: 8px 0;'>${l.trim()}</p>`).join("");
-        contenidoHTML += `<div class='bloque-versiculo'><strong>Versículo:</strong>${versiculo}</div>`;
-      }
-
-      if (p.Nota) {
-        const nota = p.Nota.split('\n').map(l => `<p style='margin: 8px 0;'>${l.trim()}</p>`).join("");
-        contenidoHTML += `<div class='bloque-nota'><strong>Nota:</strong>${nota}</div>`;
-      }
-
-      const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${dia}_${p.numero}`;
-      const reflexion = localStorage.getItem(clave);
-      if (reflexion) {
-        contenidoHTML += `<div class='bloque-nota'><strong>📝 Reflexión escrita:</strong><br>${reflexion.replace(/\n/g, '<br>')}</div>`;
-      }
-
-      div.innerHTML = contenidoHTML;
-      container.appendChild(div);
-    });
-  });
+  setTimeout(() => toast.remove(), 3000);
 }
