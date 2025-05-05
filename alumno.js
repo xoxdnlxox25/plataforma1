@@ -227,40 +227,45 @@ function guardarReflexion(dia, numero, texto) {
 }
 
 function enviarRespuestas() {
-  const fecha = new Date().toISOString().split("T")[0];
-  const id = localStorage.getItem("id");
-  const clase = localStorage.getItem("clase");
-  let completas = true;
+  return new Promise((resolve) => {
+    const fecha = new Date().toISOString().split("T")[0];
+    let completas = true;
 
-  preguntasDelDia.forEach(p => {
-    const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
-    if (!seleccionada) {
-      mostrarToast(`⚠ Responde la pregunta ${p.numero}`, "error");
-      completas = false;
-      return;
+    preguntasDelDia.forEach(p => {
+      const seleccionada = document.querySelector(`input[name="preg${p.numero}"]:checked`);
+      if (!seleccionada) {
+        mostrarToast(`⚠ Responde la pregunta ${p.numero}`, "error");
+        completas = false;
+        return;
+      }
+
+      const datos = new URLSearchParams();
+      datos.append("accion", "guardarRespuesta");
+      datos.append("clase", idClase);
+      datos.append("alumno", nombreAlumno);
+      datos.append("id", localStorage.getItem("id"));
+      datos.append("dia", p.dia);
+      datos.append("numero", p.numero);
+      datos.append("respuesta", seleccionada.value);
+      datos.append("fecha", fecha);
+
+      fetch(URL, {
+        method: "POST",
+        body: datos
+      }).then(res => res.text())
+        .then(resp => {
+          console.log("Guardado:", resp);
+        });
+    });
+
+    if (completas) {
+      mostrarToast("✅ ¡Respuestas enviadas correctamente!", "success");
     }
 
-    const datos = new URLSearchParams();
-    datos.append("accion", "guardarRespuesta");
-    datos.append("clase", clase);
-    datos.append("alumno", nombreAlumno);
-    datos.append("id", id);
-    datos.append("dia", p.dia);
-    datos.append("numero", p.numero);
-    datos.append("respuesta", seleccionada.value);
-    datos.append("fecha", fecha);
-
-    fetch(URL, {
-      method: "POST",
-      body: datos
-    }).then(res => res.text())
-      .then(resp => console.log("Guardado:", resp));
+    resolve(); // Notifica que terminó
   });
-
-  if (completas) {
-    mostrarToast("✅ ¡Respuestas enviadas correctamente!", "success");
-  }
 }
+
 
 function mostrarToast(mensaje, tipo = "info") {
   const contenedor = document.getElementById("toast-container");
