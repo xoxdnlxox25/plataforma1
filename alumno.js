@@ -1,23 +1,33 @@
+// ===================
+// DATOS DEL ALUMNO
+// ===================
 const nombreAlumno = localStorage.getItem("alumno");
 const idClase = localStorage.getItem("clase");
-
 document.getElementById("nombreAlumno").textContent = nombreAlumno;
 document.getElementById("nombreClase").textContent = idClase;
 
+// ==========================
+// VARIABLES GLOBALES
+// ==========================
 const container = document.getElementById("preguntasContainer");
 let preguntasDelDia = [];
-
 const fecha = new Date();
-const diaSemana = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(fecha);
+const diaSemana = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(fecha);
 const diaCapitalizado = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
 
+// ========================================
+// FUNCIÓN PARA CARGAR PREGUNTAS SEGÚN DÍA
+// ========================================
 function cargarPreguntasPorDia(dia) {
   document.getElementById("loader").classList.remove("oculto");
   container.classList.add("oculto");
 
-  const accion = dia.toLowerCase() === "sábado" ? "getPreguntasSemana" : "getPreguntasPorDia&dia=" + dia;
+  // Corrección en la construcción de la URL
+  const url = dia.toLowerCase() === "sábado"
+    ? `${URL}?accion=getPreguntasSemana`
+    : `${URL}?accion=getPreguntasPorDia&dia=${dia}`;
 
-  fetch(`${URL}?accion=${accion}`)
+  fetch(url)
     .then(res => res.json())
     .then(data => {
       if (dia.toLowerCase() === "sábado") {
@@ -58,10 +68,13 @@ function cargarPreguntasPorDia(dia) {
     });
 }
 
+// ===============================
+// CARGAR AL INICIAR LA PÁGINA
+// ===============================
 window.onload = () => {
   cargarPreguntasPorDia(diaCapitalizado);
 
-  // Esperar 1 segundo y luego verificar si debe mostrarse el botón de enviar
+  // Verificación del botón de enviar tras carga inicial
   setTimeout(() => verificarRespuestasCompletas(), 1000);
 
   document.querySelectorAll(".btn-dia").forEach(btn => {
@@ -72,7 +85,9 @@ window.onload = () => {
   });
 };
 
-
+// ============================================
+// FUNCIÓN PARA MOSTRAR LAS PREGUNTAS EN HTML
+// ============================================
 function mostrarPreguntas() {
   container.innerHTML = "";
 
@@ -98,17 +113,6 @@ function mostrarPreguntas() {
   }
 
   preguntasDelDia.forEach(p => {
-    if (p.subtitulo && p.subtitulo.trim() !== "") {
-      const subtituloDiv = document.createElement("div");
-      subtituloDiv.className = "subtitulo-tarjeta fade-in";
-      const subtituloHTML = p.subtitulo
-        .split('\n')
-        .map(linea => `<p style="margin: 6px 0;">${linea.trim()}</p>`)
-        .join("");
-      subtituloDiv.innerHTML = subtituloHTML;
-      container.appendChild(subtituloDiv);
-    }
-
     const div = document.createElement("div");
     div.className = "pregunta fade-in";
     div.style.marginBottom = "20px";
@@ -118,22 +122,18 @@ function mostrarPreguntas() {
 
     let contenidoHTML = `<p><strong>${p.encabezado}:</strong> ${p.pregunta}</p>`;
 
-    if (p.versiculo && p.versiculo.trim() !== "") {
-      const versiculoParrafos = p.versiculo
-        .split('\n')
-        .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`)
-        .join("");
+    if (p.versiculo?.trim()) {
+      const versiculoParrafos = p.versiculo.split('\n')
+        .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`).join("");
       contenidoHTML += `
         <button class="toggle-btn" onclick="document.getElementById('${idVers}').classList.toggle('hidden')">📖 Mostrar/Ocultar versículo</button>
         <div id="${idVers}" class="bloque-versiculo hidden"><strong>Versículo:</strong>${versiculoParrafos}</div>
       `;
     }
 
-    if (p.nota && p.nota.trim() !== "") {
-      const notaParrafos = p.nota
-        .split('\n')
-        .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`)
-        .join("");
+    if (p.nota?.trim()) {
+      const notaParrafos = p.nota.split('\n')
+        .map(linea => `<p style="margin: 8px 0;">${linea.trim()}</p>`).join("");
       contenidoHTML += `
         <button class="toggle-btn" onclick="document.getElementById('${idNota}').classList.toggle('hidden')">📜 Mostrar/Ocultar nota</button>
         <div id="${idNota}" class="bloque-nota hidden"><strong>Nota:</strong>${notaParrafos}</div>
@@ -172,6 +172,9 @@ function mostrarPreguntas() {
   container.appendChild(contenedorBoton);
 }
 
+// ===============================================
+// VERIFICAR SI TODAS LAS RESPUESTAS FUERON DADAS
+// ===============================================
 async function verificarRespuestasCompletas() {
   const totalPreguntas = preguntasDelDia.length;
   let totalRespondidas = 0;
@@ -182,14 +185,11 @@ async function verificarRespuestasCompletas() {
   });
 
   const contenedorBoton = document.getElementById("botonEnviarContainer");
-  const diaHoy = new Intl.DateTimeFormat('es-ES', { weekday: 'long' }).format(new Date());
+  const diaHoy = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(new Date());
   const diaActual = diaHoy.charAt(0).toUpperCase() + diaHoy.slice(1);
   const diaSeleccionado = preguntasDelDia[0]?.dia;
-
-  // Verifica si ya respondió hoy
   const yaRespondio = await verificarSiYaRespondio(diaSeleccionado);
 
-  // Quitar botón si ya respondió o si no cumplió condiciones
   const botonExistente = document.getElementById("btnEnviar");
   if (botonExistente) botonExistente.remove();
 
@@ -200,7 +200,6 @@ async function verificarRespuestasCompletas() {
     btn.className = "toggle-btn fade-in";
     btn.onclick = () => {
       enviarRespuestas().then(() => {
-        // Una vez enviadas, elimina el botón
         const b = document.getElementById("btnEnviar");
         if (b) b.remove();
       });
@@ -209,8 +208,9 @@ async function verificarRespuestasCompletas() {
   }
 }
 
-}
-
+// ===============================================
+// VERIFICAR SI EL ALUMNO YA ENVIÓ ESE DÍA
+// ===============================================
 async function verificarSiYaRespondio(dia) {
   const id = localStorage.getItem("id");
   const clase = localStorage.getItem("clase");
@@ -226,11 +226,17 @@ async function verificarSiYaRespondio(dia) {
   }
 }
 
+// ========================================
+// GUARDAR LA REFLEXIÓN EN LOCALSTORAGE
+// ========================================
 function guardarReflexion(dia, numero, texto) {
   const clave = `reflexion_${idClase}_${localStorage.getItem("id")}_${dia}_${numero}`;
   localStorage.setItem(clave, texto);
 }
 
+// ===================================
+// ENVÍO DE RESPUESTAS AL SERVIDOR
+// ===================================
 function enviarRespuestas() {
   return new Promise((resolve) => {
     const fecha = new Date().toISOString().split("T")[0];
@@ -263,15 +269,15 @@ function enviarRespuestas() {
         });
     });
 
-    if (completas) {
-      mostrarToast("✅ ¡Respuestas enviadas correctamente!", "success");
-    }
+    if (completas) mostrarToast("✅ ¡Respuestas enviadas correctamente!", "success");
 
-    resolve(); // Notifica que terminó
+    resolve();
   });
 }
 
-
+// ======================
+// TOAST DE NOTIFICACIÓN
+// ======================
 function mostrarToast(mensaje, tipo = "info") {
   const contenedor = document.getElementById("toast-container");
   if (!contenedor) return;
