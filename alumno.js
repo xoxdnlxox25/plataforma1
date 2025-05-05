@@ -182,19 +182,19 @@ async function verificarRespuestasCompletas() {
   const diaSeleccionado = preguntasDelDia[0]?.dia;
 
   const botonExistente = document.getElementById("btnEnviar");
-  if (botonExistente) botonExistente.remove();
 
-  if (totalRespondidas === totalPreguntas && diaSeleccionado === diaActual) {
-    const yaRespondio = await verificarSiYaRespondio(diaSeleccionado);
-    if (!yaRespondio) {
-      const btn = document.createElement("button");
-      btn.id = "btnEnviar";
-      btn.textContent = "✅ Enviar respuestas";
-      btn.className = "toggle-btn fade-in";
-      btn.onclick = enviarRespuestas;
-      contenedorBoton.appendChild(btn);
-    }
+// Solo crear el botón si aún no existe y si cumple las condiciones
+if (!botonExistente && totalRespondidas === totalPreguntas && diaSeleccionado === diaActual) {
+  const yaRespondio = await verificarSiYaRespondio(diaSeleccionado);
+  if (!yaRespondio) {
+    const btn = document.createElement("button");
+    btn.id = "btnEnviar";
+    btn.textContent = "✅ Enviar respuestas";
+    btn.className = "toggle-btn fade-in";
+    btn.onclick = enviarRespuestas;
+    contenedorBoton.appendChild(btn);
   }
+}
 }
 
 async function verificarSiYaRespondio(dia) {
