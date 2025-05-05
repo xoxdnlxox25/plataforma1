@@ -197,17 +197,22 @@ async function verificarRespuestasCompletas() {
   }
 }
 
+
 async function verificarSiYaRespondio(dia) {
   const id = localStorage.getItem("id");
   const clase = localStorage.getItem("clase");
+  const fecha = new Date().toISOString().split("T")[0]; // formato YYYY-MM-DD
+
   try {
-    const res = await fetch(`${URL}?accion=verificarRespuestas&dia=${dia}&id=${id}&clase=${clase}`);
-    const data = await res.json();
-    return data?.respondio === true;
+    const res = await fetch(`${URL}?accion=verificarEnvioDelDia&clase=${clase}&alumno=${id}&fecha=${fecha}`);
+    const texto = await res.text();
+    return texto === "true";
   } catch (err) {
     console.error("Error al verificar si ya respondió:", err);
     return false;
   }
+}
+
 }
 
 function guardarReflexion(dia, numero, texto) {
