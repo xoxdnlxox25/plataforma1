@@ -194,11 +194,20 @@ async function verificarRespuestasCompletas() {
   const diaHoy = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(new Date());
   const diaActual = diaHoy.charAt(0).toUpperCase() + diaHoy.slice(1);
   const diaSeleccionado = preguntasDelDia[0]?.dia;
-  // ✅ YA NO VOLVEMOS A CONSULTAR; usamos el valor guardado en la carga
 
-  const botonExistente = document.getElementById("btnEnviar");
-  if (botonExistente) botonExistente.remove();
+  // Limpiar cualquier contenido anterior (botón o mensaje)
+  contenedorBoton.innerHTML = "";
 
+  // ✅ Mostrar mensaje si ya envió
+  if (yaRespondioHoy && diaSeleccionado === diaActual) {
+    const mensaje = document.createElement("div");
+    mensaje.textContent = "✅ Ya enviaste tus respuestas hoy";
+    mensaje.className = "mensaje-confirmacion fade-in"; // puedes estilizar esto en CSS
+    contenedorBoton.appendChild(mensaje);
+    return;
+  }
+
+  // ✅ Mostrar botón solo si aún no ha enviado y todas están respondidas
   if (!yaRespondioHoy && totalRespondidas === totalPreguntas && diaSeleccionado === diaActual) {
     const btn = document.createElement("button");
     btn.id = "btnEnviar";
@@ -208,11 +217,19 @@ async function verificarRespuestasCompletas() {
       enviarRespuestas().then(() => {
         const b = document.getElementById("btnEnviar");
         if (b) b.remove();
+
+        // ✅ Mostrar mensaje después de enviar
+        yaRespondioHoy = true;
+        const msg = document.createElement("div");
+        msg.textContent = "✅ Ya enviaste tus respuestas hoy";
+        msg.className = "mensaje-confirmacion fade-in";
+        contenedorBoton.appendChild(msg);
       });
     };
     contenedorBoton.appendChild(btn);
   }
 }
+
 
 // ===============================================
 // VERIFICAR SI EL ALUMNO YA ENVIÓ ESE DÍA
