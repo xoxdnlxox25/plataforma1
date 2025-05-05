@@ -194,12 +194,17 @@ async function verificarRespuestasCompletas() {
   const diaHoy = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(new Date());
   const diaActual = diaHoy.charAt(0).toUpperCase() + diaHoy.slice(1);
   const diaSeleccionado = preguntasDelDia[0]?.dia;
-  // ✅ YA NO VOLVEMOS A CONSULTAR; usamos el valor guardado en la carga
 
+  // ✅ Eliminar el botón si existe
   const botonExistente = document.getElementById("btnEnviar");
   if (botonExistente) botonExistente.remove();
 
-  if (!yaRespondioHoy && totalRespondidas === totalPreguntas && diaSeleccionado === diaActual) {
+  // ✅ NUEVO BLOQUE — impedir botón si ya respondió
+  if (yaRespondioHoy || diaSeleccionado !== diaActual) {
+    return; // 👈 Nunca mostrar botón si ya respondió o no es el día actual
+  }
+
+  if (totalRespondidas === totalPreguntas) {
     const btn = document.createElement("button");
     btn.id = "btnEnviar";
     btn.textContent = "✅ Enviar respuestas";
@@ -208,10 +213,12 @@ async function verificarRespuestasCompletas() {
       enviarRespuestas().then(() => {
         const b = document.getElementById("btnEnviar");
         if (b) b.remove();
+        yaRespondioHoy = true; // ✅ Importante: no mostrar botón después de enviar
       });
     };
     contenedorBoton.appendChild(btn);
   }
+}
 }
 
 // ===============================================
