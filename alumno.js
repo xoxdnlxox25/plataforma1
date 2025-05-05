@@ -8,6 +8,7 @@ document.getElementById("nombreClase").textContent = idClase;
 
 // ==========================
 // VARIABLES GLOBALES
+let yaRespondioHoy = false; // ✅ NUEVO: guarda si el alumno ya respondió hoy para evitar mostrar el botón
 // ==========================
 const container = document.getElementById("preguntasContainer");
 let preguntasDelDia = [];
@@ -29,7 +30,12 @@ function cargarPreguntasPorDia(dia) {
 
   fetch(url)
     .then(res => res.json())
-    .then(data => {
+    .then(async data => {
+      // ✅ NUEVO: Guardamos si ya respondió hoy para el día seleccionado
+      const hoy = new Date();
+      const nombreDiaActual = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(hoy);
+      const diaActual = nombreDiaActual.charAt(0).toUpperCase() + nombreDiaActual.slice(1);
+      yaRespondioHoy = (dia === diaActual) ? await verificarSiYaRespondio(dia) : true;
       if (dia.toLowerCase() === "sábado") {
         mostrarRepasoSemanal(data);
       } else {
@@ -188,12 +194,12 @@ async function verificarRespuestasCompletas() {
   const diaHoy = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(new Date());
   const diaActual = diaHoy.charAt(0).toUpperCase() + diaHoy.slice(1);
   const diaSeleccionado = preguntasDelDia[0]?.dia;
-  const yaRespondio = await verificarSiYaRespondio(diaSeleccionado);
+  // ✅ YA NO VOLVEMOS A CONSULTAR; usamos el valor guardado en la carga
 
   const botonExistente = document.getElementById("btnEnviar");
   if (botonExistente) botonExistente.remove();
 
-  if (!yaRespondio && totalRespondidas === totalPreguntas && diaSeleccionado === diaActual) {
+  if (!yaRespondioHoy && totalRespondidas === totalPreguntas && diaSeleccionado === diaActual) {
     const btn = document.createElement("button");
     btn.id = "btnEnviar";
     btn.textContent = "✅ Enviar respuestas";
