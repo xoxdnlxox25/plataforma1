@@ -223,7 +223,7 @@ async function verificarSiYaRespondio(dia) {
   const fecha = new Date().toISOString().split("T")[0];
 
   try {
-    const res = await fetch(`${URL}?accion=verificarEnvioDelDia&clase=${clase}&alumno=${id}&fecha=${fecha}`);
+    const res = await fetch(`${URL}?accion=verificarEnvioDelDia&clase=${clase}&id=${id}&fecha=${fecha}`);
     const texto = await res.text();
     return texto === "true";
   } catch (err) {
