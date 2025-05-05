@@ -77,19 +77,19 @@ function cargarPreguntasPorDia(dia) {
 // ===============================
 // CARGAR AL INICIAR LA PÁGINA
 // ===============================
-window.onload = () => {
-  cargarPreguntasPorDia(diaCapitalizado);
-
-  // Verificación del botón de enviar tras carga inicial
-  setTimeout(() => verificarRespuestasCompletas(), 1000);
+window.onload = async () => {
+  await cargarPreguntasPorDia(diaCapitalizado); // ✅ Espera a que termine
+  verificarRespuestasCompletas();               // ✅ Ahora ya sabe si ya respondió
 
   document.querySelectorAll(".btn-dia").forEach(btn => {
-    btn.addEventListener("click", () => {
+    btn.addEventListener("click", async () => {
       const diaSeleccionado = btn.textContent.trim();
-      cargarPreguntasPorDia(diaSeleccionado);
+      await cargarPreguntasPorDia(diaSeleccionado); // ✅ Espera para evitar error
+      verificarRespuestasCompletas();               // ✅ Solo después de cargar preguntas
     });
   });
 };
+
 
 // ============================================
 // FUNCIÓN PARA MOSTRAR LAS PREGUNTAS EN HTML
