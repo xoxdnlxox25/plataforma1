@@ -19,23 +19,23 @@ const diaCapitalizado = diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1);
 // ========================================
 // FUNCIÓN PARA CARGAR PREGUNTAS SEGÚN DÍA
 // ========================================
-async function cargarPreguntasPorDia(dia) {
+function cargarPreguntasPorDia(dia) {
   document.getElementById("loader").classList.remove("oculto");
   container.classList.add("oculto");
 
+  // Corrección en la construcción de la URL
   const url = dia.toLowerCase() === "sábado"
     ? `${URL}?accion=getPreguntasSemana`
     : `${URL}?accion=getPreguntasPorDia&dia=${dia}`;
 
-  return fetch(url) // ✅ AGREGADO return para que await funcione correctamente afuera
+  fetch(url)
     .then(res => res.json())
     .then(async data => {
+      // ✅ NUEVO: Guardamos si ya respondió hoy para el día seleccionado
       const hoy = new Date();
       const nombreDiaActual = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(hoy);
       const diaActual = nombreDiaActual.charAt(0).toUpperCase() + nombreDiaActual.slice(1);
-
       yaRespondioHoy = (dia === diaActual) ? await verificarSiYaRespondio(dia) : true;
-
       if (dia.toLowerCase() === "sábado") {
         mostrarRepasoSemanal(data);
       } else {
@@ -48,7 +48,7 @@ async function cargarPreguntasPorDia(dia) {
           versiculo: p.Versiculo,
           nota: p.Nota,
           opciones: (p.Respuesta || "")
-            .split(/\n|(?=[A-Z]\)))
+            .split(/\n|(?=[A-Z]\))/)
             .map(op => op.trim())
             .filter(op => op !== ""),
           correcta: p.Correcta,
