@@ -60,6 +60,10 @@ function cargarPreguntasPorDia(dia) {
 
 window.onload = () => {
   cargarPreguntasPorDia(diaCapitalizado);
+
+  // Esperar 1 segundo y luego verificar si debe mostrarse el botón de enviar
+  setTimeout(() => verificarRespuestasCompletas(), 1000);
+
   document.querySelectorAll(".btn-dia").forEach(btn => {
     btn.addEventListener("click", () => {
       const diaSeleccionado = btn.textContent.trim();
@@ -67,6 +71,7 @@ window.onload = () => {
     });
   });
 };
+
 
 function mostrarPreguntas() {
   container.innerHTML = "";
