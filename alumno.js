@@ -31,11 +31,13 @@ function cargarPreguntasPorDia(dia) {
   fetch(url)
     .then(res => res.json())
     .then(async data => {
-      // ✅ NUEVO: Guardamos si ya respondió hoy para el día seleccionado
+      console.log("📦 Preguntas recibidas:", data); // ✅ DEBUG: Muestra datos cargados
+
       const hoy = new Date();
       const nombreDiaActual = new Intl.DateTimeFormat("es-ES", { weekday: "long" }).format(hoy);
       const diaActual = nombreDiaActual.charAt(0).toUpperCase() + nombreDiaActual.slice(1);
       yaRespondioHoy = (dia === diaActual) ? await verificarSiYaRespondio(dia) : true;
+
       if (dia.toLowerCase() === "sábado") {
         mostrarRepasoSemanal(data);
       } else {
@@ -48,13 +50,14 @@ function cargarPreguntasPorDia(dia) {
           versiculo: p.Versiculo,
           nota: p.Nota,
           opciones: (p.Respuesta || "")
-            .split(/\n|(?=[A-Z]\))/)
+            .split(/
+|(?=[A-Z]\))/)
             .map(op => op.trim())
             .filter(op => op !== ""),
           correcta: p.Correcta,
           TextoExtra: p.TextoExtra || ""
         }));
-        mostrarPreguntas();
+        mostrarPreguntas(); // ✅ Siempre se llama aunque ya respondió
       }
 
       document.getElementById("loader").classList.add("oculto");
