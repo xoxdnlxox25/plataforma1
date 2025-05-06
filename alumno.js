@@ -313,3 +313,8 @@ function mostrarToast(mensaje, tipo = "info") {
 
   setTimeout(() => toast.remove(), 3000);
 }
+
+function cerrarSesion() {
+  localStorage.clear(); // Elimina todos los datos guardados
+  window.location.href = "index.html"; // Redirige al login o página principal
+}
