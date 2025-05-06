@@ -1,2 +1,2 @@
 // URL de la API de Google Apps Script
-const URL = 'https://script.google.com/macros/s/AKfycbx5uOMhGKQPiqdRyVHIYBJeuKaVV4o_C7JMpiIvWUE8dV9AKknankqrkoWvE6k0draw/exec';
+const URL = 'https://script.google.com/macros/s/AKfycbwoMGQEaoyMYgEbVLHq9SjmG1hZ5zUubAOkoFezBjBWSNlpYxxf3tirKQF1CXL-7e8/exec';
